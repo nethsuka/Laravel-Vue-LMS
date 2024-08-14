@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('NIC');
             $table->integer('exam_year');
             $table->string('school')->nullable();
-            $table->string('getToKnow');
-            $table->string('address');
+            $table->text('getToKnow');
+            $table->text('address');
             $table->string('f_number')->nullable();
             $table->string('m_number')->nullable();
             $table->string('w_number');

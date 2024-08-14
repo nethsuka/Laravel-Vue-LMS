@@ -32,7 +32,7 @@ const submit = () => {
     <GuestLayoutRegister>
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" enctype="multipart/form-data">
             <div>
                 <InputLabel for="name" value="Name*" />
 
@@ -59,7 +59,6 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.NIC"
                     required
-                    autofocus
                     autocomplete="nic"
                 />
 
@@ -75,7 +74,6 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.exam_year"
                     required
-                    autofocus
                     autocomplete="year"
                 />
 
@@ -90,7 +88,6 @@ const submit = () => {
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.school"
-                    autofocus
                     autocomplete="school"
                 />
 
@@ -105,7 +102,6 @@ const submit = () => {
                     name="w3review" rows="3"
                     v-model="form.getToKnow"
                     required
-                    autofocus
                 ></textarea>
 
                 <InputError class="mt-2" :message="form.errors.getToKnow" />
@@ -119,7 +115,6 @@ const submit = () => {
                     rows="2"
                     v-model="form.address"
                     required
-                    autofocus
                 ></textarea>
 
                 <InputError class="mt-2" :message="form.errors.address" />
@@ -133,7 +128,6 @@ const submit = () => {
                     type="tel"
                     class="mt-1 block w-full"
                     v-model="form.f_number"
-                    autofocus
                     autocomplete="Father's Number"
                 />
 
@@ -148,7 +142,6 @@ const submit = () => {
                     type="tel"
                     class="mt-1 block w-full"
                     v-model="form.m_number"
-                    autofocus
                     autocomplete="Mother's Number"
                 />
 
@@ -163,7 +156,6 @@ const submit = () => {
                     type="tel"
                     class="mt-1 block w-full"
                     v-model="form.whatsapp_number"
-                    autofocus
                     required
                     autocomplete="whatsapp_number"
                 />
