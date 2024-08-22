@@ -37,7 +37,8 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit" enctype="multipart/form-data">
+        <form @submit.prevent="submit" enctype="multipart/form-data" method="post">
+            <input type="hidden" name="_token" :value="csrfToken">
             <div>
                 <InputLabel for="email" value="Email" />
 
@@ -63,7 +64,6 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.password"
                     required
-                    autocomplete="current-password"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />

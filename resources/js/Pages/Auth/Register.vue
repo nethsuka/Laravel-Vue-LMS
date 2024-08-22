@@ -33,6 +33,7 @@ const submit = () => {
         <Head title="Register" />
 
         <form @submit.prevent="submit" enctype="multipart/form-data">
+            <input type="hidden" name="_token" :value="csrfToken">
             <div>
                 <InputLabel for="name" value="Name*" />
 
@@ -187,7 +188,6 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.password"
                     required
-                    autocomplete="new-password"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />
@@ -202,7 +202,6 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.password_confirmation"
                     required
-                    autocomplete="new-password"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />

@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Symfony\Component\Routing\Route as RoutingRoute;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -32,8 +34,12 @@ Route::get('/admin', function () {
 
 
 
-Route::get('/payments', function () {
-    return Inertia::render('Payment');
-})->name('payments');
+// Route::get('/payments', function () {
+//     return Inertia::render('Payment');
+// })->name('payments');
+
+Route::get('/payments', [PaymentController::class, 'index'])->name('payments');
+Route::post('/payments', [PaymentController::class, 'store'])->name('payments.upload');
+
 
 require __DIR__.'/auth.php';
