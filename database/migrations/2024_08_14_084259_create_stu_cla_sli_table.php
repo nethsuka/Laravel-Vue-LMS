@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id') // This creates the 'user_id' column
                   ->constrained('users') // This references the 'id' column on the 'users' table
                   ->onDelete('cascade'); // If a user is deleted, their posts are deleted as well
-            $table->foreignId('class_id') // This creates the 'user_id' column
-                  ->constrained('classes') // This references the 'id' column on the 'users' table
+            $table->foreignId('tuition_class_id') // This creates the 'user_id' column
+                  ->constrained('tuition_classes') // This references the 'id' column on the 'users' table
                   ->onDelete('cascade');
             $table->foreignId('slip_id') // This creates the 'user_id' column
                   ->constrained('slips') // This references the 'id' column on the 'users' table

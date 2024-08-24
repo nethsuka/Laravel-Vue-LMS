@@ -52,4 +52,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function tuition_classes()
+    {
+        return $this->belongsToMany(TuitionClass::class, 'stclasses');
+    }
 }

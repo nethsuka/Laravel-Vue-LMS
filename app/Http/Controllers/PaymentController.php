@@ -27,7 +27,7 @@ class PaymentController extends Controller
         $slip = $request->file('slip');
         $fileName = time() . '_' . $slip->getClientOriginalName(); //making a file name
         // $slip->move(public_path('mounthly_slips'), $fileName);
-        $path = $slip->storeAs('mounthly_slips', $fileName, 'public');
+        $path = $slip->storeAs('monthly_slips', $fileName, 'public');
 
         Slip::create([
             'note' => $request->name,

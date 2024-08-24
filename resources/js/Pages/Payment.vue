@@ -23,8 +23,12 @@ const form1 = useForm({
 });
 
 function submit1() {
-  form1.post('/payments')
-  form1.reset();
+  form1.post('/payments', {
+    preserveScroll: true,
+    onSuccess: () => {
+        form1.reset();
+        window.scrollTo(0, 0);},
+  });
   showAlert.value = true;
 }
 
@@ -146,9 +150,9 @@ function closeAlert() {
                             <input @input="form1.slip = $event.target.files[0]" accept=".pdf,.png,.jpg,.jpeg" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG or PDF (MAX. 3MB).</p>
                             <InputError class="mt-2" :message="form1.errors.slip" />
-                            <div v-if="$page.props.flash.errorMessage">
+                            <!-- <div v-if="$page.props.flash.errorMessage">
                                 {{ $page.props.flash.errorMessage }}
-                            </div>
+                            </div> -->
 
                             <button type="submit" class="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                             </form>
