@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\StExtendDate;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -51,6 +52,10 @@ class RegisteredUserController extends Controller
             'w_number' => $request->whatsapp_number,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+        ]);
+
+        StExtendDate::create([
+            'user_email' => $request->email,
         ]);
 
         event(new Registered($user));

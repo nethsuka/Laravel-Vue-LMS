@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Slip;
 use Inertia\Inertia;
+use App\Models\StuClaSlip;
+use App\Models\TuitionClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
 
     public function index() {
-        return Inertia::render('Payment');
+        $classDetails = TuitionClass::all();
+        return Inertia::render('Payment', ['classDetails' => $classDetails]);
+        // return response()->json(['classDetails' => $classDetails]);
+
     }
 
     public function store(Request $request) {
@@ -22,6 +28,7 @@ class PaymentController extends Controller
             'slip' => 'required|file|mimes:jpg,png,pdf|max:2048',
         ]);
 
+        //------------Saving data in Zip file starts------------
         $classes_paid = implode(',', $form1_data['paid_classes']);
 
         $slip = $request->file('slip');
@@ -35,9 +42,20 @@ class PaymentController extends Controller
             'paid_classes' => $classes_paid,
             'st_email' => $request->email,
         ]);
+        //-----------Saving data in Zip file ends-------------
 
-        // Process data for form 1
-        // return redirect()->back()->with('errorMessage', 'Form 1 submitted successfully!');
+        foreach ($form1_data['paid_classes'] as $class) {
+            $classID = TuitionClass::where('class_name', $class)->value('id');
+            $slipID = Slip::where('slip_url', $path)->value('id');
+            $stID = Auth::user()->id;
+
+            StuClaSlip::create([
+                'user_id' => $stID,
+                'tuition_class_id' => $classID,
+                'slip_id' => $slipID,
+            ]);
+        }
+        
         return back()->with([
             'successMsg' => 'Payment details submitted successfully.',
         ]);

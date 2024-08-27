@@ -3,8 +3,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
+const Arrays = defineProps({
+  stclassRecords: Array,
+  classDetails: Array,
+});
+
 // const activeTab = ref('profile');
-const activeTab = ref('2023AL');
+// const activeTab = ref('2023AL');
+const activeTab = ref(Arrays.classDetails[0].class_name);
 
 function setActiveTab(tab) {
   activeTab.value = tab;
@@ -16,13 +22,16 @@ const form = useForm({
 
 function submit(value) {
     form.className= value;
+    Arrays.stclassRecords.push({ tuition_class_id: value });
     form.post('/dashboard');
 }
 
-defineProps({
-  stclassRecords: Array,
-  classDetails: Array,
-});
+function collectTuitionClassIds() {
+    var tuitionClassIds = Arrays.stclassRecords.map(record => record.tuition_class_id);
+    console.log(tuitionClassIds);
+    return tuitionClassIds;
+}
+
 </script>
 
 <template>
@@ -51,7 +60,7 @@ defineProps({
                         <li v-for="record in classDetails" :key="record.id">
                             <a
                             href="#"
-                            class="inline-flex items-center px-4 py-3 rounded-lg hover:text-gray-900 bg-gray-50 hover:bg-gray-100 w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+                            class="inline-flex items-center px-4 py-3 rounded-lg hover:text-gray-900 bg-gray-50 hover:bg-gray-100 w-40 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
                             :class="{ 'back-color': activeTab == record.class_name }"
                             @click.prevent="setActiveTab(record.class_name)"
                             >
@@ -64,30 +73,35 @@ defineProps({
 
                         <template v-for="record in classDetails" :key="record.id">
                             <div v-if="activeTab === record.class_name">
-                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ record.class_name }} Class</h3>
-                                <!-- <p class="mb-2">This is some placeholder content for the Profile tab's associated content. Clicking another tab will toggle the visibility of this one.</p>
-                                <p>The tab JavaScript swaps classes to control the content visibility and styling.</p> -->
-                                <div class="mt-5 mb-10">
-                                <a :href="record.zoom_link" class="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                                    Join Online Class
-                                </a>
-                                <a :href="record.tele_group" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                                    Telegram Channel
-                                </a>
+                                <div v-if="!collectTuitionClassIds().includes(record.id)" class="container flex justify-center items-center py-20">
+                                    <button @click="submit(record.id)" type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-400 dark:hover:bg-green-700 dark:focus:ring-green-800">Join Class</button>
                                 </div>
+                                <div v-else>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ record.class_name }} Class</h3>
+                                    <!-- <p class="mb-2">This is some placeholder content for the Profile tab's associated content. Clicking another tab will toggle the visibility of this one.</p>
+                                    <p>The tab JavaScript swaps classes to control the content visibility and styling.</p> -->
+                                    <div class="mt-5 mb-10 flex">
+                                    <a :href="record.zoom_link" class="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                                        Join Online Class
+                                    </a>
+                                    <a :href="record.tele_group" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                                        Telegram Channel
+                                    </a>
+                                    </div>
 
-                                <div class="pb-9">
-                                <h6 class="pb-1"><b>Papers</b></h6>
-                                <hr class="pb-3">
-                                <a href="#" class="block max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                                <!-- <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5> -->
-                                <p class="font-normal text-gray-700 dark:text-gray-400">My_file.pdf</p>
-                                </a>
+                                    <div class="pb-9">
+                                    <h6 class="pb-1"><b>Papers</b></h6>
+                                    <hr class="pb-3">
+                                    <a href="#" class="block max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                                    <!-- <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5> -->
+                                    <p class="font-normal text-gray-700 dark:text-gray-400">My_file.pdf</p>
+                                    </a>
+                                    </div>
+
+                                    <h6 class="pb-1"><b>Recordings</b></h6>
+                                    <hr class="pb-3">
+                                    <div v-html="record.video_link"></div>
                                 </div>
-
-                                <h6 class="pb-1"><b>Recordings</b></h6>
-                                <hr class="pb-3">
-                                <div v-html="record.video_link"></div>
                             </div>
                         </template>
 
@@ -120,5 +134,10 @@ defineProps({
 .back-color { 
     background-color: #2f7dd1; 
     color: white;
+}
+@media only screen and (min-width: 300px) {
+.back-color  {
+    width: 100%;
+  }
 }
 </style>

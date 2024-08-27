@@ -112,8 +112,8 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                        <ResponsiveNavLink :href="route('class_controles')" :active="route().current('class_controles')">
+                            Class Controles
                         </ResponsiveNavLink>
                     </div>
 

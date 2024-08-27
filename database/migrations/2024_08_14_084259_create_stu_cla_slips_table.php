@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stu_cla_sli', function (Blueprint $table) {
+        Schema::create('stu_cla_slips', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id') // This creates the 'user_id' column
                   ->constrained('users') // This references the 'id' column on the 'users' table
@@ -22,8 +22,7 @@ return new class extends Migration
             $table->foreignId('slip_id') // This creates the 'user_id' column
                   ->constrained('slips') // This references the 'id' column on the 'users' table
                   ->onDelete('cascade');
-            $table->boolean('paid')->default(false);
-            $table->string('extend_date');
+            $table->string('paid')->default('no');
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stu_cla_sli');
+        Schema::dropIfExists('stu_cla_slips');
     }
 };
