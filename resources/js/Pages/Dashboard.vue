@@ -6,6 +6,8 @@ import { ref } from 'vue';
 const Arrays = defineProps({
   stclassRecords: Array,
   classDetails: Array,
+  extendDetails: Array,
+  paidClassDetails: Array,
 });
 
 // const activeTab = ref('profile');
@@ -32,6 +34,24 @@ function collectTuitionClassIds() {
     return tuitionClassIds;
 }
 
+function checkPaidOrNot(classID) {
+    for (var item of Arrays.paidClassDetails) {
+        if (item.tuition_class_id === classID && item.paid === 'yes') {
+            return true;
+        }
+    }
+    return false;
+}
+
+function checkDateRange() {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDate();
+    if( currentDay >= 1 && currentDay <= Arrays.extendDetails.extend_date){
+        return true;
+    }else{
+        return false;
+    }
+}
 </script>
 
 <template>
@@ -74,9 +94,9 @@ function collectTuitionClassIds() {
                         <template v-for="record in classDetails" :key="record.id">
                             <div v-if="activeTab === record.class_name">
                                 <div v-if="!collectTuitionClassIds().includes(record.id)" class="container flex justify-center items-center py-20">
-                                    <button @click="submit(record.id)" type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-400 dark:hover:bg-green-700 dark:focus:ring-green-800">Join Class</button>
+                                    <button @click="submit(record.id)" type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Join Class</button>
                                 </div>
-                                <div v-else>
+                                <div v-else-if="checkPaidOrNot(record.id) || checkDateRange()">
                                     <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ record.class_name }} Class</h3>
                                     <!-- <p class="mb-2">This is some placeholder content for the Profile tab's associated content. Clicking another tab will toggle the visibility of this one.</p>
                                     <p>The tab JavaScript swaps classes to control the content visibility and styling.</p> -->
@@ -94,13 +114,23 @@ function collectTuitionClassIds() {
                                     <hr class="pb-3">
                                     <a href="#" class="block max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                                     <!-- <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5> -->
-                                    <p class="font-normal text-gray-700 dark:text-gray-400">My_file.pdf</p>
+                                    <p class="flex font-normal text-gray-700 dark:text-gray-400">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7ZM8 16a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1-5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
+                                        </svg>
+                                        &nbsp;&nbsp;My_file.pdf
+                                    </p>
                                     </a>
                                     </div>
 
                                     <h6 class="pb-1"><b>Recordings</b></h6>
                                     <hr class="pb-3">
                                     <div v-html="record.video_link"></div>
+                                </div>
+                                <div v-else class="container flex justify-center items-center py-20">
+                                    <a href="/payments">
+                                    <button type="button" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Pay For the Class</button>
+                                    </a>
                                 </div>
                             </div>
                         </template>
