@@ -18,7 +18,9 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::post('/dashboard', [DashboardController::class, 'joinClass'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/dashboard', [DashboardController::class, 'joinClass'])->middleware(['auth', 'verified'])->name('dashboard.joinClass');
+Route::post('/dashboard/zoomlink', [DashboardController::class, 'joinOnline'])->middleware(['auth', 'verified'])->name('dashboard.joinOnline');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -40,6 +42,10 @@ Route::get('/admin', function () {
 
 Route::get('/payments', [PaymentController::class, 'index'])->name('payments');
 Route::post('/payments', [PaymentController::class, 'store'])->name('payments.upload');
+
+Route::get('/test', function () {
+    return Inertia::render('Admin/AdminPanel');
+})->name('test');
 
 
 require __DIR__.'/auth.php';

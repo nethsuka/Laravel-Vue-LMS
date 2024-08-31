@@ -22,10 +22,19 @@ const form = useForm({
     className: '',
 });
 
+const form2 = useForm({
+    classID: '',
+});
+
 function submit(value) {
-    form.className= value;
+    form.className = value;
     Arrays.stclassRecords.push({ tuition_class_id: value });
     form.post('/dashboard');
+}
+
+function joinOnline(cid) {
+    form2.classID = cid;
+    form2.post('/dashboard/zoomlink');
 }
 
 function collectTuitionClassIds() {
@@ -101,7 +110,7 @@ function checkDateRange() {
                                     <!-- <p class="mb-2">This is some placeholder content for the Profile tab's associated content. Clicking another tab will toggle the visibility of this one.</p>
                                     <p>The tab JavaScript swaps classes to control the content visibility and styling.</p> -->
                                     <div class="mt-5 mb-10 flex">
-                                    <a :href="record.zoom_link" class="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                                    <a href="#" @click="joinOnline(record.id)" class="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                                         Join Online Class
                                     </a>
                                     <a :href="record.tele_group" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">

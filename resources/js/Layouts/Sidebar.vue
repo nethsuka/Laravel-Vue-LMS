@@ -1,0 +1,80 @@
+<script setup>
+import AdminAuthenticatedLayout from '@/Layouts/AdminAuthenticatedLayout.vue';
+import AdminNavLink from '@/Components/AdminNavLink.vue';
+import { ref } from 'vue';
+const sidebarOpen = ref(false); // Control the sidebar visibility
+
+</script>
+
+<template>
+    <AdminAuthenticatedLayout>
+        <div class="flex h-screen bg-gray-100">
+        <!-- Sidebar -->
+        <aside
+            :class="[
+            'bg-white shadow-md fixed md:relative md:translate-x-0 transition-transform duration-300',
+            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            ]"
+            class="w-60 h-full z-30 md:block"
+        >
+            <nav class="mt-10">
+            <ul>
+                <li class="hover:bg-gray-200">
+                    <AdminNavLink :href="route('test')" :active="route().current('test')">
+                    <i class="fas fa-tachometer-alt mr-2"></i>
+                    Dashboard
+                    </AdminNavLink>
+                </li>
+                <li class="flex items-center p-3 hover:bg-gray-200">
+                    <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                    <i class="fas fa-tasks mr-2"></i>
+                    Kanban
+                    </AdminNavLink>
+                </li>
+                
+                <li class="flex items-center p-3 hover:bg-gray-200">
+                    <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                    <i class="fas fa-tasks mr-2"></i>
+                    Inbox
+                    </AdminNavLink>
+                </li>
+                <li class="flex items-center p-3 hover:bg-gray-200">
+                    <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                    <i class="fas fa-tasks mr-2"></i>
+                    Users
+                    </AdminNavLink>
+                </li>
+                <li class="flex items-center p-3 hover:bg-gray-200">
+                    <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                    <i class="fas fa-tasks mr-2"></i>
+                    pProducts
+                    </AdminNavLink>
+                </li>
+                <li class="flex items-center p-3 hover:bg-gray-200">
+                    <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                    <i class="fas fa-tasks mr-2"></i>
+                    Sign In
+                    </AdminNavLink>
+                </li>
+                <li class="flex items-center p-3 hover:bg-gray-200">
+                    <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                    <i class="fas fa-tasks mr-2"></i>
+                    Sign Out
+                    </AdminNavLink>
+                </li>
+            </ul>
+            </nav>
+        </aside>
+    
+        <div class="flex-1 min-h-screen">
+            <!-- Main Content -->
+            <main>
+                <slot />
+            </main>
+
+        </div>
+        </div>
+    </AdminAuthenticatedLayout>
+</template>
+
+  

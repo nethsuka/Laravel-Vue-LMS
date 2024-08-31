@@ -6,8 +6,16 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import sha256 from 'js-sha256';
 
 const showingNavigationDropdown = ref(false);
+
+//user image
+function getGravatarURL( email ) {
+  const address = String( email ).trim().toLowerCase();
+  const hash = sha256( address );
+  return `https://www.gravatar.com/avatar/${ hash }`;
+}
 </script>
 
 <template>
@@ -50,6 +58,8 @@ const showingNavigationDropdown = ref(false);
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
+                                            <img class="w-8 h-8 rounded-full mr-2" :src="getGravatarURL( $page.props.auth.user.email )" alt="Rounded avatar">
+
                                                 {{ $page.props.auth.user.name }}
 
                                                 <svg
@@ -128,6 +138,7 @@ const showingNavigationDropdown = ref(false);
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="px-4">
+                            <img class="w-8 h-8 rounded-full mr-2" :src="getGravatarURL( $page.props.auth.user.email )" alt="Rounded avatar">
                             <div class="font-medium text-base text-gray-800">
                                 {{ $page.props.auth.user.name }}
                             </div>

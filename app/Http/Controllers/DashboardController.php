@@ -16,8 +16,8 @@ class DashboardController extends Controller
     public function index() {
 
         $stclassRecords = Stclass::where('user_id', Auth::id())->get(['user_id','tuition_class_id']);
-        $classDetails = TuitionClass::all();
-        $extendDetails = StExtendDate::where('user_email', Auth::user()->email)->get('extend_date');
+        $classDetails = TuitionClass::get(['id','class_name','video_link','tele_group','class_tute']);
+        $extendDetails = StExtendDate::where('user_email', Auth::user()->email)->first('extend_date');
         $paidClassDetails = StuClaSlip::where('user_id', Auth::id())->get(['tuition_class_id','paid']);
         return Inertia::render('Dashboard', [
             'stclassRecords' => $stclassRecords, 
@@ -38,6 +38,12 @@ class DashboardController extends Controller
         // Attach the class to the student's classes
         $student->tuition_classes()->attach($request->className);
         // return response()->json(['stclassRecord' => $request->className]);
-        // return Inertia::render('Dashboard');
+    }
+
+    public function joinOnline(Request $request) {
+
+        $linkData = TuitionClass::where('id', $request->classID)->first('zoom_link');
+
+        return Inertia::location($linkData->zoom_link);
     }
 }
