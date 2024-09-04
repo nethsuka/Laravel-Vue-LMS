@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClassTute;
+use App\Models\ClassVideo;
 use Inertia\Inertia;
 use App\Models\Stclass;
 use App\Models\StExtendDate;
@@ -16,16 +18,19 @@ class DashboardController extends Controller
     public function index() {
 
         $stclassRecords = Stclass::where('user_id', Auth::id())->get(['user_id','tuition_class_id']);
-        $classDetails = TuitionClass::get(['id','class_name','video_link','tele_group','class_tute']);
+        $classDetails = TuitionClass::get(['id','class_name','tele_group']);
         $extendDetails = StExtendDate::where('user_email', Auth::user()->email)->first('extend_date');
         $paidClassDetails = StuClaSlip::where('user_id', Auth::id())->get(['tuition_class_id','paid']);
+        $videoLinks = ClassVideo::all();
+
         return Inertia::render('Dashboard', [
             'stclassRecords' => $stclassRecords, 
             'classDetails' => $classDetails,
             'extendDetails' => $extendDetails,
             'paidClassDetails' => $paidClassDetails,
+            'videoLinks' => $videoLinks,
         ]);
-        // return response()->json(['stclassRecords' => $stclassRecords]);
+        // return response()->json(['videoLinks' => $videoLinks,]);
     }
 
     public function joinClass(Request $request) {

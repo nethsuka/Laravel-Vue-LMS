@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('tuition_classes', function (Blueprint $table) {
             $table->id();
             $table->string('class_name');
-            $table->string('video_link', 800);
-            $table->string('tele_group', 500);
-            $table->string('zoom_link', 500);
-            $table->string('class_tute');
+            $table->string('tele_group', 500)->nullable();;
+            $table->string('zoom_link', 500)->nullable();
             $table->timestamps();
         });
     }

@@ -34,7 +34,6 @@ const submit = () => {
         <Head title="Register" />
 
         <form @submit.prevent="submit" enctype="multipart/form-data">
-            <input type="hidden" name="_token" :value="csrfToken">
             <div>
                 <InputLabel for="name" value="Name*" />
 

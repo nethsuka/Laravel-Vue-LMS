@@ -46,6 +46,9 @@ Route::post('/payments', [PaymentController::class, 'store'])->name('payments.up
 Route::get('/test', function () {
     return Inertia::render('Admin/AdminPanel');
 })->name('test');
+Route::get('/classfees', function () {
+    return Inertia::render('Admin/ClassFee');
+})->name('manage.fees');
 
 
 require __DIR__.'/auth.php';

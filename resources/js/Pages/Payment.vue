@@ -8,7 +8,7 @@ const Arrays = defineProps({
     classDetails: Array,
 });
 
-const activeTab = ref('profile');
+const activeTab = ref('Monthly Payment');
 const showAlert = ref(true);
 
 const setActiveTab = (tab) => {
@@ -37,6 +37,29 @@ function submit1() {
 
 function closeAlert() {
     showAlert.value = false;
+}
+
+function class_fees() {
+    let total = 0;
+    let paper = '';
+    let theory = '';
+    for (let y of [5, 6, 7]) {
+        paper = '202' + y + ' Paper';
+        theory = '202' + y + ' Theory';
+        if (form1.paid_classes.includes(theory) &&
+            form1.paid_classes.includes(paper)) {
+            total = total + 7000;
+        }
+        else {
+            if (form1.paid_classes.includes(theory)) {
+                total = total  + 5000;
+            }
+            else if (form1.paid_classes.includes(paper)) {
+                total = total  + 3500;
+            }
+        }
+    }
+    return total;
 }
 
 </script>
@@ -82,7 +105,7 @@ function closeAlert() {
 
                     <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
                         <li class="me-2">
-                            <a href="#" @click.prevent="setActiveTab('profile')" :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'profile' }" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Profile</a>
+                            <a href="#" @click.prevent="setActiveTab('Monthly Payment')" :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'Monthly Payment' }" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Monthly Payment</a>
                         </li>
                         <li class="me-2">
                             <a href="#" @click.prevent="setActiveTab('dashboard')" :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'dashboard' }" class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Dashboard</a>
@@ -99,7 +122,7 @@ function closeAlert() {
                     </ul>
 
                     <div class="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
-                        <template v-if="activeTab === 'profile'">
+                        <template v-if="activeTab === 'Monthly Payment'">
                             <h3 class="mb-5 text-lg font-bold text-gray-900 dark:text-white">Monthly Payment</h3>
                             <!-- <p class="mb-4">This is some placeholder content for the Profile tab's associated content.</p> -->
 
@@ -116,9 +139,10 @@ function closeAlert() {
 
                             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Classes you pay</label>
                             <div v-for="name in classDetails" class="flex items-center mb-2">
-                                <input :id="name.id" type="checkbox" v-model="form1.paid_classes" :value="name.class_name" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <input :id="name.id" type="checkbox" v-model="form1.paid_classes" :value="name.class_name" @change="class_fees" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 <label :for="name.id" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ name.class_name }}</label>
                             </div>
+
                             <!-- <div class="flex items-center mb-2">
                                 <input id="c1" type="checkbox" v-model="form1.paid_classes" value="2025 Theory" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 <label for="c1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">2025 Theory</label>
@@ -144,6 +168,12 @@ function closeAlert() {
                           
                             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Note</label>
                             <textarea id="message" v-model="form1.note" rows="4" class="mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Any note regarding your payment..." ></textarea>
+
+                            <template v-if="class_fees() > 0">
+                            <blockquote class="text-lg italic font-semibold my-3 border-l-4 border-s-slate-400 bg-slate-100 text-gray-900 dark:text-white text-center py-4">
+                                <p>Total Class Fees: Rs {{ class_fees() }}.00</p>
+                            </blockquote>
+                            </template>
 
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload Slip</label>
                             <input @input="form1.slip = $event.target.files[0]" accept=".pdf,.png,.jpg,.jpeg" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">

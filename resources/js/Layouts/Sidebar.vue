@@ -25,38 +25,38 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                     Dashboard
                     </AdminNavLink>
                 </li>
-                <li class="flex items-center p-3 hover:bg-gray-200">
-                    <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                <li class="hover:bg-gray-200">
+                    <AdminNavLink :href="route('manage.fees')" :active="route().current('manage.fees')">
                     <i class="fas fa-tasks mr-2"></i>
-                    Kanban
+                    Manage class fees
                     </AdminNavLink>
                 </li>
                 
-                <li class="flex items-center p-3 hover:bg-gray-200">
+                <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                     <i class="fas fa-tasks mr-2"></i>
                     Inbox
                     </AdminNavLink>
                 </li>
-                <li class="flex items-center p-3 hover:bg-gray-200">
+                <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                     <i class="fas fa-tasks mr-2"></i>
                     Users
                     </AdminNavLink>
                 </li>
-                <li class="flex items-center p-3 hover:bg-gray-200">
+                <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                     <i class="fas fa-tasks mr-2"></i>
-                    pProducts
+                    Products
                     </AdminNavLink>
                 </li>
-                <li class="flex items-center p-3 hover:bg-gray-200">
+                <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                     <i class="fas fa-tasks mr-2"></i>
                     Sign In
                     </AdminNavLink>
                 </li>
-                <li class="flex items-center p-3 hover:bg-gray-200">
+                <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                     <i class="fas fa-tasks mr-2"></i>
                     Sign Out
