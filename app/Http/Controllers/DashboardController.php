@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClassTute;
-use App\Models\ClassVideo;
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Stclass;
-use App\Models\StExtendDate;
+use App\Models\ClassVideo;
 use App\Models\StuClaSlip;
+use App\Models\StExtendDate;
 use App\Models\TuitionClass;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -35,14 +35,17 @@ class DashboardController extends Controller
 
     public function joinClass(Request $request) {
 
-        $student = User::find(Auth::id()); // Assuming 'user' is a Student model
+        $student = User::find(Auth::id());
 
         // Find the class by its ID
-        $class = TuitionClass::findOrFail($request->className);
+        // $class = TuitionClass::where('id', $request->classID)->first(['class_name']);
 
-        // Attach the class to the student's classes
-        $student->tuition_classes()->attach($request->className);
-        // return response()->json(['stclassRecord' => $request->className]);
+        // $student->tuition_classes()->attach($request->className);
+        DB::table('stclasses')->insert([
+            'user_id' => Auth::id(),
+            'tuition_class_id' => $request->classID,
+        ]);
+        // return response()->json(['stclassRecord' => $className]);
     }
 
     public function joinOnline(Request $request) {

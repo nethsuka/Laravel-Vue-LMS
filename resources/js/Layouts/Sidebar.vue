@@ -26,7 +26,7 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
-                    <AdminNavLink :href="route('manage.fees')" :active="route().current('manage.fees')">
+                    <AdminNavLink :href="route('classfees')" :active="route().current('classfees')">
                     <i class="fas fa-tasks mr-2"></i>
                     Manage class fees
                     </AdminNavLink>

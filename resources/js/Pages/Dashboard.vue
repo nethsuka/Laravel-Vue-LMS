@@ -22,7 +22,7 @@ function setActiveTab(tab) {
 }
 
 const form = useForm({
-    className: '',
+    classID: '',
 });
 
 const form2 = useForm({
@@ -30,7 +30,7 @@ const form2 = useForm({
 });
 
 function submit(value) {
-    form.className = value;
+    form.classID = value;
     Arrays.stclassRecords.push({ tuition_class_id: value });
     form.post('/dashboard');
 }

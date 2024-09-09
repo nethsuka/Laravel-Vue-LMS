@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassFeeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
@@ -17,10 +18,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::post('/dashboard', [DashboardController::class, 'joinClass'])->middleware(['auth', 'verified'])->name('dashboard.joinClass');
-Route::post('/dashboard/zoomlink', [DashboardController::class, 'joinOnline'])->middleware(['auth', 'verified'])->name('dashboard.joinOnline');
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,6 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/dashboard', [DashboardController::class, 'joinClass'])->middleware(['auth', 'verified'])->name('dashboard.joinClass');
+Route::post('/dashboard/zoomlink', [DashboardController::class, 'joinOnline'])->middleware(['auth', 'verified'])->name('dashboard.joinOnline');
 
 
 Route::get('/admin', function () {
@@ -46,9 +46,9 @@ Route::post('/payments', [PaymentController::class, 'store'])->name('payments.up
 Route::get('/test', function () {
     return Inertia::render('Admin/AdminPanel');
 })->name('test');
-Route::get('/classfees', function () {
-    return Inertia::render('Admin/ClassFee');
-})->name('manage.fees');
+
+Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
+Route::post('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');
 
 
 require __DIR__.'/auth.php';

@@ -2,10 +2,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { FwbCheckbox } from 'flowbite-vue';
+import { ref, onMounted } from 'vue';
 
 const Arrays = defineProps({
     classDetails: Array,
+    paidClasses: Array,
 });
 
 const activeTab = ref('Monthly Payment');
@@ -29,8 +31,10 @@ function submit1() {
   form1.post('/payments', {
     preserveScroll: true,
     onSuccess: () => {
+        total.value = 0;
         form1.reset();
-        window.scrollTo(0, 0);},
+        window.scrollTo(0, 0);
+    },
   });
   showAlert.value = true;
 }
@@ -39,28 +43,126 @@ function closeAlert() {
     showAlert.value = false;
 }
 
-function class_fees() {
-    let total = 0;
+// form payment calculation
+const total = ref(0);
+
+onMounted(() => {
+    discount();
+    // addClassNamesToArray();
+})
+
+var st_paid = ref(Arrays.paidClasses);
+const discount_class = ref([]);
+
+// function addClassNamesToArray() {
+//   st_paid.value = [];
+//   for(item in Arrays.paidClasses.value) {
+//     st_paid.value.push(detail.class_name);
+//   };
+// }
+
+function discount() {
     let paper = '';
     let theory = '';
-    for (let y of [5, 6, 7]) {
-        paper = '202' + y + ' Paper';
-        theory = '202' + y + ' Theory';
-        if (form1.paid_classes.includes(theory) &&
-            form1.paid_classes.includes(paper)) {
-            total = total + 7000;
-        }
-        else {
-            if (form1.paid_classes.includes(theory)) {
-                total = total  + 5000;
-            }
-            else if (form1.paid_classes.includes(paper)) {
-                total = total  + 3500;
+    for (let i of [25, 26, 27, 28, 29, 30]) {
+        paper = '20' + i + ' Paper';
+        theory = '20' + i + ' Theory';
+        if (!(st_paid.value.includes(paper) && st_paid.value.includes(theory))) {
+            if (st_paid.value.includes(paper)) {
+                discount_class.value.push(theory);
+            } else if (st_paid.value.includes(theory)) {
+                discount_class.value.push(paper);
             }
         }
     }
-    return total;
 }
+
+function class_fees() {
+    total.value = 0;
+    let paper = '';
+    let theory = '';
+    for (let y of [25, 26, 27, 28, 29, 30]) {
+        paper = '20' + y + ' Paper';
+        theory = '20' + y + ' Theory';
+        if (form1.paid_classes.includes(theory) &&
+            form1.paid_classes.includes(paper)) {
+            total.value = total.value + 7000;
+        }
+        else {
+            if (form1.paid_classes.includes(theory)) {
+                total.value = total.value + 5000;
+            }
+            else if (form1.paid_classes.includes(paper)) {
+                total.value = total.value + 3500;
+            }
+        }
+    }
+
+}
+
+function already_paid() {
+    total.value = 0;
+    let count = 0;
+    for (let i of form1.paid_classes) {
+        if (discount_class.value.includes(i)) {
+            if(i.includes('Theory')){
+                total.value = total.value + 3500
+            }else if(i.includes('Paper')){
+                total.value = total.value + 2000
+            }
+        }
+        else {
+            if (count === 0) {
+                let paper = '';
+                let theory = '';
+                for (let y of [25, 26, 27, 28, 29, 30]) {
+                    paper = '20' + y + ' Paper';
+                    theory = '20' + y + ' Theory';
+                    if (form1.paid_classes.includes(theory) &&
+                        form1.paid_classes.includes(paper)) {
+                        total.value = total.value + 7000;
+                    }
+                    else {
+                        if (form1.paid_classes.includes(theory)) {
+                            if (!discount_class.value.includes(theory)) {
+                                total.value = total.value + 5000;
+                            }
+                        }
+                        else if (form1.paid_classes.includes(paper)) {
+                            if (!discount_class.value.includes(paper)) {
+                                total.value = total.value + 3500;
+                            }
+                        }
+                    }
+                }
+            }
+            count = count + 1
+        }
+    }
+}
+
+// Handle the checkbox selection
+const handleCheckboxChange = (value) => {
+    if (st_paid.length === 0) {
+        console.log('st paid empty')
+        if (form1.paid_classes.includes(value)) {
+            form1.paid_classes = form1.paid_classes.filter(item => item !== value);
+        } else {
+            form1.paid_classes.push(value);
+        }
+        class_fees()
+    } else {
+        if (!st_paid.value.includes(value)) {
+            if (form1.paid_classes.includes(value)) {
+                form1.paid_classes = form1.paid_classes.filter(item => item !== value);
+            } else {
+                form1.paid_classes.push(value);
+            }
+            already_paid()
+        }
+    }
+
+};
 
 </script>
 
@@ -139,39 +241,21 @@ function class_fees() {
 
                             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Classes you pay</label>
                             <div v-for="name in classDetails" class="flex items-center mb-2">
-                                <input :id="name.id" type="checkbox" v-model="form1.paid_classes" :value="name.class_name" @change="class_fees" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label :for="name.id" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ name.class_name }}</label>
+                                <!-- <input :id="name.id" type="checkbox" v-model="form1.paid_classes" :value="name.class_name" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label :for="name.id" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ name.class_name }}</label> -->
+                                <FwbCheckbox :modelValue="form1.paid_classes.includes(name.class_name)"
+                                        @update:modelValue="() => handleCheckboxChange(name.class_name)"
+                                        :label = "name.class_name"></FwbCheckbox>
                             </div>
-
-                            <!-- <div class="flex items-center mb-2">
-                                <input id="c1" type="checkbox" v-model="form1.paid_classes" value="2025 Theory" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="c1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">2025 Theory</label>
-                            </div>
-                            <div class="flex items-center mb-2">
-                                <input id="c2" type="checkbox" v-model="form1.paid_classes" value="2025 Paper" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="c2" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">2025 Paper</label>
-                            </div>
-                            <div class="flex items-center mb-2">
-                                <input id="c3" type="checkbox" v-model="form1.paid_classes" value="2026 Theory" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="c3" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">2026 Theory</label>
-                            </div>
-                            <div class="flex items-center mb-2">
-                                <input  id="c4" type="checkbox" v-model="form1.paid_classes" value="2026 Paper" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="c4" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">2026 Paper</label>
-                            </div>
-                            <div class="flex items-center mb-4">
-                                <input id="c5" type="checkbox" v-model="form1.paid_classes" value="2027 Theory" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                <label for="c5" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">2027 Theory</label>
-                            </div> -->
                             <InputError class="mt-2" :message="form1.errors.paid_classes" />
 
                           
                             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Note</label>
                             <textarea id="message" v-model="form1.note" rows="4" class="mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Any note regarding your payment..." ></textarea>
 
-                            <template v-if="class_fees() > 0">
+                            <template v-if="total > 0">
                             <blockquote class="text-lg italic font-semibold my-3 border-l-4 border-s-slate-400 bg-slate-100 text-gray-900 dark:text-white text-center py-4">
-                                <p>Total Class Fees: Rs {{ class_fees() }}.00</p>
+                                <p>Total Class Fees: Rs {{ total }}.00</p>
                             </blockquote>
                             </template>
 
@@ -179,10 +263,7 @@ function class_fees() {
                             <input @input="form1.slip = $event.target.files[0]" accept=".pdf,.png,.jpg,.jpeg" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file">
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PNG, JPG or PDF (MAX. 2MB).</p>
                             <InputError class="mt-2" :message="form1.errors.slip" />
-                            <!-- <div v-if="$page.props.flash.errorMessage">
-                                {{ $page.props.flash.errorMessage }}
-                            </div> -->
-
+        
                             <button type="submit" class="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                             </form>
 

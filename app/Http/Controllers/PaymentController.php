@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\StuClaSlip;
 use App\Models\TuitionClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
@@ -14,8 +15,16 @@ class PaymentController extends Controller
 
     public function index() {
         $classDetails = TuitionClass::all();
-        return Inertia::render('Payment', ['classDetails' => $classDetails]);
-        // return response()->json(['classDetails' => $classDetails]);
+        $paidClasses = DB::table('stu_cla_slips')
+                        ->join('tuition_classes', 'stu_cla_slips.tuition_class_id', '=', 'tuition_classes.id')
+                        ->where('stu_cla_slips.user_id', Auth::id())
+                        ->pluck('tuition_classes.class_name');
+
+        return Inertia::render('Payment', [
+            'classDetails' => $classDetails,
+            'paidClasses' => $paidClasses,
+        ]);
+        // return response()->json(['paidClasses' => $paidClasses]);
 
     }
 
@@ -37,7 +46,7 @@ class PaymentController extends Controller
         $path = $slip->storeAs('monthly_slips', $fileName, 'public');
 
         Slip::create([
-            'note' => $request->name,
+            'note' => $request->note,
             'slip_url' => $path,
             'paid_classes' => $classes_paid,
             'st_email' => $request->email,
