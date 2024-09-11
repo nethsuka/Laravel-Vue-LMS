@@ -43,10 +43,6 @@ Route::get('/admin', function () {
 Route::get('/payments', [PaymentController::class, 'index'])->name('payments');
 Route::post('/payments', [PaymentController::class, 'store'])->name('payments.upload');
 
-Route::get('/test', function () {
-    return Inertia::render('Admin/AdminPanel');
-})->name('test');
-
 Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
 Route::post('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');
 

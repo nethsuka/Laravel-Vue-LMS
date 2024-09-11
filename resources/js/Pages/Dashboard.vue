@@ -103,7 +103,7 @@ function getVideoList(classID){
                             <li v-for="record in classDetails" :key="record.id">
                                 <a
                                 href="#"
-                                class="inline-flex items-center px-4 py-3 rounded-lg hover:text-gray-900 bg-gray-50 hover:bg-gray-100 w-40 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+                                class="whitespace-nowrap inline-flex items-center px-4 py-3 rounded-lg hover:text-gray-900 bg-gray-50 hover:bg-gray-100 w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
                                 :class="{ 'back-color': activeTab == record.class_name }"
                                 @click.prevent="setActiveTab(record.class_name)"
                                 >

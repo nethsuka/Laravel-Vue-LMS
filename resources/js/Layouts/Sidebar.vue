@@ -20,9 +20,9 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
             <nav class="mt-10">
             <ul>
                 <li class="hover:bg-gray-200">
-                    <AdminNavLink :href="route('test')" :active="route().current('test')">
+                    <AdminNavLink :href="route('class_controles')" :active="route().current('class_controles')">
                     <i class="fas fa-tachometer-alt mr-2"></i>
-                    Dashboard
+                    Class Controles
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
