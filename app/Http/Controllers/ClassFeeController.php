@@ -51,4 +51,9 @@ class ClassFeeController extends Controller
 
         StuClaSlip::where('slip_id', $request->slipID)->update(['paid' => 'yes']);
     }
+
+    public function undoPayment(Request $request) {
+
+        StuClaSlip::where('slip_id', $request->slipID)->update(['paid' => 'no']);
+    }
 }

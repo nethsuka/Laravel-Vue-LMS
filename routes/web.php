@@ -45,6 +45,7 @@ Route::post('/payments', [PaymentController::class, 'store'])->name('payments.up
 
 Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
 Route::post('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');
+Route::post('/classfees/undo-payment', [ClassFeeController::class, 'undoPayment'])->name('classfees.undo');
 
 
 require __DIR__.'/auth.php';
