@@ -1,6 +1,6 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, Link } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import {
     FwbA,
@@ -22,20 +22,6 @@ const activeTab = ref('first');
 const Arrays = defineProps({
     results: Array,
 });
-
-const form = useForm({
-    slipID: '',
-})
-
-function acceptPayment(slip_ID){
-    form.slipID = slip_ID;
-    form.post('/classfees');
-}
-
-function undoPayment(slip_ID) {
-    form.slipID = slip_ID;
-    form.post('/classfees/undo-payment');
-}
 
 function addbr(classes){
     return classes.split(',').join('<br>');
@@ -108,7 +94,7 @@ const showModal = (item) => {
                                         <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                                         </div>
-                                        <input type="text"  v-model="keyword1" id="table-search" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for records">
+                                        <input type="text"  v-model="keyword1" id="table-search" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search from name or email">
                                     </div>
                                 </div>
                                 <fwb-table hoverable>
@@ -137,7 +123,9 @@ const showModal = (item) => {
                                                             <fwb-button color="default" @click="showModal(element)" class="whitespace-nowrap px-3 py-1" outline>Slip Details</fwb-button>
                                                         </fwb-table-cell>
                                                         <fwb-table-cell>
-                                                            <button type="button" @click="acceptPayment(element.slip_id)" class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center">Accept</button>
+                                                            <Link href="/classfees" method="patch" :data="{ slipID: element.slip_id }" as="button" type="button" class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
+                                                                Accept
+                                                            </Link>
                                                         </fwb-table-cell>
                                                     </template>
                                                 </fwb-table-row>
@@ -146,7 +134,7 @@ const showModal = (item) => {
                                                 <fwb-table-row>
                                                     <fwb-table-cell colspan="6">
                                                         <fwb-alert class="border-t-4 rounded-none" icon type="warning">
-                                                            There is no item '{{ keyword1 }}'
+                                                            There is no name or email '{{ keyword1 }}'
                                                         </fwb-alert>
                                                     </fwb-table-cell>
                                                 </fwb-table-row>
@@ -176,7 +164,7 @@ const showModal = (item) => {
                                         <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
                                             <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                                         </div>
-                                        <input type="text"  v-model="keyword2" id="table-search" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for records">
+                                        <input type="text"  v-model="keyword2" id="table-search" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search from name or email">
                                     </div>
                                 </div>
                                 <fwb-table hoverable>
@@ -205,7 +193,9 @@ const showModal = (item) => {
                                                             <fwb-button color="default" class="whitespace-nowrap px-3 py-1" @click="showModal(element)" outline>Slip Details</fwb-button>
                                                         </fwb-table-cell>
                                                         <fwb-table-cell>
-                                                            <button type="button" @click="undoPayment(element.slip_id)" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center">Undo</button>
+                                                            <Link href="/classfees/undo-payment" method="patch" :data="{ slipID: element.slip_id }" as="button" type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
+                                                                Undo
+                                                            </Link>
                                                         </fwb-table-cell>
                                                     </template>
                                                 </fwb-table-row>
@@ -214,7 +204,7 @@ const showModal = (item) => {
                                                 <fwb-table-row>
                                                     <fwb-table-cell colspan="6">
                                                         <fwb-alert class="border-t-4 rounded-none" icon type="warning">
-                                                            There is no item '{{ keyword2 }}'
+                                                            There is no name or email '{{ keyword2 }}'
                                                         </fwb-alert>
                                                     </fwb-table-cell>
                                                 </fwb-table-row>
@@ -261,11 +251,13 @@ const showModal = (item) => {
                         </template>
                         <template #footer>
                             <div class="flex justify-between">
-                                <fwb-button @click="closeModal" color="alternative">
-                                    Decline
-                                </fwb-button>
+                                <a :href="getFilePath(tomodel.slip_url)" target="_blanck">
+                                    <fwb-button @click="closeModal" color="alternative">
+                                        View full screen
+                                    </fwb-button>
+                                </a>
                                 <fwb-button @click="closeModal" color="green">
-                                    I accept
+                                    close
                                 </fwb-button>
                             </div>
                         </template>
