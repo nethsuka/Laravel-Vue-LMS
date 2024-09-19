@@ -3,7 +3,6 @@ Run these commands:
 composer install (disable your virusguard befor run this)
 
 npm install
-npm install js-sha256
 
 mkdir -p storage/framework/views
 
