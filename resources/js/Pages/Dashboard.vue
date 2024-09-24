@@ -149,7 +149,7 @@ function getVideoList(classID){
                                         <h6 class="pb-1"><b>Recordings</b></h6>
                                         <hr class="pb-3">
                                         <div v-if="getVideoList(record.id).length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
-                                            <template v-for="video in getVideoList(record.id)">
+                                            <template v-for="(video, index) in getVideoList(record.id)" :key="index">
                                                 <div>
                                                     <div class="py-2 pl-4">{{ video.video_name }}</div>
                                                     <div v-html="video.video_link"></div>

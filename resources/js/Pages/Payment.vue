@@ -286,14 +286,20 @@ const handleCheckboxChange = (value) => {
                                         required />
                                 </div>
                                 <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Classes you can pay</label>
-                                <div v-for="name in showarray" class="flex items-center mb-2" :key="name.name">
+                                <template v-if="showarray.length > 0">
+                                    <div v-for="name in showarray" class="flex items-center mb-2" :key="name.name">
 
-                                    <FwbCheckbox :modelValue="form1.paid_classes.includes(name.class_name)"
-                                        @update:modelValue="() => handleCheckboxChange(name.class_name)"
-                                        :label="name.class_name">
-                                    </FwbCheckbox>
+                                        <FwbCheckbox :modelValue="form1.paid_classes.includes(name.class_name)"
+                                            @update:modelValue="() => handleCheckboxChange(name.class_name)"
+                                            :label="name.class_name">
+                                        </FwbCheckbox>
 
-                                </div>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <p class="text-xs pl-4 mb-2">No classes available</p>
+                                </template>
+
                                 <InputError class="mt-2" :message="form1.errors.paid_classes" />
 
 

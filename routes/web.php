@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClassFeeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MoreClassesController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -46,6 +47,8 @@ Route::post('/payments', [PaymentController::class, 'store'])->name('payments.up
 Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
 Route::patch('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');
 Route::patch('/classfees/undo-payment', [ClassFeeController::class, 'undoPayment'])->name('classfees.undo');
+
+Route::get('/more-classes', [MoreClassesController::class, 'index'])->name('classinfo');
 
 
 require __DIR__.'/auth.php';
