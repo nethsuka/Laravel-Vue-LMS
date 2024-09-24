@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\StuClaSlip;
+use App\Models\TuitionClass;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class ClassFeeController extends Controller
 {
@@ -14,8 +17,8 @@ class ClassFeeController extends Controller
         $results = DB::table('stu_cla_slips as s')
             ->join('users as u', 's.user_id', '=', 'u.id')
             ->join('slips as sl', 's.slip_id', '=', 'sl.id')
-            ->join('stclasses as st', 's.user_id', '=', 'st.user_id')
-            ->join('tuition_classes as cl', 'st.tuition_class_id', '=', 'cl.id')
+            ->leftJoin('stclasses as st', 's.user_id', '=', 'st.user_id') // Changed to LEFT JOIN
+            ->leftJoin('tuition_classes as cl', 'st.tuition_class_id', '=', 'cl.id')
             ->leftJoin('stu_cla_slips as sc', 's.slip_id', '=', 'sc.slip_id')
             ->leftJoin('tuition_classes as paid_cl', 'sc.tuition_class_id', '=', 'paid_cl.id')
             ->select(
@@ -43,16 +46,48 @@ class ClassFeeController extends Controller
             ->get();
 
 
+
         return Inertia::render('Admin/ClassFee', ['results' => $results]);
         // return response()->json(['results' => $results]);
     }
 
     public function acceptPayment(Request $request) {
 
+        $paidClasses = explode(',', $request->paidClasses);
+
+        foreach ($paidClasses as $class) {
+            $classID = TuitionClass::where('class_name', $class)->first('id');
+            
+            // Check if the record already exists
+            $recordExists = DB::table('stclasses')
+                ->where('user_id', Auth::id())
+                ->where('tuition_class_id', $classID->id)
+                ->exists();
+            
+            // If the record doesn't exist, insert it
+            if (!$recordExists) {
+                DB::table('stclasses')->insert([
+                    'user_id' => Auth::id(),
+                    'tuition_class_id' => $classID->id,
+                ]);
+            }
+        }
+
         StuClaSlip::where('slip_id', $request->slipID)->update(['paid' => 'yes']);
     }
 
     public function undoPayment(Request $request) {
+
+        $paidClasses = explode(',', $request->paidClasses);
+
+        foreach ($paidClasses as $class) {
+            $classID = TuitionClass::where('class_name', $class)->first('id');
+
+            DB::table('stclasses')
+                ->where('user_id', Auth::id())
+                ->where('tuition_class_id', $classID->id)
+                ->delete();
+        }
 
         StuClaSlip::where('slip_id', $request->slipID)->update(['paid' => 'no']);
     }

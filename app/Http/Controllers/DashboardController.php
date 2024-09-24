@@ -17,20 +17,24 @@ class DashboardController extends Controller
 {
     public function index() {
 
-        $stclassRecords = Stclass::where('user_id', Auth::id())->get(['user_id','tuition_class_id']);
-        $classDetails = TuitionClass::get(['id','class_name','tele_group']);
+        // $stclassRecords = Stclass::where('user_id', Auth::id())->get(['user_id','tuition_class_id']);
+        // $classDetails = TuitionClass::get(['id','class_name','tele_group']);
+
+        $paidClassArray = Stclass::where('user_id', Auth::id())->pluck('tuition_class_id')->toArray();
+        
+        $classDetails = TuitionClass::whereIn('id', $paidClassArray)->get(['id', 'class_name', 'tele_group']);
         $extendDetails = StExtendDate::where('user_email', Auth::user()->email)->first('extend_date');
         $paidClassDetails = StuClaSlip::where('user_id', Auth::id())->get(['tuition_class_id','paid']);
         $videoLinks = ClassVideo::all();
 
-        return Inertia::render('Dashboard', [
-            'stclassRecords' => $stclassRecords, 
+        return Inertia::render('Dashboard', [ 
             'classDetails' => $classDetails,
             'extendDetails' => $extendDetails,
             'paidClassDetails' => $paidClassDetails,
             'videoLinks' => $videoLinks,
         ]);
-        // return response()->json(['videoLinks' => $videoLinks,]);
+        
+        // return response()->json(['classDetails' => $classDetails]);
     }
 
     public function joinClass(Request $request) {
