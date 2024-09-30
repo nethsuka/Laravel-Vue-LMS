@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\StuClaSlip;
 use App\Models\TuitionClass;
+use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class ClassFeeController extends Controller
 {
@@ -24,6 +24,7 @@ class ClassFeeController extends Controller
             ->select(
                 's.slip_id',
                 'u.name as student_name',
+                'u.id as stID',
                 DB::raw('GROUP_CONCAT(DISTINCT cl.class_name ORDER BY cl.class_name) as joined_classes'),
                 DB::raw('GROUP_CONCAT(DISTINCT paid_cl.class_name ORDER BY paid_cl.class_name) as paid_classes'),
                 'sl.note as slip_note',
@@ -36,6 +37,7 @@ class ClassFeeController extends Controller
             ->groupBy(
                 's.slip_id',
                 'u.name',
+                'u.id',
                 'sl.note',
                 'sl.slip_url',
                 'sl.st_email',
@@ -54,20 +56,21 @@ class ClassFeeController extends Controller
     public function acceptPayment(Request $request) {
 
         $paidClasses = explode(',', $request->paidClasses);
+        $student = User::find($request->stID);
 
         foreach ($paidClasses as $class) {
             $classID = TuitionClass::where('class_name', $class)->first('id');
             
             // Check if the record already exists
             $recordExists = DB::table('stclasses')
-                ->where('user_id', Auth::id())
+                ->where('user_id', $student->id)
                 ->where('tuition_class_id', $classID->id)
                 ->exists();
             
             // If the record doesn't exist, insert it
             if (!$recordExists) {
                 DB::table('stclasses')->insert([
-                    'user_id' => Auth::id(),
+                    'user_id' => $student->id,
                     'tuition_class_id' => $classID->id,
                 ]);
             }
@@ -79,12 +82,13 @@ class ClassFeeController extends Controller
     public function undoPayment(Request $request) {
 
         $paidClasses = explode(',', $request->paidClasses);
+        $student = User::find($request->stID);
 
         foreach ($paidClasses as $class) {
             $classID = TuitionClass::where('class_name', $class)->first('id');
 
             DB::table('stclasses')
-                ->where('user_id', Auth::id())
+                ->where('user_id', $student->id)
                 ->where('tuition_class_id', $classID->id)
                 ->delete();
         }

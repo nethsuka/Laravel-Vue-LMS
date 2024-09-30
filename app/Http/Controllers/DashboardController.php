@@ -17,9 +17,6 @@ class DashboardController extends Controller
 {
     public function index() {
 
-        // $stclassRecords = Stclass::where('user_id', Auth::id())->get(['user_id','tuition_class_id']);
-        // $classDetails = TuitionClass::get(['id','class_name','tele_group']);
-
         $paidClassArray = Stclass::where('user_id', Auth::id())->pluck('tuition_class_id')->toArray();
         
         $classDetails = TuitionClass::whereIn('id', $paidClassArray)->get(['id', 'class_name', 'tele_group']);
@@ -36,21 +33,7 @@ class DashboardController extends Controller
         
         // return response()->json(['classDetails' => $classDetails]);
     }
-
-    public function joinClass(Request $request) {
-
-        $student = User::find(Auth::id());
-
-        // Find the class by its ID
-        // $class = TuitionClass::where('id', $request->classID)->first(['class_name']);
-
-        // $student->tuition_classes()->attach($request->className);
-        DB::table('stclasses')->insert([
-            'user_id' => Auth::id(),
-            'tuition_class_id' => $request->classID,
-        ]);
-        // return response()->json(['stclassRecord' => $className]);
-    }
+    
 
     public function joinOnline(Request $request) {
 

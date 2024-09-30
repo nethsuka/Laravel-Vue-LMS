@@ -127,7 +127,7 @@ const showModal = (item) => {
                                                             <fwb-button color="default" @click="showModal(element)" class="whitespace-nowrap px-3 py-1" outline>Slip Details</fwb-button>
                                                         </fwb-table-cell>
                                                         <fwb-table-cell>
-                                                            <Link href="/classfees" method="patch" :data="{ slipID: element.slip_id, paidClasses: element.paid_classes }" as="button" type="button" class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
+                                                            <Link href="/classfees" method="patch" :data="{ slipID: element.slip_id, paidClasses: element.paid_classes, stID: element.stID }" as="button" type="button" class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
                                                                 Accept
                                                             </Link>
                                                         </fwb-table-cell>
@@ -197,7 +197,7 @@ const showModal = (item) => {
                                                             <fwb-button color="default" class="whitespace-nowrap px-3 py-1" @click="showModal(element)" outline>Slip Details</fwb-button>
                                                         </fwb-table-cell>
                                                         <fwb-table-cell>
-                                                            <Link href="/classfees/undo-payment" method="patch" :data="{ slipID: element.slip_id, paidClasses: element.paid_classes }" as="button" type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
+                                                            <Link href="/classfees/undo-payment" method="patch" :data="{ slipID: element.slip_id, paidClasses: element.paid_classes, stID: element.stID }" as="button" type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
                                                                 Undo
                                                             </Link>
                                                         </fwb-table-cell>

@@ -27,7 +27,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::post('/dashboard', [DashboardController::class, 'joinClass'])->middleware(['auth', 'verified'])->name('dashboard.joinClass');
 Route::post('/dashboard/zoomlink', [DashboardController::class, 'joinOnline'])->middleware(['auth', 'verified'])->name('dashboard.joinOnline');
 
 
