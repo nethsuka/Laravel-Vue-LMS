@@ -46,6 +46,7 @@ Route::post('/payments', [PaymentController::class, 'store'])->name('payments.up
 Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
 Route::patch('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');
 Route::patch('/classfees/undo-payment', [ClassFeeController::class, 'undoPayment'])->name('classfees.undo');
+Route::delete('/classfees/delete/slips', [ClassFeeController::class, 'clearSlipTable'])->name('');
 
 Route::get('/more-classes', [MoreClassesController::class, 'index'])->name('classinfo');
 

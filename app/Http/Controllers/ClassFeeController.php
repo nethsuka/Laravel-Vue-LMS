@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Slip;
+use App\Models\Stclass;
 use App\Models\StuClaSlip;
 use App\Models\TuitionClass;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+
 
 class ClassFeeController extends Controller
 {
@@ -53,6 +56,7 @@ class ClassFeeController extends Controller
         // return response()->json(['results' => $results]);
     }
 
+
     public function acceptPayment(Request $request) {
 
         $paidClasses = explode(',', $request->paidClasses);
@@ -79,6 +83,7 @@ class ClassFeeController extends Controller
         StuClaSlip::where('slip_id', $request->slipID)->update(['paid' => 'yes']);
     }
 
+
     public function undoPayment(Request $request) {
 
         $paidClasses = explode(',', $request->paidClasses);
@@ -94,5 +99,53 @@ class ClassFeeController extends Controller
         }
 
         StuClaSlip::where('slip_id', $request->slipID)->update(['paid' => 'no']);
+    }
+
+
+    public function clearSlipTable() {
+
+        $joinClassData = Stclass::select('user_id', 'tuition_class_id')->get();
+        $paidClasData = StuClaSlip::select('user_id', 'tuition_class_id', 'paid')->get();
+
+        if (count($paidClasData) == 0) {
+            return;
+        }
+
+        foreach ($joinClassData as $classObj) {
+            $found = false;
+    
+            foreach ($paidClasData as $paidObj) {
+                // Check if both user_id and tuition_class_id match
+                if ($classObj->user_id == $paidObj->user_id && $classObj->tuition_class_id == $paidObj->tuition_class_id) {
+                    $found = true; // A match was found
+                    break; // Exit the inner loop early
+                }
+            }
+    
+            // If not found in paidClasData, delete the record from Stclass
+            if (!$found) {
+                // $classObj->delete();
+                Stclass::where('user_id', $classObj->user_id)
+                    ->where('tuition_class_id', $classObj->tuition_class_id)
+                    ->delete();
+            }
+        }
+
+        Slip::query()->delete();
+        // StuClaSlip::query()->delete();
+
+        $directory = storage_path('app/public/monthly_slips');
+
+        // Ensure the directory exists
+        if (File::exists($directory)) {
+            // Get all files from the directory
+            $files = File::files($directory);
+            
+            // Delete each file
+            foreach ($files as $file) {
+                File::delete($file);
+            }
+        }
+
     }
 }

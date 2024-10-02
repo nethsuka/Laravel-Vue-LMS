@@ -1,6 +1,6 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue';
-import { Head, useForm, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import {
     FwbA,
@@ -15,7 +15,7 @@ import {
     FwbInput,
     FwbAlert,
     FwbTab, FwbTabs
-} from 'flowbite-vue'
+} from 'flowbite-vue';
 
 const activeTab = ref('first');
 
@@ -62,6 +62,13 @@ function paidCount() {
     return Arrays.results.filter(item => item.paid === 'yes').length;
 }
 
+function deleteSlipData() {
+    const choice = confirm('Are you sure you want to proceed with the deletion ?');
+    if (choice) {
+        router.visit('/classfees/delete/slips', { method: 'delete' });
+    }
+}
+
 
 // modal view controles
 const isShowModal = ref(false)
@@ -83,8 +90,20 @@ const showModal = (item) => {
         <Sidebar>
         <div class="py-12">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="text-sm py-2 px-7 col-span-3">
+                            Please proceed with caution as this will permanently remove all slip data from the database
+                            from which there is no way to retrieve it.
+                        </div>
+                        <div class="py-2 px-7">
+                            <fwb-button color="red" class="ml-12" @click="deleteSlipData">Delete All Slips</fwb-button>
+                        </div>
+                    </div>
+                </div>
+
+                
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
-             
                     <!--main  content -->
                     <fwb-tabs v-model="activeTab" class="p-5" variant="underline">
                         <fwb-tab name="first" title="Accept Payments">

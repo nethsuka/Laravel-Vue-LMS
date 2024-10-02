@@ -47,7 +47,6 @@ function creatingshowarray() {
     for (let i of Arrays.classDetails) {
         if (!st_paid.value.includes(i.class_name)) {
             showarray.value.push(i)
-            console.log(showarray.value)
         }
     }
 }
@@ -69,13 +68,31 @@ const discount_class = ref([]);
 function discount() {
     let paper = '';
     let theory = '';
-    for (let i of [25, 26, 27, 28, 29, 30]) {
+
+    // Check if st_paid.value is a string or array and ensure lowercase comparison
+    const st_paid_value = Array.isArray(st_paid.value) 
+        ? st_paid.value.map(item => item.toLowerCase())  // If it's an array, map each element to lowercase
+        : st_paid.value.toLowerCase();                   // If it's a string, convert it to lowercase
+
+    // Get the current year and extract the last two digits
+    let currentYear = new Date().getFullYear() % 100;
+
+    // Create an array for the current year and the next two years
+    let years = [currentYear-1, currentYear, currentYear + 1, currentYear + 2];
+
+    for (let i of years) {
         paper = '20' + i + ' Paper';
         theory = '20' + i + ' Theory';
-        if (!(st_paid.value.includes(paper) && st_paid.value.includes(theory))) {
-            if (st_paid.value.includes(paper)) {
+
+        // Convert paper and theory to lowercase
+        const paper_lower = paper.toLowerCase();
+        const theory_lower = theory.toLowerCase();
+
+        // If st_paid_value is an array, use includes() to check; if it's a string, the same logic applies
+        if (!(st_paid_value.includes(paper_lower) && st_paid_value.includes(theory_lower))) {
+            if (st_paid_value.includes(paper_lower)) {
                 discount_class.value.push(theory);
-            } else if (st_paid.value.includes(theory)) {
+            } else if (st_paid_value.includes(theory_lower)) {
                 discount_class.value.push(paper);
             }
         }
@@ -102,7 +119,6 @@ function class_fees() {
             }
         }
     }
-
 }
 
 function already_paid() {
@@ -264,10 +280,14 @@ const handleCheckboxChange = (value) => {
                             <form class="max-w-sm mx-auto" @submit.prevent="submit1">
                                 <template v-if="st_paid.length > 0">
                                     <div class="mb-5">
-                                        <fwb-alert icon type="info">
-                                            Already paid for -
-                                            <span v-for="(paidClass, index) in st_paid" :key="index">
-                                                {{ paidClass }}{{ index < st_paid.length - 1 ? ', ' : '' }} </span>
+                                        <fwb-alert icon type="info" class="p-4 w-full bg-blue-100">
+                                            <div class="flex flex-col">
+                                                <p>Already paid for - 
+                                                    <span v-for="(paidClass, index) in st_paid" :key="index">
+                                                        {{ paidClass }}{{ index < st_paid.length - 1 ? ', ' : '' }}
+                                                    </span>
+                                                </p>
+                                            </div>
                                         </fwb-alert>
                                     </div>
                                 </template>
@@ -297,7 +317,7 @@ const handleCheckboxChange = (value) => {
                                     </div>
                                 </template>
                                 <template v-else>
-                                    <p class="text-xs pl-4 mb-2">No classes available</p>
+                                    <p class="text-xs pl-4 mb-2">Not available</p>
                                 </template>
 
                                 <InputError class="mt-2" :message="form1.errors.paid_classes" />
