@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassControlsController;
 use App\Http\Controllers\ClassFeeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MoreClassesController;
@@ -30,10 +31,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::post('/dashboard/zoomlink', [DashboardController::class, 'joinOnline'])->middleware(['auth', 'verified'])->name('dashboard.joinOnline');
 
 
-Route::get('/admin', function () {
-    return Inertia::render('Admin/ClassControles');
-})->name('class_controles');
-
+Route::get('/class-controls', [ClassControlsController::class, 'index'])->name('class_controls');
+Route::post('/class-controls/video-list-update', [ClassControlsController::class, 'updateClassVideoList'])->name('class_controls.video_list_update');
 
 
 // Route::get('/payments', function () {
