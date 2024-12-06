@@ -11,6 +11,7 @@ const activeTab = ref('2025 Theory')
 
 const Arrays = defineProps({
     videoDetails: Array,
+    classDetails: Array,
 });
 
 const list = ref(Arrays.videoDetails);

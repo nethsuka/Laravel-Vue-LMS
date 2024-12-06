@@ -4,20 +4,24 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\ClassVideo;
+use App\Models\TuitionClass;
 use Illuminate\Http\Request;
 
 class ClassControlsController extends Controller
 {
     private $videoDetails;
+    private $classDetails;
 
     public function __construct()
     {
         $this->videoDetails = ClassVideo::all();  // Assuming this is an Eloquent collection
+        $this->classDetails = TuitionClass::select('id', 'class_name', 'tele_group','zoom_link')->get();
     }
 
     public function index() {
         return Inertia::render('Admin/ClassControls', [ 
             'videoDetails' => $this->videoDetails,
+            'classDetails' => $this->classDetails,
         ]);
     }
 
