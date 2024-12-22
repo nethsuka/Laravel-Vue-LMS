@@ -189,7 +189,7 @@ function getVideoList(classID){
                             </div>
                         </template>
                         <template v-else>
-                            <p class="pt-1 pb-3 pl-4">You haven't buy any classes</p>
+                            <p class="pt-1 pb-3 pl-4">You haven't bought any classes</p>
                         </template>
                     </div>
                                         

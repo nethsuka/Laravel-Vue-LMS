@@ -71,7 +71,6 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
             <main>
                 <slot />
             </main>
-
         </div>
         </div>
     </AdminAuthenticatedLayout>

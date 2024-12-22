@@ -18,6 +18,7 @@ return new class extends Migration
                   ->onDelete('cascade');
             $table->string('video_link', 800);
             $table->string('video_name');
+            $table->date('expiry_date');
             $table->integer('index');
             $table->timestamps();
         });

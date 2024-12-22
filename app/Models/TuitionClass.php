@@ -9,6 +9,12 @@ class TuitionClass extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'class_name',
+        'zoom_link',
+        'tele_group',
+    ];
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'stclasses');

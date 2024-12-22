@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\ClassVideo;
 use App\Models\TuitionClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class ClassControlsController extends Controller
 {
@@ -21,33 +22,38 @@ class ClassControlsController extends Controller
     public function index() {
         return Inertia::render('Admin/ClassControls', [ 
             'videoDetails' => $this->videoDetails,
-            'classDetails' => $this->classDetails,
-        ]);
+            'classDetails' => $this->classDetails,        ]);
     }
 
     public function updateClassVideoList(Request $request) {
-        // Convert modifiedList from request to ClassVideo instances if necessary
-        $modifiedList = collect($request->modifiedList)->map(function ($item) {
-            return ClassVideo::find($item['id']);  // Find ClassVideo instances by ID
-        });
 
-        // Call the function to find missing items
-        $missingItems = $this->findMissingItems($this->videoDetails, $modifiedList);
+        if($request->modifiedList != null) {
+            // Convert modifiedList from request to ClassVideo instances if necessary
+            $modifiedList = collect($request->modifiedList)->map(function ($item) {
+                return ClassVideo::find($item['id']);  // Find ClassVideo instances by ID
+            });
 
-        foreach($missingItems as $item) {
-            ClassVideo::where('id', $item->id)->delete();
-        }
+            // Call the function to find missing items
+            $missingItems = $this->findMissingItems($this->videoDetails, $modifiedList);
 
-        foreach ($request->modifiedList as $updateObj) {
-            // Accessing 'id' as an array element
-            ClassVideo::where('id', $updateObj['id'])->update([
-                'video_link' => $updateObj['video_link'],
-                'video_name' => $updateObj['video_name'],
-                'index' => $updateObj['index'],
+            foreach($missingItems as $item) {
+                ClassVideo::where('id', $item->id)->delete();
+            }
+
+            foreach ($request->modifiedList as $updateObj) {
+                // Accessing 'id' as an array element
+                ClassVideo::where('id', $updateObj['id'])->update([
+                    'video_link' => $updateObj['video_link'],
+                    'video_name' => $updateObj['video_name'],
+                    'index' => $updateObj['index'],
+                ]);
+            }
+            
+            // return response()->json(['missingItems' => $request->modifiedList]);
+            return back()->with([
+                'successMsg' => 'Changes saved successfully',
             ]);
         }
-        
-        // return response()->json(['missingItems' => $request->modifiedList]);
     }
 
     // Function to find missing items in $partialArray from $fullArray based on 'id'
@@ -59,5 +65,53 @@ class ClassControlsController extends Controller
         return $fullArray->filter(function ($obj) use ($partialIds) {
             return !in_array($obj->id, $partialIds);
         });
+    }
+
+    public function addNewClass(Request $request) {
+
+        $existingClass = TuitionClass::where('class_name', $request->class_name)->first();
+
+        if ($existingClass) {
+            // return response()->json(['error' => 'Class with this name already exists.'], 400);
+            return;
+        }
+
+        TuitionClass::create([
+            'class_name' => $request->class_name,
+            'zoom_link' => $request->zoom_link,
+            'tele_group' => $request->tele_link,
+        ]);
+
+        return back()->with([
+            'successMsg' => 'Class added successfully.',
+        ]);
+        // return Redirect::route('class_controls');
+    }
+
+    public function updateclass(Request $request) {
+
+        TuitionClass::where('class_name', $request->class_name)->update([
+            'tele_group' => $request->tele_group,
+            'zoom_link' => $request->zoom_link,
+        ]);
+
+        return back()->with([
+            'successMsg' => 'Class details updated successfully.',
+        ]);
+    }
+
+    public function addNewVideo(Request $request) {
+
+        ClassVideo::create([
+            'tuition_class_id' => $request->tuition_class_id,
+            'video_link' => $request->video_link,
+            'video_name' => $request->video_name,
+            'expiry_date' => $request->expiry_date,
+            'index' => $request->index,
+        ]);
+
+        return back()->with([
+            'successMsg' => 'Added new video successfully.',
+        ]);
     }
 }
