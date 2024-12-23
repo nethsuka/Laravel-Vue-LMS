@@ -101,8 +101,15 @@ function addclasses() {
         preserveScroll: false,
         onSuccess: () => {
             form2.reset();
+            setTimeout(() => {
+                alert(page.props.flash.successMsg )
+                location.reload();
+            }, 1000);
         },
     });
+}
+function showalert(){
+    alert(props.flash.successMsg)
 }
 
 const video_link = ref('')
@@ -184,13 +191,9 @@ function handleAdd(classid) {
         updated_at: null,
         tuition_class_id: classid
     }
-    // classvideoobj.value.push(videobj)
 
     listobj.value.push(videobj);
     console.log(classvideoobj.value);
-    // video_link.value = '';
-    // video_name.value = '';
-    // expiry_date.value = '';
 
     //sending data to backend
     form4.tuition_class_id = classid;
@@ -203,7 +206,10 @@ function handleAdd(classid) {
         onSuccess: () => {
             video_link.value = '';
             video_name.value = '';
-            expiry_date.value = '';
+            video_expiry_date.value = '';
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
         },
     });
 }
