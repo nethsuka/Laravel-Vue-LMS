@@ -21,23 +21,23 @@ const Arrays = defineProps({
 const activeTab = ref((Arrays.classDetails.length > 0 ? Arrays.classDetails[0].class_name : 'no data'));
 
 const form2 = useForm({
-    class_name : '',
-    zoom_link : '',
-    tele_link : '',
+    class_name: '',
+    zoom_link: '',
+    tele_link: '',
 });
 
 const form3 = useForm({
-    class_name : '',
-    zoom_link : '',
-    tele_group : '',
+    class_name: '',
+    zoom_link: '',
+    tele_group: '',
 });
 
 const form4 = useForm({
-    tuition_class_id : '',
-    video_link : '',
-    video_name : '',
-    expiry_date : '',
-    index : '',
+    tuition_class_id: '',
+    video_link: '',
+    video_name: '',
+    expiry_date: '',
+    index: '',
 })
 
 const class_type = [
@@ -91,7 +91,8 @@ function addclasses() {
         id: null,
         class_name: class_name,
         tele_group: form2.tele_link,
-        zoom_link: form2.zoom_link,}
+        zoom_link: form2.zoom_link,
+    }
     classlist.value.push(obj)
     console.log(classlist.value)
 
@@ -101,15 +102,13 @@ function addclasses() {
         preserveScroll: false,
         onSuccess: () => {
             form2.reset();
-            setTimeout(() => {
-                alert(page.props.flash.successMsg )
-                location.reload();
-            }, 1000);
+            showalert("Class Created Successfully")
+            location.reload();
         },
     });
 }
-function showalert(){
-    alert(props.flash.successMsg)
+function showalert(msg) {
+    alert(msg)
 }
 
 const video_link = ref('')
@@ -126,7 +125,8 @@ const tele_link = ref('')
 
 function saveAndClose(classid) {
     handleAdd(classid)
-    isShowModal.value = false}
+    isShowModal.value = false
+}
 
 function closeModal() {
     isShowModal.value = false
@@ -155,8 +155,7 @@ function createlist() {
 }
 onMounted(() => {
     createlist();
-    // console.log(listobj.value)
-    console.log(classlist.value)
+    console.log(listobj.value)
 })
 
 function remove(index) {
@@ -207,14 +206,13 @@ function handleAdd(classid) {
             video_link.value = '';
             video_name.value = '';
             video_expiry_date.value = '';
-            setTimeout(() => {
-                location.reload();
-            }, 1000);
+            showalert("Video added successfully")
+            location.reload();
         },
     });
 }
 
-function ptintclasslist(classid) {
+function saveclasslist(classid) {
     const classobj = classlist.value.find(i => i.id === classid)
     console.log(classobj)
     form3.class_name = classobj.class_name;
@@ -224,14 +222,23 @@ function ptintclasslist(classid) {
         preserveScroll: false,
     });
 }
+function disabledsavechanges() {
+    const nullvalues = listobj.value.filter(i => i.video_name === null || i.video_name.trim() === '' || i.video_link === null || i.video_link.trim() === '' || i.expiry_date === null || i.expiry_date.trim() === '')
+    if (nullvalues.length > 0) {
+        return true
+    } else {
+        return false
+    }
+}
+
 
 </script>
 <template>
 
     <Head title="Admin Panel" />
     <Sidebar>
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
+        <div class="py-12" >
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '95vh' }">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
                     <!-- content -->
                     <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success">
@@ -251,7 +258,8 @@ function ptintclasslist(classid) {
                                                 Name</label>
                                             <input type="text" id="l1" aria-label="disabled input"
                                                 class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flex-grow"
-                                                placeholder="class name" disabled :value="tuteClass.class_name" required />
+                                                placeholder="class name" disabled :value="tuteClass.class_name"
+                                                required />
                                         </div>
                                         <div class="mb-5 flex items-center">
                                             <label for="l2"
@@ -259,8 +267,8 @@ function ptintclasslist(classid) {
                                                 Link</label>
                                             <textarea id="l2" rows="3"
                                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="Enter your content here..."
-                                                :value="tuteClass.zoom_link" @input="tuteClass.zoom_link = $event.target.value"></textarea>
+                                                placeholder="Enter your content here..." :value="tuteClass.zoom_link"
+                                                @input="tuteClass.zoom_link = $event.target.value"></textarea>
                                         </div>
                                         <div class="mb-5 flex items-center">
                                             <label for="l3"
@@ -268,10 +276,11 @@ function ptintclasslist(classid) {
                                                 Link</label>
                                             <textarea id="l3" rows="3"
                                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="Enter your content here..."
-                                                :value="tuteClass.tele_group" @input="tuteClass.tele_group = $event.target.value"></textarea>
+                                                placeholder="Enter your content here..." :value="tuteClass.tele_group"
+                                                @input="tuteClass.tele_group = $event.target.value"></textarea>
                                         </div>
-                                        <fwb-button type="button" size="sm" class="float-end" @click="ptintclasslist(tuteClass.id)">Save Changes</fwb-button>
+                                        <fwb-button type="button" size="sm" class="float-end"
+                                            @click="saveclasslist(tuteClass.id)">Save Changes</fwb-button>
                                         <br><br><br>
                                     </form>
 
@@ -284,8 +293,8 @@ function ptintclasslist(classid) {
                                             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                                 viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2" d="M5 12h14m-7 7V5" />
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
                                             </svg>
                                             <span>&nbsp;Add Tute</span>
                                         </button>
@@ -298,8 +307,8 @@ function ptintclasslist(classid) {
                                             <button @click="showModal"
                                                 class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
                                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                                    viewBox="0 0 24 24">
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round"
                                                         stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
                                                 </svg>
@@ -317,24 +326,41 @@ function ptintclasslist(classid) {
                                                         <div class="flex flex-row">
                                                             <div class="flex flex-col mb-4 mt-4 mr-4">
                                                                 <label for="small-input"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Class name</label>
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video
+                                                                    name</label>
                                                                 <input type="text" v-model="item.video_name"
                                                                     id="small-input"
                                                                     class="mr-3 block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                                <fwb-alert type="warning"
+                                                                    v-if="item.video_name === null || item.video_name.trim() === ''">
+                                                                    Video name is required
+                                                                </fwb-alert>
                                                             </div>
-
                                                             <div class="flex flex-col mb-4">
                                                                 <label for="message"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video link</label>
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video
+                                                                    link</label>
                                                                 <textarea id="message" rows="4"
                                                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                                     placeholder="Write your thoughts here..."
                                                                     v-model="item.video_link"></textarea>
+                                                                <fwb-alert type="warning"
+                                                                    v-if="item.video_link === null || item.video_link.trim() === ''">
+                                                                    Video link is required
+                                                                </fwb-alert>
                                                             </div>
 
                                                             <div class="flex flex-col mb-4 ml-5">
-                                                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-3">Expiry date</label>
-                                                                <input type="date" class="border bg-gray-50 border-gray-300 rounded-lg p-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                                                <label for="email"
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-3">Expiry
+                                                                    date</label>
+                                                                <input type="date"
+                                                                    class="border bg-gray-50 border-gray-300 rounded-lg p-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                                    v-model="item.expiry_date">
+                                                                <fwb-alert type="warning"
+                                                                    v-if="item.expiry_date === null || item.expiry_date.trim() === ''">
+                                                                    Expire date is required
+                                                                </fwb-alert>
                                                             </div>
                                                         </div>
 
@@ -346,24 +372,32 @@ function ptintclasslist(classid) {
                                             </VueDraggable>
                                         </div>
                                     </div>
-                                    <fwb-button @click="sendList()" size="sm" color="green" class="float-end">Save
+                                    <fwb-button @click="sendList()" size="sm" color="green" class="float-end"
+                                        :disabled="disabledsavechanges()">Save
                                         Changes</fwb-button>
 
                                     <br>
                                     <br>
                                     <br>
-                                    <div id="alert-additional-content-2" class="p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+                                    <div id="alert-additional-content-2"
+                                        class="p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+                                        role="alert">
                                         <div class="flex items-center">
-                                            <svg class="flex-shrink-0 w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                            <svg class="flex-shrink-0 w-4 h-4 me-2" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path
+                                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                                             </svg>
                                             <span class="sr-only">Info</span>
                                             <h3 class="text-lg font-medium">Delete The Class</h3>
                                         </div>
                                         <div class="mt-2 mb-4 text-sm">
-                                            Once this class is deleted, all data will be permanently erased and cannot be recovered.                                        </div>
+                                            Once this class is deleted, all data will be permanently erased and cannot
+                                            be recovered. </div>
                                         <div class="flex">
-                                            <button type="button" class="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                            <button type="button"
+                                                class="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                                 Delete
                                             </button>
                                             <!-- <button type="button" class="text-red-800 bg-transparent border border-red-800 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-red-600 dark:border-red-600 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800" data-dismiss-target="#alert-additional-content-2" aria-label="Close">
@@ -381,7 +415,7 @@ function ptintclasslist(classid) {
                                         <template #body>
                                             <fwb-input v-model="tute_name" placeholder="Enter Tute Name"
                                                 label="Tute for" /><br>
-                                                <fwb-file-input v-model="file" dropzone />
+                                            <fwb-file-input v-model="file" dropzone />
                                         </template>
                                         <template #footer>
                                             <div class="flex justify-between">
@@ -406,8 +440,11 @@ function ptintclasslist(classid) {
                                                 placeholder="Enter Class Name" size="md" />
                                             <fwb-textarea v-model="video_link" :rows="4" label="Class Link"
                                                 placeholder="Enter link..." />
-                                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-3">Expiry date</label>
-                                            <input type="date" v-model="video_expiry_date" class="border bg-gray-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                            <label for="email"
+                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-3">Expiry
+                                                date</label>
+                                            <input type="date" v-model="video_expiry_date"
+                                                class="border bg-gray-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                                         </template>
                                         <template #footer>
                                             <div class="flex justify-between">
@@ -415,7 +452,7 @@ function ptintclasslist(classid) {
                                                     Close
                                                 </fwb-button>
                                                 <fwb-button @click="saveAndClose(tuteClass.id)" color="green"
-                                                    :disabled="!video_name || !video_link">
+                                                    :disabled="!video_name || !video_link || !video_expiry_date">
                                                     Save
                                                 </fwb-button>
                                             </div>
@@ -469,7 +506,8 @@ function ptintclasslist(classid) {
                             <fwb-button @click="addclassmodalclose" color="alternative">
                                 Close
                             </fwb-button>
-                            <fwb-button type="submit" @click="addclasses" color="green" :disabled="!class_year || !selected">
+                            <fwb-button type="submit" @click="addclasses" color="green"
+                                :disabled="!class_year || !selected">
                                 Save
                             </fwb-button>
                         </div>

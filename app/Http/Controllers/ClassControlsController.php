@@ -45,6 +45,7 @@ class ClassControlsController extends Controller
                 ClassVideo::where('id', $updateObj['id'])->update([
                     'video_link' => $updateObj['video_link'],
                     'video_name' => $updateObj['video_name'],
+                    'expiry_date' => $updateObj['expiry_date'],
                     'index' => $updateObj['index'],
                 ]);
             }
