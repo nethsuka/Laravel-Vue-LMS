@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\ClassControlsController;
 use App\Http\Controllers\ClassFeeController;
 use App\Http\Controllers\DashboardController;
@@ -36,6 +35,10 @@ Route::post('/payments', [PaymentController::class, 'store'])->name('payments.up
 Route::get('/extra-lessons', function () {
         return Inertia::render('ExtraLessons');
     })->name('extra_lessons');
+
+Route::get('/resources', function () {
+    return Inertia::render('Resources');
+})->name('resources');
 
 Route::get('/class-controls', [ClassControlsController::class, 'index'])->name('class_controls');
 Route::post('/class-controls/video-list-update', [ClassControlsController::class, 'updateClassVideoList'])->name('class_controls.video_list_update');

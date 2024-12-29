@@ -513,7 +513,6 @@ function disabledsavechanges() {
                         </div>
                     </template>
                 </fwb-modal>
-
             </div>
         </div>
     </Sidebar>

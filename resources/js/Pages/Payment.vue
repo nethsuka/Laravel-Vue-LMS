@@ -188,7 +188,7 @@ const handleCheckboxChange = (value) => {
 
 <template>
 
-    <Head title="Dashboard" />
+    <Head title="Payments" />
 
     <AuthenticatedLayout>
         <template #header>
