@@ -558,7 +558,7 @@ function deleteClass(classId) {
                                     <fwb-modal v-if="isShowModal" @close="closeModal">
                                         <template #header>
                                             <div class="flex items-center text-lg">
-                                                Add vidoe for : {{ tuteClass.class_name }}
+                                                Add video for : {{ tuteClass.class_name }}
                                             </div>
                                         </template>
                                         <template #body>

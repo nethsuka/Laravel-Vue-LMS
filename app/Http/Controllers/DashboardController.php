@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClassTute;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Stclass;
@@ -23,12 +24,15 @@ class DashboardController extends Controller
         $extendDetails = StExtendDate::where('user_email', Auth::user()->email)->first('extend_date');
         $paidClassDetails = StuClaSlip::where('user_id', Auth::id())->get(['tuition_class_id','paid']);
         $videoLinks = ClassVideo::all();
+        $classTutes = ClassTute::all();
 
         return Inertia::render('Dashboard', [ 
             'classDetails' => $classDetails,
             'extendDetails' => $extendDetails,
             'paidClassDetails' => $paidClassDetails,
             'videoLinks' => $videoLinks,
+            'classTutes' => $classTutes,
+
         ]);
         
         // return response()->json(['classDetails' => $classDetails]);
