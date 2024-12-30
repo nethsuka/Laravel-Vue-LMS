@@ -55,6 +55,36 @@ const objectarray = ref([
     { name: 'Unit 14 - Plant based products & environmental pollution', price: 1000, buy: true, isunit: true },
 ])
 
+const boughtArray = ref([
+    { name: 'Unit 1: Atomic Structure', expire_date : 2024/10/13 , video_link:[
+        "ergergergerg",'ergergergergerger','ergergergregergergerg'
+    ] },
+    {
+        name: 'Unit 2: Structure and Bonding', expire_date : 2024/10/13 , video_link:[
+            "ergergergerg",'ergergergergerger','ergergergregergergerg'
+        ]
+    },
+    {
+        name: 'Unit 3: Chemical Calculations', expire_date : 2024/10/13 , video_link:[
+            "ergergergerg",'ergergergergerger','ergergergregergergerg'
+        ]
+    }    ,
+    {
+        name: 'Unit 4: Gaseous State of Matter', expire_date : 2024/10/13 , video_link:[
+            "ergergergerg",'ergergergergerger','ergergergregergergerg'
+        ]
+    },
+    {
+        name: 'Unit 5: Energetics', expire_date : 2024/10/13 , video_link:[
+            "ergergergerg",'ergergergergerger','ergergergregergergerg'
+        ]
+    },
+    {
+        name:'2003, 2004, 2005', expire_date : '2024/10/13' , video_link:[
+            "ergergergerg",'ergergergergerger','ergergergregergergerg'
+        ]
+    }
+])
 
 function getkey(evt) {
     showarray.value = [];
@@ -66,13 +96,11 @@ function getkey(evt) {
         }
     }
 }
-
 </script>
 
 <template>
 
     <Head title="Resources" />
-
     <AuthenticatedLayout>
         <template #header>
             <div class="flex justify-between">
@@ -93,7 +121,6 @@ function getkey(evt) {
                 </div>
             </div>
         </template>
-
         <div class="py-12">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
@@ -107,7 +134,7 @@ function getkey(evt) {
                                 class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
                                 Past papers
                             </button>
-                            <button type="button"
+                            <button type="button" @click="activebutton = 'myresources'"
                                 class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
                                 My Resources
                             </button>
@@ -117,7 +144,6 @@ function getkey(evt) {
                     <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
                     <div v-if="activebutton === 'unit'" style="overflow-x: auto; max-height: 73vh;">
                         <div class="input-border max-w-md mx-auto">
-
                             <fwb-input v-on:input="getkey" class="max-w-md mx-auto" v-model="query" label="Search"
                                 placeholder="Find unit based lessons" size="lg">
                                 <template #prefix>
@@ -185,6 +211,32 @@ function getkey(evt) {
                             </fwb-table-body>
                         </fwb-table>
                     </div>
+                    <div v-if="activebutton === 'myresources'">
+                        <fwb-accordion>
+                            <fwb-accordion-panel v-for = "(y, index) in boughtArray" :key="index">
+                                <fwb-accordion-header>{{ y.name }}
+                                    <span class="text-gray-500 dark:text-gray-400"> Expire Date {{ y.expire_date }}</span>
+                                </fwb-accordion-header>
+                                <fwb-accordion-content>
+                                    <div>
+                                        <p class="mb-2 text-gray-500 dark:text-gray-400">
+                                            Flowbite is an open-source library of interactive components built on top of
+                                            Tailwind CSS including buttons, dropdowns, modals, navbars, and more.
+                                        </p>
+                                        <p class="text-gray-500 dark:text-gray-400">
+                                            Check out this guide to learn how to <a
+                                                href="/docs/getting-started/introduction/"
+                                                class="text-blue-600 dark:text-blue-500 hover:underline">get started</a>
+                                            and
+                                            start developing websites even faster with components on top of Tailwind
+                                            CSS.
+                                        </p>
+                                    </div>
+                                </fwb-accordion-content>
+                            </fwb-accordion-panel>
+ 
+                        </fwb-accordion>
+                    </div>
                 </div>
             </div>
         </div>
@@ -192,8 +244,10 @@ function getkey(evt) {
 </template>
 <style>
 .input-border {
-    border: 2px solid #ccc; /* Change color and width as needed */
-    border-radius: 4px; /* Optional: for rounded corners */
+    border: 2px solid #ccc;
+    /* Change color and width as needed */
+    border-radius: 4px;
+    /* Optional: for rounded corners */
     padding: 20px;
     width: 500px;
     border-radius: 20px;
