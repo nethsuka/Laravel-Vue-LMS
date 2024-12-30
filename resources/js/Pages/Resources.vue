@@ -21,8 +21,6 @@ import {
     FwbInput,
     FwbAlert
 } from 'flowbite-vue';
-
-
 const showarray = ref([]);
 const query = ref('');
 const activebutton = ref('unit');
@@ -56,32 +54,34 @@ const objectarray = ref([
 ])
 
 const boughtArray = ref([
-    { name: 'Unit 1: Atomic Structure', expire_date : 2024/10/13 , video_link:[
-        "ergergergerg",'ergergergergerger','ergergergregergergerg'
-    ] },
     {
-        name: 'Unit 2: Structure and Bonding', expire_date : 2024/10/13 , video_link:[
-            "ergergergerg",'ergergergergerger','ergergergregergergerg'
+        name: 'Unit 1: Atomic Structure', expire_date: '2025/01/13', video_link: [
+            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
         ]
     },
     {
-        name: 'Unit 3: Chemical Calculations', expire_date : 2024/10/13 , video_link:[
-            "ergergergerg",'ergergergergerger','ergergergregergergerg'
-        ]
-    }    ,
-    {
-        name: 'Unit 4: Gaseous State of Matter', expire_date : 2024/10/13 , video_link:[
-            "ergergergerg",'ergergergergerger','ergergergregergergerg'
+        name: 'Unit 2: Structure and Bonding', expire_date: '2025/1/13', video_link: [
+            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
         ]
     },
     {
-        name: 'Unit 5: Energetics', expire_date : 2024/10/13 , video_link:[
-            "ergergergerg",'ergergergergerger','ergergergregergergerg'
+        name: 'Unit 3: Chemical Calculations', expire_date: '2025/1/13', video_link: [
+            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
         ]
     },
     {
-        name:'2003, 2004, 2005', expire_date : '2024/10/13' , video_link:[
-            "ergergergerg",'ergergergergerger','ergergergregergergerg'
+        name: 'Unit 4: Gaseous State of Matter', expire_date: '2025/2/13', video_link: [
+            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
+        ]
+    },
+    {
+        name: 'Unit 5: Energetics', expire_date: '2025/3/13', video_link: [
+            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
+        ]
+    },
+    {
+        name: '2003, 2004, 2005', expire_date: '2025/4/13', video_link: [
+            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
         ]
     }
 ])
@@ -95,6 +95,25 @@ function getkey(evt) {
             }
         }
     }
+}
+function calculateExpireDate(expire_date) {
+    // Get today's date
+    const today = new Date();
+
+    // Set the expire date from the input
+    const expireDate = new Date(expire_date);
+
+    // Calculate the difference in time
+    const timeDifference = expireDate - today;
+
+    // Convert time difference from milliseconds to days
+    const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+    // Log the calculated expire date and the days difference
+
+
+    // Return the calculated expire date
+    return daysDifference;
 }
 </script>
 
@@ -122,7 +141,7 @@ function getkey(evt) {
             </div>
         </template>
         <div class="py-12">
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
                     <div class="flex justify-center ">
                         <div class="inline-flex rounded-md shadow-sm" role="group">
@@ -213,9 +232,14 @@ function getkey(evt) {
                     </div>
                     <div v-if="activebutton === 'myresources'">
                         <fwb-accordion>
-                            <fwb-accordion-panel v-for = "(y, index) in boughtArray" :key="index">
-                                <fwb-accordion-header>{{ y.name }}
-                                    <span class="text-gray-500 dark:text-gray-400"> Expire Date {{ y.expire_date }}</span>
+                            <fwb-accordion-panel v-for="(y, index) in boughtArray" :key="index">
+                                <fwb-accordion-header>
+                                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                                        <span>{{ y.name }}</span>
+                                        <span>Days Left: {{ calculateExpireDate(y.expire_date) }}</span>
+                                        <span class="text-gray-500 dark:text-gray-400">Expire Date {{ y.expire_date
+                                            }}</span>
+                                    </div>
                                 </fwb-accordion-header>
                                 <fwb-accordion-content>
                                     <div>
@@ -234,7 +258,7 @@ function getkey(evt) {
                                     </div>
                                 </fwb-accordion-content>
                             </fwb-accordion-panel>
- 
+
                         </fwb-accordion>
                     </div>
                 </div>
