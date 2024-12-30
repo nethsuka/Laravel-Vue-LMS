@@ -2,27 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClassTute;
 use Inertia\Inertia;
 use App\Models\ClassVideo;
 use App\Models\TuitionClass;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\File;
 
 class ClassControlsController extends Controller
 {
     private $videoDetails;
     private $classDetails;
+    private $tuteDetails;
 
     public function __construct()
     {
         $this->videoDetails = ClassVideo::all();  // Assuming this is an Eloquent collection
         $this->classDetails = TuitionClass::select('id', 'class_name', 'tele_group','zoom_link')->get();
+        $this->tuteDetails = ClassTute::all();
     }
 
     public function index() {
         return Inertia::render('Admin/ClassControls', [ 
             'videoDetails' => $this->videoDetails,
-            'classDetails' => $this->classDetails,        ]);
+            'classDetails' => $this->classDetails,  
+            'tuteDetails' => $this->tuteDetails,  
+        ]);
+                    // return response()->json(['tuteDetails' => $this->tuteDetails]);
+
     }
 
     public function updateClassVideoList(Request $request) {
@@ -114,5 +121,42 @@ class ClassControlsController extends Controller
         return back()->with([
             'successMsg' => 'Added new video successfully.',
         ]);
+    }
+
+    public function addTute(Request $request) {
+
+        $file = $request->file('file');
+        $fileName = time() . '_' . $file->getClientOriginalName(); //making a file name
+        $path = $file->storeAs('class_tutes', $fileName, 'public');
+
+        ClassTute::create([
+            'tuition_class_id' => $request->classId,
+            'tute_path' => $path,
+            'tute_name' => $request->tute_name,
+        ]);
+    }
+
+
+    public function deleteTute(Request $request) {
+
+        $record = ClassTute::where('id', $request->tuteId)->first();
+
+        ClassTute::where('id', $request->tuteId)->delete();
+
+        if (!$record) {
+            return response()->json(['error' => 'Record not found'], 404);
+        }
+
+        $fileToDelete = $record->tute_path; // e.g., 'class_tutes/1735555922_azurepic.PNG'
+        $fullPath = storage_path('app/public/' . $fileToDelete);
+
+        // Check if the file exists and delete it
+        if (File::exists($fullPath)) {
+            File::delete($fullPath);
+            // return response()->json(['success' => 'File deleted successfully']);
+        } else {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+        
     }
 }

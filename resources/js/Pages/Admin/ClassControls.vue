@@ -16,6 +16,7 @@ const { props } = usePage();
 const Arrays = defineProps({
     videoDetails: Array,
     classDetails: Array,
+    tuteDetails: Array,
 });
 
 const activeTab = ref((Arrays.classDetails.length > 0 ? Arrays.classDetails[0].class_name : 'no data'));
@@ -38,12 +39,22 @@ const form4 = useForm({
     video_name: '',
     expiry_date: '',
     index: '',
-})
+});
+
+const form5 = useForm({
+    classId : '',
+    tute_name: '',
+    file: null,
+});
+
+const form6 = useForm({
+    tuteId : '',
+});
 
 const class_type = [
     { value: 'Paper', name: 'Paper' },
     { value: 'Theory', name: 'Theory' },
-]
+];
 
 function validatenumber(event) {
     const value = event.target.value;
@@ -58,11 +69,26 @@ function addclassmodal() {
 function addtuteopen() {
     istuteModal.value = true
 }
+
 function addtute(classid) {
-    console.log(classid)
-    console.log(file.value)
-    addtuteclose()
+
+    console.log(classid);
+    console.log(file.value);
+
+    form5.classId = classid;
+    form5.tute_name = tute_name.value;
+    form5.file = file.value;
+    form5.post('/class-controls/addTute', {
+        preserveScroll: false,
+        onSuccess: () => {
+            tute_name.value = '';
+            file.value = null;
+            form5.reset();
+        },
+    });
+    addtuteclose();
 }
+
 function addtuteclose() {
     istuteModal.value = false
 }
@@ -231,6 +257,43 @@ function disabledsavechanges() {
     }
 }
 
+const handleDrop = (event) => {
+  event.preventDefault()
+  const droppedFiles = event.dataTransfer.files
+  if (droppedFiles.length > 0) {
+    file.value = droppedFiles[0] // Save the first file dropped
+  }
+}
+
+const handleFileChange = (event) => {
+  const selectedFile = event.target.files[0]
+  if (selectedFile) {
+    file.value = selectedFile // Save the selected file
+  }
+}
+
+
+function getTutesAccordingToClass(tuteClassId) {
+  return Arrays.tuteDetails.filter((tute) => tute.tuition_class_id === tuteClassId)
+}
+
+function getFilePath(filePath) {
+  // Construct the URL using the base path
+  return `${import.meta.env.VITE_APP_BASE_URL}/storage/${filePath}`;
+}
+
+function removeTute(tuteId) {
+    form6.tuteId = tuteId;
+    const choice = confirm('Are you sure you want to delete this file ?');
+    if (choice) {
+        form6.delete('/class-controls/deleteTute', {
+            preserveScroll: false,
+            onSuccess: () => {
+                form6.reset();
+            },
+        });
+    }
+}
 
 </script>
 <template>
@@ -284,21 +347,47 @@ function disabledsavechanges() {
                                         <br><br><br>
                                     </form>
 
-                                    <div class="mb-5 flex items-center">
-                                        <label for="l3"
-                                            class="text-sm font-medium text-gray-900 dark:text-white mr-8 whitespace-nowrap">Tutes
-                                            : </label>
-                                        <button @click="addtuteopen"
-                                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                                viewBox="0 0 24 24">
-                                                <path stroke="currentColor" stroke-linecap="round"
-                                                    stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
-                                            </svg>
-                                            <span>&nbsp;Add Tute</span>
-                                        </button>
+                                    <div class="mb-5 flex w-1/2">
+                                        <label for="l3" class="text-sm font-medium text-gray-900 dark:text-white mr-8 whitespace-nowrap">Tutes:</label>
+                                        <div class="flex flex-col w-full">
+                                            <button @click="addtuteopen" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
+                                                </svg>
+                                                <span>&nbsp;Add Tute</span>
+                                            </button>
+                                            <div class="flex flex-col gap-2 p-4 w-full bg-gray-500/5 rounded-b-md">
+                                                <template v-for="tute in getTutesAccordingToClass(tuteClass.id)" :key="tute.id">
+                                                    <div class="h-auto bg-gray-500/5 px-4 py-2 rounded flex items-center justify-between">
+                                                        <div class="flex flex-row w-full gap-4">
+                                                            <div class="flex flex-col flex-1">
+                                                                <a :href="'storage/'+tute.tute_path" :download="tute.tute_name" class="flex justify-between items-center max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                                                                    <p class="flex font-normal text-gray-700 dark:text-gray-400">
+                                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                                            <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7ZM8 16a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1-5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
+                                                                        </svg>
+                                                                        &nbsp;&nbsp;{{tute.tute_name + '.' + tute.tute_path.split('.').pop()}}
+                                                                    </p>
+                                                                    <svg class="mr-3 w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                                        <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
+                                                                        <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
+                                                                    </svg>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Remove Button -->
+                                                        <button class="cursor-pointer ml-4" @click="removeTute(tute.id)">
+                                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
                                     </div>
+
                                     <div class="mb-5 flex w-full">
                                         <label for="l3"
                                             class="text-sm font-medium text-gray-900 dark:text-white mr-8 whitespace-nowrap">Video
@@ -414,8 +503,30 @@ function disabledsavechanges() {
                                         </template>
                                         <template #body>
                                             <fwb-input v-model="tute_name" placeholder="Enter Tute Name"
-                                                label="Tute for" /><br>
-                                            <fwb-file-input v-model="file" dropzone />
+                                                label="File name" />
+                                            <br>
+                                            <div class="flex items-center justify-center w-full" 
+                                                id="dropzone" 
+                                                @dragover.prevent 
+                                                @drop="handleDrop">
+                                                <label for="dropzone-file" 
+                                                    class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                                        <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                                        </svg>
+                                                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or PDF (MAX. 2MB)</p>
+                                                        <p v-if="file" class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ file.name }}</p>
+                                                    </div>
+                                                    <input id="dropzone-file" 
+                                                        @change="handleFileChange" 
+                                                        accept=".pdf,.png,.jpg,.jpeg,.doc,.xlsx,.txt" 
+                                                        type="file" 
+                                                        class="hidden" 
+                                                        aria-describedby="file_input_help" />
+                                                </label>
+                                            </div>
                                         </template>
                                         <template #footer>
                                             <div class="flex justify-between">

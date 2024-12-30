@@ -45,6 +45,8 @@ Route::post('/class-controls/video-list-update', [ClassControlsController::class
 Route::post('/class-controls/addclass', [ClassControlsController::class, 'addNewClass'])->name('class_controls.add_video');
 Route::patch('/class-controls/updateclass', [ClassControlsController::class, 'updateclass'])->name('class_controls.update_class');
 Route::post('/class-controls/addnewvideo', [ClassControlsController::class, 'addNewVideo'])->name('class_controls.new_video');
+Route::post('/class-controls/addTute', [ClassControlsController::class, 'addTute'])->name('class_controls.new_tute');
+Route::delete('/class-controls/deleteTute', [ClassControlsController::class, 'deleteTute'])->name('class_controls.delete_tute');
 
 
 // Route::get('/payments', function () {
