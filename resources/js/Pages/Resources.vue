@@ -55,6 +55,7 @@ const objectarray = ref([
     { name: 'Unit 14 - Plant based products & environmental pollution', price: 1000, buy: true, isunit: true },
 ])
 
+
 function getkey(evt) {
     showarray.value = [];
     if (query.value.length > 0) {
@@ -112,20 +113,26 @@ function getkey(evt) {
                             </button>
                         </div>
                     </div>
-                    <div v-if="activebutton === 'unit'" style=" overflow-x: auto; max-height: 75vh;">
-                        <fwb-input v-on:input="getkey" class="max-w-md mx-auto" v-model="query" label="Search"
-                            placeholder="Find unit based lessons" size="lg">
-                            <template #prefix>
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round"
-                                        stroke-linejoin="round" stroke-width="2" />
-                                </svg>
-                            </template>
-                            <template #suffix>
-                                <fwb-button>Search</fwb-button>
-                            </template>
-                        </fwb-input>
+
+                    <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
+                    <div v-if="activebutton === 'unit'" style="overflow-x: auto; max-height: 73vh;">
+                        <div class="input-border max-w-md mx-auto">
+
+                            <fwb-input v-on:input="getkey" class="max-w-md mx-auto" v-model="query" label="Search"
+                                placeholder="Find unit based lessons" size="lg">
+                                <template #prefix>
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round"
+                                            stroke-linejoin="round" stroke-width="2" />
+                                    </svg>
+                                </template>
+                                <template #suffix>
+                                    <fwb-button>Search</fwb-button>
+                                </template>
+                            </fwb-input>
+                        </div>
+                        <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
                         <fwb-table striped style="margin-top: 20px;">
                             <fwb-table-body>
                                 <template v-if="query.length > 0">
@@ -183,3 +190,12 @@ function getkey(evt) {
         </div>
     </AuthenticatedLayout>
 </template>
+<style>
+.input-border {
+    border: 2px solid #ccc; /* Change color and width as needed */
+    border-radius: 4px; /* Optional: for rounded corners */
+    padding: 20px;
+    width: 500px;
+    border-radius: 20px;
+}
+</style>
