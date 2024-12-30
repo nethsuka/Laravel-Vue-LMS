@@ -3,7 +3,7 @@ import Sidebar from '@/Layouts/Sidebar.vue';
 import { onMounted, ref } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import 'primeicons/primeicons.css'
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage, router } from '@inertiajs/vue3';
 import { FwbTab, FwbAlert, FwbTabs, FwbButton, FwbModal, FwbTextarea, FwbInput, FwbSelect, FwbFileInput } from 'flowbite-vue'
 
 const isShowModal = ref(false)
@@ -295,6 +295,24 @@ function removeTute(tuteId) {
     }
 }
 
+const form7 = useForm({
+    classId: '',
+})
+
+function deleteClass(classId) {
+    form7.classId = classId;
+    const choice = confirm('Are you sure you want to permanently delete this class ?');
+    if (choice) {
+        form7.delete('/class-controls/deleteClass', {
+            preserveScroll: false,
+            onSuccess: () => {
+                form7.reset();
+                location.reload();
+            },
+        });
+    }
+}
+
 </script>
 <template>
 
@@ -485,13 +503,10 @@ function removeTute(tuteId) {
                                             Once this class is deleted, all data will be permanently erased and cannot
                                             be recovered. </div>
                                         <div class="flex">
-                                            <button type="button"
+                                            <button type="button" @click="deleteClass(tuteClass.id)"
                                                 class="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                                 Delete
                                             </button>
-                                            <!-- <button type="button" class="text-red-800 bg-transparent border border-red-800 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-red-600 dark:border-red-600 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800" data-dismiss-target="#alert-additional-content-2" aria-label="Close">
-                                                Dismiss
-                                            </button> -->
                                         </div>
                                     </div>
 
@@ -516,7 +531,7 @@ function removeTute(tuteId) {
                                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
                                                         </svg>
                                                         <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or PDF (MAX. 2MB)</p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or PDF</p>
                                                         <p v-if="file" class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ file.name }}</p>
                                                     </div>
                                                     <input id="dropzone-file" 

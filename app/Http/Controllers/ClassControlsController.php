@@ -159,4 +159,9 @@ class ClassControlsController extends Controller
         }
         
     }
+
+    public function deleteClass(Request $request) {
+
+        TuitionClass::where('id', $request->classId)->delete();
+    }
 }

@@ -47,7 +47,7 @@ Route::patch('/class-controls/updateclass', [ClassControlsController::class, 'up
 Route::post('/class-controls/addnewvideo', [ClassControlsController::class, 'addNewVideo'])->name('class_controls.new_video');
 Route::post('/class-controls/addTute', [ClassControlsController::class, 'addTute'])->name('class_controls.new_tute');
 Route::delete('/class-controls/deleteTute', [ClassControlsController::class, 'deleteTute'])->name('class_controls.delete_tute');
-
+Route::delete('/class-controls/deleteClass', [ClassControlsController::class, 'deleteClass'])->name('class_controls.delete_class');
 
 // Route::get('/payments', function () {
 //     return Inertia::render('Payment');
