@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import 'primeicons/primeicons.css'
 import {
     FwbAccordion,
     FwbAccordionContent,
@@ -19,8 +20,12 @@ import {
     FwbTableRow,
     FwbP,
     FwbInput,
-    FwbAlert
+    FwbAlert,
+    FwbModal
 } from 'flowbite-vue';
+
+
+const isShowModal = ref(false)
 const showarray = ref([]);
 const query = ref('');
 const activebutton = ref('unit');
@@ -56,36 +61,41 @@ const objectarray = ref([
 const boughtArray = ref([
     {
         name: 'Unit 1: Atomic Structure', expire_date: '2025/01/13', video_link: [
-            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`
         ]
     },
     {
         name: 'Unit 2: Structure and Bonding', expire_date: '2025/1/13', video_link: [
-            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`
         ]
     },
     {
         name: 'Unit 3: Chemical Calculations', expire_date: '2025/1/13', video_link: [
-            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`
         ]
     },
     {
         name: 'Unit 4: Gaseous State of Matter', expire_date: '2025/2/13', video_link: [
-            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
+
         ]
     },
     {
         name: 'Unit 5: Energetics', expire_date: '2025/3/13', video_link: [
-            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
         ]
     },
     {
         name: '2003, 2004, 2005', expire_date: '2025/4/13', video_link: [
-            "ergergergerg", 'ergergergergerger', 'ergergergregergergerg'
+            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
         ]
     }
 ])
-
 function getkey(evt) {
     showarray.value = [];
     if (query.value.length > 0) {
@@ -97,24 +107,31 @@ function getkey(evt) {
     }
 }
 function calculateExpireDate(expire_date) {
-    // Get today's date
     const today = new Date();
-
-    // Set the expire date from the input
     const expireDate = new Date(expire_date);
-
-    // Calculate the difference in time
     const timeDifference = expireDate - today;
-
-    // Convert time difference from milliseconds to days
     const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
-    // Log the calculated expire date and the days difference
-
-
-    // Return the calculated expire date
     return daysDifference;
 }
+
+function closeModal() {
+    isShowModal.value = false
+}
+function showModal() {
+    isShowModal.value = true
+}
+
+const cartarrya = ref([])
+
+function addtocart(item) {
+    cartarrya.value.push(item)
+    console.log(cartarrya.value)
+}
+
+function isitemincart(item) {
+    return cartarrya.value.includes(item)
+}
+
 </script>
 
 <template>
@@ -141,42 +158,85 @@ function calculateExpireDate(expire_date) {
             </div>
         </template>
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
-                    <div class="flex justify-center ">
-                        <div class="inline-flex rounded-md shadow-sm" role="group">
+                    <div class="flex justify-center relative">
+                        <div class="inline-flex rounded-md shadow-sm mt-2" role="group">
                             <button type="button" @click="activebutton = 'unit'"
-                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
                                 Unite base lessons
                             </button>
                             <button type="button" @click="activebutton = 'paper'"
-                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
                                 Past papers
                             </button>
                             <button type="button" @click="activebutton = 'myresources'"
-                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
                                 My Resources
                             </button>
                         </div>
+
+                        <fwb-button color="alternative" class="absolute right-0" pill @click="showModal">
+                            <!-- <i class="pi pi-cart-minus" style="font-size: 1.2rem"></i> -->
+
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                            </svg>
+                        </fwb-button>
+
                     </div>
+
+                    <fwb-modal v-if="isShowModal" @close="closeModal">
+                        <template #header>
+                            <div class="flex items-center text-lg">
+                                Cart
+                            </div>
+                        </template>
+                        <template #body>
+                            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                With less than a month to go before the European Union enacts new consumer privacy laws
+                                for its citizens, companies around the world are updating their terms of service
+                                agreements to comply.
+                            </p>
+                            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on
+                                May 25 and is meant to ensure a common set of data rights in the European Union. It
+                                requires organizations to notify users as soon as possible of high-risk data breaches
+                                that could personally affect them.
+                            </p>
+                        </template>
+                        <template #footer>
+                            <div class="flex justify-between">
+                                <fwb-button @click="closeModal" color="alternative">
+                                    Decline
+                                </fwb-button>
+                                <fwb-button @click="closeModal" color="green">
+                                    I accept
+                                </fwb-button>
+                            </div>
+                        </template>
+                    </fwb-modal>
 
                     <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
                     <div v-if="activebutton === 'unit'" style="overflow-x: auto; max-height: 73vh;">
-                        <div class="input-border max-w-md mx-auto">
-                            <fwb-input v-on:input="getkey" class="max-w-md mx-auto" v-model="query" label="Search"
-                                placeholder="Find unit based lessons" size="lg">
-                                <template #prefix>
-                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round"
-                                            stroke-linejoin="round" stroke-width="2" />
-                                    </svg>
-                                </template>
-                                <template #suffix>
-                                    <fwb-button>Search</fwb-button>
-                                </template>
-                            </fwb-input>
-                        </div>
+
+                        <fwb-input v-on:input="getkey" class="max-w-md mx-auto" v-model="query"
+                            placeholder="Find unit based lessons" size="sm" style="width: 300px;">
+                            <template #prefix>
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-width="2" />
+                                </svg>
+                            </template>
+                            <template #suffix>
+                            </template>
+                        </fwb-input>
+
                         <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
                         <fwb-table striped style="margin-top: 20px;">
                             <fwb-table-body>
@@ -185,11 +245,14 @@ function calculateExpireDate(expire_date) {
                                         <template v-for="(y, index) in showarray" :key="index">
                                             <fwb-table-row v-if="y.isunit">
                                                 <fwb-table-cell>
-                                                    <fwb-heading tag="h5">{{ y.name }} </fwb-heading>
+                                                    <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                                 </fwb-table-cell>
                                                 <fwb-table-cell>{{ y.price }}</fwb-table-cell>
-                                                <fwb-table-cell><fwb-button gradient="red" shadow
-                                                        v-if="y.buy">BUY</fwb-button></fwb-table-cell>
+                                                <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
+                                                    @click="addtocart(y)"
+                                                    :disabled="isitemincart(y)"
+                                                        style="padding: 2px 6px 2px 6px; font-size: 10px; pad">ADD TO
+                                                        CART</fwb-button></fwb-table-cell>
                                             </fwb-table-row>
                                         </template>
                                     </template>
@@ -203,11 +266,14 @@ function calculateExpireDate(expire_date) {
                                     <template v-for="(y, index) in objectarray" :key="index">
                                         <fwb-table-row v-if="y.isunit">
                                             <fwb-table-cell>
-                                                <fwb-heading tag="h5">{{ y.name }} </fwb-heading>
+                                                <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                             </fwb-table-cell>
                                             <fwb-table-cell>{{ y.price }}</fwb-table-cell>
-                                            <fwb-table-cell><fwb-button gradient="red" shadow
-                                                    v-if="y.buy">BUY</fwb-button></fwb-table-cell>
+                                            <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
+                                                @click="addtocart(y)"
+                                                :disabled="isitemincart(y)"
+                                                    style="padding: 2px 6px 2px 6px; font-size: 10px; pad">ADD TO
+                                                    CART</fwb-button></fwb-table-cell>
                                         </fwb-table-row>
                                     </template>
                                 </template>
@@ -220,11 +286,14 @@ function calculateExpireDate(expire_date) {
                                 <template v-for="(y, index) in objectarray" :key="index">
                                     <fwb-table-row v-if="!y.isunit">
                                         <fwb-table-cell>
-                                            <fwb-heading tag="h5">{{ y.name }} </fwb-heading>
+                                            <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                         </fwb-table-cell>
                                         <fwb-table-cell>{{ y.price }}</fwb-table-cell>
-                                        <fwb-table-cell><fwb-button gradient="red" shadow
-                                                v-if="y.buy">BUY</fwb-button></fwb-table-cell>
+                                        <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
+                                            @click="addtocart(y)"
+                                            :disabled="isitemincart(y)"
+                                                style="padding: 2px 6px 2px 6px; font-size: 10px; pad">ADD TO
+                                                CART</fwb-button></fwb-table-cell>
                                     </fwb-table-row>
                                 </template>
                             </fwb-table-body>
@@ -243,18 +312,10 @@ function calculateExpireDate(expire_date) {
                                 </fwb-accordion-header>
                                 <fwb-accordion-content>
                                     <div>
-                                        <p class="mb-2 text-gray-500 dark:text-gray-400">
-                                            Flowbite is an open-source library of interactive components built on top of
-                                            Tailwind CSS including buttons, dropdowns, modals, navbars, and more.
-                                        </p>
-                                        <p class="text-gray-500 dark:text-gray-400">
-                                            Check out this guide to learn how to <a
-                                                href="/docs/getting-started/introduction/"
-                                                class="text-blue-600 dark:text-blue-500 hover:underline">get started</a>
-                                            and
-                                            start developing websites even faster with components on top of Tailwind
-                                            CSS.
-                                        </p>
+                                        <div v-for="(video, index) in y.video_link" :key="index"
+                                            class="grid grid-cols-3">
+                                            <div v-html="video"></div>
+                                        </div>
                                     </div>
                                 </fwb-accordion-content>
                             </fwb-accordion-panel>
@@ -266,14 +327,4 @@ function calculateExpireDate(expire_date) {
         </div>
     </AuthenticatedLayout>
 </template>
-<style>
-.input-border {
-    border: 2px solid #ccc;
-    /* Change color and width as needed */
-    border-radius: 4px;
-    /* Optional: for rounded corners */
-    padding: 20px;
-    width: 500px;
-    border-radius: 20px;
-}
-</style>
+<style></style>

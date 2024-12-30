@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <script src="https://player.vimeo.com/api/player.js"></script>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
