@@ -1,8 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import 'primeicons/primeicons.css'
+import { ref , onMounted} from 'vue';
+
 import {
     FwbAccordion,
     FwbAccordionContent,
@@ -123,14 +123,38 @@ function showModal() {
 
 const cartarrya = ref([])
 
+onMounted(() => {
+    // Retrieve items from session storage
+    const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    // Assign the retrieved items to cartarrya
+    cartarrya.value = storedCart;
+    console.log(cartarrya.value)
+});
+
 function addtocart(item) {
     cartarrya.value.push(item)
+    sessionStorage.setItem('cart', JSON.stringify(cartarrya.value));
     console.log(cartarrya.value)
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    console.log(cart);
+}
+function removecart(item) {
+    cartarrya.value = cartarrya.value.filter((x) => x !== item)
+    sessionStorage.setItem('cart', JSON.stringify(cartarrya.value));
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    console.log(cart);
+}
+function clearcart() {
+    cartarrya.value = []
+    sessionStorage.setItem('cart', JSON.stringify(cartarrya.value));
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    console.log(cart);
 }
 
 function isitemincart(item) {
-    return cartarrya.value.includes(item)
+        return cartarrya.value.some(cartItem => cartItem.name === item.name);
 }
+
 
 </script>
 
@@ -197,33 +221,45 @@ function isitemincart(item) {
                             </div>
                         </template>
                         <template #body>
-                            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                With less than a month to go before the European Union enacts new consumer privacy laws
-                                for its citizens, companies around the world are updating their terms of service
-                                agreements to comply.
-                            </p>
-                            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on
-                                May 25 and is meant to ensure a common set of data rights in the European Union. It
-                                requires organizations to notify users as soon as possible of high-risk data breaches
-                                that could personally affect them.
-                            </p>
+                            <template v-if="cartarrya.length > 0">
+                                <fwb-table striped>
+                                    <fwb-table-body>
+                                        <template v-for="(y, index) in cartarrya" :key="index">
+                                            <fwb-table-row>
+                                                <fwb-table-cell>
+                                                    <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
+                                                </fwb-table-cell>
+                                                <fwb-table-cell>{{ y.price }}</fwb-table-cell>
+                                                <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
+                                                        @click="removecart(y)" 
+                                                        style="padding: 2px 6px 2px 6px; font-size: 10px; pad">Remove from cart</fwb-button></fwb-table-cell>
+                                            </fwb-table-row>
+                                        </template>
+                                    </fwb-table-body>
+                                </fwb-table>
+                            </template>
+                            <template v-else>
+                                <fwb-alert class="border-t-4 rounded-none" icon type="danger">
+                                    There is no item in the cart
+                                </fwb-alert>
+                                </template>
                         </template>
                         <template #footer>
                             <div class="flex justify-between">
-                                <fwb-button @click="closeModal" color="alternative">
-                                    Decline
+                                <fwb-button @click="clearcart" color="alternative" :disabled="cartarrya.length === 0">
+                                    Clear
                                 </fwb-button>
-                                <fwb-button @click="closeModal" color="green">
-                                    I accept
-                                </fwb-button>
+                                <a href="/payments">
+                                    <fwb-button  color="green" :disabled="cartarrya.length === 0">
+                                        Buy
+                                    </fwb-button>
+                                </a>
                             </div>
                         </template>
                     </fwb-modal>
 
                     <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
                     <div v-if="activebutton === 'unit'" style="overflow-x: auto; max-height: 73vh;">
-
                         <fwb-input v-on:input="getkey" class="max-w-md mx-auto" v-model="query"
                             placeholder="Find unit based lessons" size="sm" style="width: 300px;">
                             <template #prefix>
@@ -236,7 +272,6 @@ function isitemincart(item) {
                             <template #suffix>
                             </template>
                         </fwb-input>
-
                         <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
                         <fwb-table striped style="margin-top: 20px;">
                             <fwb-table-body>
@@ -249,10 +284,13 @@ function isitemincart(item) {
                                                 </fwb-table-cell>
                                                 <fwb-table-cell>{{ y.price }}</fwb-table-cell>
                                                 <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
-                                                    @click="addtocart(y)"
-                                                    :disabled="isitemincart(y)"
+                                                        @click="addtocart(y)" :disabled="isitemincart(y)"
                                                         style="padding: 2px 6px 2px 6px; font-size: 10px; pad">ADD TO
-                                                        CART</fwb-button></fwb-table-cell>
+                                                        CART</fwb-button>
+                                                        <fwb-button gradient="red" shadow v-else
+                                                        style="padding: 2px 6px 2px 6px; font-size: 10px; pad" disabled>Already bought</fwb-button>
+
+                                                    </fwb-table-cell>
                                             </fwb-table-row>
                                         </template>
                                     </template>
@@ -270,10 +308,12 @@ function isitemincart(item) {
                                             </fwb-table-cell>
                                             <fwb-table-cell>{{ y.price }}</fwb-table-cell>
                                             <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
-                                                @click="addtocart(y)"
-                                                :disabled="isitemincart(y)"
+                                                    @click="addtocart(y)" :disabled="isitemincart(y)"
                                                     style="padding: 2px 6px 2px 6px; font-size: 10px; pad">ADD TO
-                                                    CART</fwb-button></fwb-table-cell>
+                                                    CART</fwb-button>
+                                                    <fwb-button gradient="red" shadow v-else
+                                                    style="padding: 2px 6px 2px 6px; font-size: 10px; pad" disabled>Already bought</fwb-button>
+                                                </fwb-table-cell>
                                         </fwb-table-row>
                                     </template>
                                 </template>
@@ -290,10 +330,11 @@ function isitemincart(item) {
                                         </fwb-table-cell>
                                         <fwb-table-cell>{{ y.price }}</fwb-table-cell>
                                         <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
-                                            @click="addtocart(y)"
-                                            :disabled="isitemincart(y)"
+                                                @click="addtocart(y)" :disabled="isitemincart(y)"
                                                 style="padding: 2px 6px 2px 6px; font-size: 10px; pad">ADD TO
-                                                CART</fwb-button></fwb-table-cell>
+                                                CART</fwb-button>
+                                                <fwb-button gradient="red" shadow v-else
+                                                style="padding: 2px 6px 2px 6px; font-size: 10px; pad" disabled>Already bought</fwb-button></fwb-table-cell>
                                     </fwb-table-row>
                                 </template>
                             </fwb-table-body>
@@ -303,7 +344,7 @@ function isitemincart(item) {
                         <fwb-accordion>
                             <fwb-accordion-panel v-for="(y, index) in boughtArray" :key="index">
                                 <fwb-accordion-header>
-                                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                                    <div style="display: flex; justify-content: space-between; width: 100%">
                                         <span>{{ y.name }}</span>
                                         <span>Days Left: {{ calculateExpireDate(y.expire_date) }}</span>
                                         <span class="text-gray-500 dark:text-gray-400">Expire Date {{ y.expire_date
