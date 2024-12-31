@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('f_number')->nullable();
             $table->string('m_number')->nullable();
             $table->string('w_number');
+            $table->string('role')->default('member');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

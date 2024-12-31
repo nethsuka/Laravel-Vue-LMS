@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const Arrays = defineProps({
@@ -17,6 +17,7 @@ const Arrays = defineProps({
 // const activeTab = ref(Arrays.classDetails[0].class_name);
 const activeTab = ref((Arrays.classDetails.length > 0 ? Arrays.classDetails[0].class_name : 'no data'));
 
+const { props } = usePage();
 
 function setActiveTab(tab) {
   activeTab.value = tab;
@@ -95,7 +96,7 @@ function getTutesAccordingToClass(tuteClassId) {
                             Add More Classes
                         </button>
                     </a>
-                    <a href="/class-controls">
+                    <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center ml-3">
                             Admin Panel
                         </button>
