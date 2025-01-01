@@ -35,7 +35,7 @@ const { props } = usePage();
             </div>
         </template>
 
-        <div class="py-5">
+        <div class="py-12">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
                     <div class="text-center text-3xl font-semibold text-gray-800 pt-2">
