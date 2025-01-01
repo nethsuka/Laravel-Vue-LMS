@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage} from '@inertiajs/vue3';
 import { ref , onMounted} from 'vue';
 
 import {
@@ -21,9 +21,11 @@ import {
     FwbP,
     FwbInput,
     FwbAlert,
-    FwbModal
+    FwbModal,
+    FwbBadge
 } from 'flowbite-vue';
 
+const { props } = usePage();
 
 const isShowModal = ref(false)
 const showarray = ref([]);
@@ -172,7 +174,7 @@ function isitemincart(item) {
                             Add More Classes
                         </button>
                     </a>
-                    <a href="/class-controls">
+                    <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
                             class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center ml-3">
                             Admin Panel
@@ -185,24 +187,40 @@ function isitemincart(item) {
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
                     <div class="flex justify-center relative">
-                        <div class="inline-flex rounded-md shadow-sm mt-2" role="group">
+                        <div id="app" class="inline-flex rounded-md shadow-sm mt-2" role="group">
                             <button type="button" @click="activebutton = 'unit'"
-                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                                    :class="[
+                                        'px-4 py-2 text-sm font-medium',
+                                        activebutton === 'unit' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
+                                        'border border-gray-200 rounded-s-lg',
+                                        'hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700',
+                                        'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white'
+                                    ]">
                                 Unite base lessons
                             </button>
                             <button type="button" @click="activebutton = 'paper'"
-                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                                    :class="[
+                                        'px-4 py-2 text-sm font-medium',
+                                        activebutton === 'paper' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
+                                        'border-t border-b border-gray-200',
+                                        'hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700',
+                                        'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white'
+                                    ]">
                                 Past papers
                             </button>
                             <button type="button" @click="activebutton = 'myresources'"
-                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
+                                    :class="[
+                                        'px-4 py-2 text-sm font-medium',
+                                        activebutton === 'myresources' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
+                                        'border border-gray-200 rounded-e-lg',
+                                        'hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700',
+                                        'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white'
+                                    ]">
                                 My Resources
                             </button>
                         </div>
 
-                        <fwb-button color="alternative" class="absolute right-0" pill @click="showModal">
-                            <!-- <i class="pi pi-cart-minus" style="font-size: 1.2rem"></i> -->
-
+                        <button type="button" @click="showModal" class="mt-1.5 absolute right-0 inline-flex items-center p-2 text-md font-medium text-center text-white rounded-xl border-2 border-gray-400 hover:border-gray-500 hover:bg-gray-200 focus:ring-4 focus:outline-1 focus:ring-blue-300">
                             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                 viewBox="0 0 24 24">
@@ -210,8 +228,9 @@ function isitemincart(item) {
                                     stroke-width="2"
                                     d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
                             </svg>
-                        </fwb-button>
-
+                            <span class="sr-only">Notifications</span>
+                            <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">{{ cartarrya.length }}</div>
+                        </button>
                     </div>
 
                     <fwb-modal v-if="isShowModal" @close="closeModal">
@@ -227,22 +246,22 @@ function isitemincart(item) {
                                         <template v-for="(y, index) in cartarrya" :key="index">
                                             <fwb-table-row>
                                                 <fwb-table-cell>
-                                                    <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
+                                                    <fwb-heading class="text-md">{{ y.name }} </fwb-heading>
                                                 </fwb-table-cell>
-                                                <fwb-table-cell>{{ y.price }}</fwb-table-cell>
-                                                <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
-                                                        @click="removecart(y)" 
-                                                        style="padding: 2px 6px 2px 6px; font-size: 10px; pad">Remove from cart</fwb-button></fwb-table-cell>
+                                                <fwb-table-cell>Rs {{ y.price }}</fwb-table-cell>
+                                                <fwb-table-cell>
+                                                    <fwb-button gradient="red" size="xs" v-if="y.buy" @click="removecart(y)">Remove Item</fwb-button>
+                                                </fwb-table-cell>
                                             </fwb-table-row>
                                         </template>
                                     </fwb-table-body>
                                 </fwb-table>
                             </template>
                             <template v-else>
-                                <fwb-alert class="border-t-4 rounded-none" icon type="danger">
-                                    There is no item in the cart
+                                <fwb-alert border type="dark" class="mb-10">
+                                    Cart is empty !
                                 </fwb-alert>
-                                </template>
+                            </template>
                         </template>
                         <template #footer>
                             <div class="flex justify-between">
@@ -259,9 +278,9 @@ function isitemincart(item) {
                     </fwb-modal>
 
                     <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
-                    <div v-if="activebutton === 'unit'" style="overflow-x: auto; max-height: 73vh;">
-                        <fwb-input v-on:input="getkey" class="max-w-md mx-auto" v-model="query"
-                            placeholder="Find unit based lessons" size="sm" style="width: 300px;">
+                    <div v-if="activebutton === 'unit'" class="py-3">
+                        <fwb-input v-on:input="getkey" class="max-w-sm mx-auto" v-model="query"
+                            placeholder="Find unit based lessons">
                             <template #prefix>
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -272,7 +291,6 @@ function isitemincart(item) {
                             <template #suffix>
                             </template>
                         </fwb-input>
-                        <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
                         <fwb-table striped style="margin-top: 20px;">
                             <fwb-table-body>
                                 <template v-if="query.length > 0">
@@ -282,20 +300,16 @@ function isitemincart(item) {
                                                 <fwb-table-cell>
                                                     <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                                 </fwb-table-cell>
-                                                <fwb-table-cell>{{ y.price }}</fwb-table-cell>
-                                                <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
-                                                        @click="addtocart(y)" :disabled="isitemincart(y)"
-                                                        style="padding: 2px 6px 2px 6px; font-size: 10px; pad">ADD TO
-                                                        CART</fwb-button>
-                                                        <fwb-button gradient="red" shadow v-else
-                                                        style="padding: 2px 6px 2px 6px; font-size: 10px; pad" disabled>Already bought</fwb-button>
-
-                                                    </fwb-table-cell>
+                                                <fwb-table-cell>Rs {{ y.price }}</fwb-table-cell>
+                                                <fwb-table-cell>
+                                                    <fwb-button gradient="lime" size="xs" class="mr-2 text-white" v-if="y.buy" @click="addtocart(y)" :disabled="isitemincart(y)">Add To Cart</fwb-button>
+                                                    <fwb-badge size="sm" class="w-15 float-end" type="purple" v-else >Purchased</fwb-badge>
+                                                </fwb-table-cell>
                                             </fwb-table-row>
                                         </template>
                                     </template>
                                     <template v-else>
-                                        <fwb-alert class="border-t-4 rounded-none" icon type="danger">
+                                        <fwb-alert class="border-t-4 rounded-none" icon type="warning">
                                             There is no lesson name '{{ query }}'
                                         </fwb-alert>
                                     </template>
@@ -306,14 +320,11 @@ function isitemincart(item) {
                                             <fwb-table-cell>
                                                 <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                             </fwb-table-cell>
-                                            <fwb-table-cell>{{ y.price }}</fwb-table-cell>
-                                            <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
-                                                    @click="addtocart(y)" :disabled="isitemincart(y)"
-                                                    style="padding: 2px 6px 2px 6px; font-size: 10px; pad">ADD TO
-                                                    CART</fwb-button>
-                                                    <fwb-button gradient="red" shadow v-else
-                                                    style="padding: 2px 6px 2px 6px; font-size: 10px; pad" disabled>Already bought</fwb-button>
-                                                </fwb-table-cell>
+                                            <fwb-table-cell>Rs {{ y.price }}</fwb-table-cell>
+                                            <fwb-table-cell>
+                                                <fwb-button gradient="lime" size="xs" class="mr-2 text-white" v-if="y.buy" @click="addtocart(y)" :disabled="isitemincart(y)">Add To Cart</fwb-button>
+                                                <fwb-badge size="sm" class="w-15 float-end" type="purple" v-else >Purchased</fwb-badge>
+                                            </fwb-table-cell>
                                         </fwb-table-row>
                                     </template>
                                 </template>
@@ -328,13 +339,11 @@ function isitemincart(item) {
                                         <fwb-table-cell>
                                             <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                         </fwb-table-cell>
-                                        <fwb-table-cell>{{ y.price }}</fwb-table-cell>
-                                        <fwb-table-cell><fwb-button gradient="red" shadow v-if="y.buy"
-                                                @click="addtocart(y)" :disabled="isitemincart(y)"
-                                                style="padding: 2px 6px 2px 6px; font-size: 10px; pad">ADD TO
-                                                CART</fwb-button>
-                                                <fwb-button gradient="red" shadow v-else
-                                                style="padding: 2px 6px 2px 6px; font-size: 10px; pad" disabled>Already bought</fwb-button></fwb-table-cell>
+                                        <fwb-table-cell>Rs {{ y.price }}</fwb-table-cell>
+                                        <fwb-table-cell>
+                                                <fwb-button gradient="lime" size="xs" class="mr-2 text-white" v-if="y.buy" @click="addtocart(y)" :disabled="isitemincart(y)">Add To Cart</fwb-button>
+                                                <fwb-badge size="sm" class="w-15 float-end" type="purple" v-else >Purchased</fwb-badge>
+                                        </fwb-table-cell>
                                     </fwb-table-row>
                                 </template>
                             </fwb-table-body>
@@ -368,4 +377,3 @@ function isitemincart(item) {
         </div>
     </AuthenticatedLayout>
 </template>
-<style></style>

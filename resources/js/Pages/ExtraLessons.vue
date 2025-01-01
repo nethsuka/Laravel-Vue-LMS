@@ -17,7 +17,7 @@ const { props } = usePage();
     <AuthenticatedLayout>
         <template #header>
             <div class="flex justify-between">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Additional Lessons</h2>
                 <div>
                     <a href="/more-classes">
                         <button type="button"
@@ -38,7 +38,7 @@ const { props } = usePage();
         <div class="py-5">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
-                    <div class="text-center text-3xl font-semibold text-gray-800 mb-6 py-3">
+                    <div class="text-center text-3xl font-semibold text-gray-800 pt-2">
                         Additional Lessons
                     </div>
                     <hr class="h-px my-6 bg-gray-200 border-0 dark:bg-gray-700">
