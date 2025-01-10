@@ -23,7 +23,13 @@ class DashboardController extends Controller
         $classDetails = TuitionClass::whereIn('id', $paidClassArray)->get(['id', 'class_name', 'tele_group']);
         $extendDetails = StExtendDate::where('user_email', Auth::user()->email)->first('extend_date');
         $paidClassDetails = StuClaSlip::where('user_id', Auth::id())->get(['tuition_class_id','paid']);
-        $videoLinks = ClassVideo::all();
+        // $videoLinks = ClassVideo::all();
+        $videoLinks = ClassVideo::where(function ($query) {
+            $query->whereDate('expiry_date', '>=', today())  // Expiry date greater than or equal to today
+                  ->orWhereNull('expiry_date');             // Or expiry date is NULL
+        })
+        ->get();
+    
         $classTutes = ClassTute::all();
 
         return Inertia::render('Dashboard', [ 

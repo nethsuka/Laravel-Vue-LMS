@@ -275,7 +275,7 @@ const showModal = (item) => {
                         <template #footer>
                             <div class="flex justify-between">
                                 <a :href="getFilePath(tomodel.slip_url)" target="_blanck">
-                                    <fwb-button @click="closeModal" color="alternative">
+                                    <fwb-button color="alternative">
                                         View full screen
                                     </fwb-button>
                                 </a>

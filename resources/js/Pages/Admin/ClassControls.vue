@@ -313,6 +313,13 @@ function deleteClass(classId) {
     }
 }
 
+function isExpired(expiryDate) {
+  if (!expiryDate) return false; // if expiry date is null, consider it not expired
+  const currentDate = new Date();
+  const expiry = new Date(expiryDate);
+  return expiry < currentDate; // return true if the expiry date is in the past
+}
+
 </script>
 <template>
 
@@ -332,13 +339,13 @@ function deleteClass(classId) {
                         <template v-if="Arrays.classDetails.length > 0">
                             <template v-for="tuteClass in classlist" :key="tuteClass.id">
                                 <fwb-tab :name="tuteClass.class_name" :title="tuteClass.class_name">
-                                    <form class="max-w-lg mx-auto mt-6">
+                                    <form class="max-w-2xl mx-auto mt-6 border-2 pt-5 py-2 px-14 rounded-md bg-slate-50">
                                         <div class="mb-5 flex items-center">
                                             <label for="l1"
                                                 class="text-sm font-medium text-gray-900 dark:text-white mr-3 whitespace-nowrap">Class
                                                 Name</label>
                                             <input type="text" id="l1" aria-label="disabled input"
-                                                class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flex-grow"
+                                                class="cursor-not-allowed bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flex-grow"
                                                 placeholder="class name" disabled :value="tuteClass.class_name"
                                                 required />
                                         </div>
@@ -347,7 +354,7 @@ function deleteClass(classId) {
                                                 class="text-sm  font-medium text-gray-900 dark:text-white mr-3 whitespace-nowrap">Zoom
                                                 Link</label>
                                             <textarea id="l2" rows="3"
-                                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-200 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                 placeholder="Enter your content here..." :value="tuteClass.zoom_link"
                                                 @input="tuteClass.zoom_link = $event.target.value"></textarea>
                                         </div>
@@ -356,15 +363,16 @@ function deleteClass(classId) {
                                                 class="text-sm font-medium text-gray-900 dark:text-white mr-3 whitespace-nowrap">Telegram
                                                 Link</label>
                                             <textarea id="l3" rows="3"
-                                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-200 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                 placeholder="Enter your content here..." :value="tuteClass.tele_group"
                                                 @input="tuteClass.tele_group = $event.target.value"></textarea>
                                         </div>
                                         <fwb-button type="button" size="sm" class="float-end"
                                             @click="saveclasslist(tuteClass.id)">Save Changes</fwb-button>
-                                        <br><br><br>
+                                        <br><br>
                                     </form>
 
+                                    <br><br>
                                     <div class="mb-5 flex w-1/2">
                                         <label for="l3" class="text-sm font-medium text-gray-900 dark:text-white mr-8 whitespace-nowrap">Tutes:</label>
                                         <div class="flex flex-col w-full">
@@ -422,19 +430,24 @@ function deleteClass(classId) {
                                                 <span>&nbsp;Add Video</span>
                                             </button>
                                             <VueDraggable v-model="listobj" :animation="150" handle=".handle"
-                                                class="flex flex-col gap-2 p-4 w-300px bg-gray-500/5 rounded"
-                                                v-on:update="onup(tuteClass.id)">
+                                                    class="flex flex-col gap-2 p-4 w-300px bg-gray-500/5 rounded"
+                                                    v-on:update="onup(tuteClass.id)">
                                                 <template v-for="(item, index) in listobj" :key="item.id || index">
                                                     <div v-show="item.tuition_class_id === tuteClass.id"
-                                                        class="h-50px bg-gray-500/5 px-2 rounded flex items-center justify-between">
+                                                        class="h-50px bg-gray-500/5 px-2 rounded flex items-center justify-between relative">
+                                                        
+                                                        <!-- Expired Label (conditionally rendered) -->
+                                                        <span  v-if="isExpired(item.expiry_date)" class="absolute top-0 right-0 bg-red-500 text-white text-xs py-1 px-2 rounded-bl-lg">
+                                                            Expired
+                                                        </span>
+
                                                         <button class="handle cursor-move mr-4">
                                                             <i class="pi pi-list" style="font-size: 1.5rem"></i>
                                                         </button>
                                                         <div class="flex flex-row">
                                                             <div class="flex flex-col mb-4 mt-4 mr-4">
                                                                 <label for="small-input"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video
-                                                                    name</label>
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video name</label>
                                                                 <input type="text" v-model="item.video_name"
                                                                     id="small-input"
                                                                     class="mr-3 block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -445,8 +458,7 @@ function deleteClass(classId) {
                                                             </div>
                                                             <div class="flex flex-col mb-4">
                                                                 <label for="message"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video
-                                                                    link</label>
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video link</label>
                                                                 <textarea id="message" rows="4"
                                                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                                     placeholder="Write your thoughts here..."
@@ -459,14 +471,13 @@ function deleteClass(classId) {
 
                                                             <div class="flex flex-col mb-4 ml-5">
                                                                 <label for="email"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-3">Expiry
-                                                                    date</label>
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-3">Expiry date</label>
                                                                 <input type="date"
                                                                     class="border bg-gray-50 border-gray-300 rounded-lg p-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                                                     v-model="item.expiry_date">
                                                                 <fwb-alert type="warning"
                                                                     v-if="item.expiry_date === null || item.expiry_date.trim() === ''">
-                                                                    Expire date is required
+                                                                    Expiry date is required
                                                                 </fwb-alert>
                                                             </div>
                                                         </div>

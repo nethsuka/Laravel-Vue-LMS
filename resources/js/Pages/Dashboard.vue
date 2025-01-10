@@ -159,7 +159,7 @@ function getTutesAccordingToClass(tuteClassId) {
                                                 <template v-if="getTutesAccordingToClass(record.id).length !== 0">
                                                     <template v-for="tute in getTutesAccordingToClass(record.id)" :key="tute.id">
                                                         <a :href="'storage/'+tute.tute_path" :download="tute.tute_name" class="mb-3 flex justify-between items-center max-w-xs p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                                                            <p class="flex font-normal text-gray-700 dark:text-gray-400">
+                                                            <p class="flex font-normal text-gray-700 dark:text-gray-400 truncate">
                                                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                                                     <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7ZM8 16a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1-5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
                                                                 </svg>
