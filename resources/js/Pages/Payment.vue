@@ -58,6 +58,19 @@ onMounted(() => {
     discount();
     creatingshowarray();
     // addClassNamesToArray();
+    if(sessionStorage.getItem('buy')=='true'){
+        activeTab.value = 'Resources Payments';
+        sessionStorage.removeItem('buy');
+    }
+
+    // cart array taken from the session storage
+    if(sessionStorage.getItem('cart')){
+        let cart = JSON.parse(sessionStorage.getItem('cart'));
+        for (let i of cart) {
+            console.log(i)
+        }
+        // sessionStorage.removeItem('cart');
+    }
 })
 
 const st_paid = ref(Arrays.paidClasses);
@@ -251,9 +264,9 @@ const handleCheckboxChange = (value) => {
                                 Payment</a>
                         </li>
                         <li class="me-2">
-                            <a href="#" @click.prevent="setActiveTab('dashboard')"
-                                :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'dashboard' }"
-                                class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Dashboard</a>
+                            <a href="#" @click.prevent="setActiveTab('Resources Payments')"
+                                :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'Resources Payments' }"
+                                class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Resources Payments</a>
                         </li>
                         <li class="me-2">
                             <a href="#" @click.prevent="setActiveTab('settings')"
@@ -351,7 +364,7 @@ const handleCheckboxChange = (value) => {
                             </form>
 
                         </template>
-                        <template v-if="activeTab === 'dashboard'">
+                        <template v-if="activeTab === 'Resources Payments'">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Dashboard Tab</h3>
                             <p>This is some placeholder content for the Dashboard tab's associated content.</p>
                         </template>

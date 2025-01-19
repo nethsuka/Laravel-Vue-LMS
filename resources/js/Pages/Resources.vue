@@ -164,7 +164,11 @@ function clearcart() {
 function isitemincart(item) {
     return cartarrya.value.some(cartItem => cartItem.name === item.name);
 }
+function redirectpayement() {
+    sessionStorage.setItem('buy', 'true');
+    window.location.href = '/payments';
 
+}
 
 </script>
 
@@ -283,11 +287,11 @@ function isitemincart(item) {
                                     <fwb-heading tag="h5" color="text-green-400" v-if="total != 0">Total amount : {{
                                         total }}</fwb-heading>
                                 </div>
-                                <a href="/payments">
-                                    <fwb-button color="green" :disabled="cartarrya.length === 0">
+                               
+                                    <fwb-button color="green" :disabled="cartarrya.length === 0" @click="redirectpayement">
                                         Buy
                                     </fwb-button>
-                                </a>
+                                
                             </div>
                         </template>
                     </fwb-modal>
