@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tuition_classes', function (Blueprint $table) {
+        Schema::create('resource_slips', function (Blueprint $table) {
             $table->id();
-            $table->string('class_name');
-            $table->string('tele_group', 500)->nullable();
-            $table->string('zoom_link', 500)->nullable();
+            $table->string('st_name');
+            $table->string('st_email');
+            $table->string('resource_name');
+            $table->string('slip_url');
+            $table->string('note');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tuition_classes');
+        Schema::dropIfExists('resource_slips');
     }
 };

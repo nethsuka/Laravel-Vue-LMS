@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('stu_res_slips', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id') // This creates the 'user_id' column
+                  ->constrained('users') // This references the 'id' column on the 'users' table
+                  ->onDelete('cascade'); // If a user is deleted, their posts are deleted as well
+            $table->foreignId('resource_id') // This creates the 'user_id' column
+                  ->constrained('resources') // This references the 'id' column on the 'users' table
+                  ->onDelete('cascade');
+            $table->foreignId('slip_id') // This creates the 'user_id' column
+                  ->constrained('resource_slips') // This references the 'id' column on the 'users' table
+                  ->onDelete('cascade');
+            $table->string('paid')->default('no');
+            $table->date('expiry_date');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('stu_res_slips');
+    }
+};

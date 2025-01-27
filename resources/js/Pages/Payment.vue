@@ -16,14 +16,43 @@ const showAlert = ref(true);
 const setActiveTab = (tab) => {
     activeTab.value = tab;
 };
+
+let cart = [];
+
+onMounted(() => {
+    discount();
+    creatingshowarray();
+    // addClassNamesToArray();
+    if(sessionStorage.getItem('buy')=='true'){
+        activeTab.value = 'Resources Payment';
+        sessionStorage.removeItem('buy');
+    }
+
+    // cart array taken from the session storage
+    if(sessionStorage.getItem('cart')){
+        cart = JSON.parse(sessionStorage.getItem('cart'));
+        for (let i of cart) {
+            console.log(i)
+        }
+        // sessionStorage.removeItem('cart');
+    }
+})
+
 const { props } = usePage();
 const form1 = useForm({
     name: props.auth.user.name,
     email: props.auth.user.email,
-    paid_classes: [],
+    paid_classes: cart,
     note: '',
     slip: null,
+});
 
+const form2 = useForm({
+    name: props.auth.user.name,
+    email: props.auth.user.email,
+    selected_resources: [],
+    note: '',
+    slip: null,
 });
 
 function submit1() {
@@ -53,25 +82,6 @@ function creatingshowarray() {
 
 // form payment calculation
 const total = ref(0);
-
-onMounted(() => {
-    discount();
-    creatingshowarray();
-    // addClassNamesToArray();
-    if(sessionStorage.getItem('buy')=='true'){
-        activeTab.value = 'Resources Payments';
-        sessionStorage.removeItem('buy');
-    }
-
-    // cart array taken from the session storage
-    if(sessionStorage.getItem('cart')){
-        let cart = JSON.parse(sessionStorage.getItem('cart'));
-        for (let i of cart) {
-            console.log(i)
-        }
-        // sessionStorage.removeItem('cart');
-    }
-})
 
 const st_paid = ref(Arrays.paidClasses);
 const showarray = ref([]);
@@ -264,30 +274,16 @@ const handleCheckboxChange = (value) => {
                                 Payment</a>
                         </li>
                         <li class="me-2">
-                            <a href="#" @click.prevent="setActiveTab('Resources Payments')"
-                                :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'Resources Payments' }"
-                                class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Resources Payments</a>
-                        </li>
-                        <li class="me-2">
-                            <a href="#" @click.prevent="setActiveTab('settings')"
-                                :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'settings' }"
-                                class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Settings</a>
-                        </li>
-                        <li class="me-2">
-                            <a href="#" @click.prevent="setActiveTab('contacts')"
-                                :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'contacts' }"
-                                class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Contacts</a>
-                        </li>
-                        <li>
-                            <a
-                                class="inline-block p-4 text-gray-400 rounded-t-lg cursor-not-allowed dark:text-gray-500">Disabled</a>
+                            <a href="#" @click.prevent="setActiveTab('Resources Payment')"
+                                :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'Resources Payment' }"
+                                class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Resources Payment</a>
                         </li>
                     </ul>
 
                     <div
                         class="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
                         <template v-if="activeTab === 'Monthly Payment'">
-                            <h3 class="mb-5 text-lg font-bold text-gray-900 dark:text-white">Monthly Payment</h3>
+                            <h3 class="mb-5 text-lg font-bold text-gray-900 dark:text-white pb-2">Monthly Payment</h3>
                             <!-- <p class="mb-4">This is some placeholder content for the Profile tab's associated content.</p> -->
 
                             <form class="max-w-sm mx-auto" @submit.prevent="submit1">
@@ -364,17 +360,73 @@ const handleCheckboxChange = (value) => {
                             </form>
 
                         </template>
-                        <template v-if="activeTab === 'Resources Payments'">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Dashboard Tab</h3>
-                            <p>This is some placeholder content for the Dashboard tab's associated content.</p>
-                        </template>
-                        <template v-if="activeTab === 'settings'">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Settings Tab</h3>
-                            <p>This is some placeholder content for the Settings tab's associated content.</p>
-                        </template>
-                        <template v-if="activeTab === 'contacts'">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Contacts Tab</h3>
-                            <p>This is some placeholder content for the Contacts tab's associated content.</p>
+                        <template v-if="activeTab === 'Resources Payment'">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 pb-5">Resources Payment</h3>
+                            
+                            <form class="max-w-sm mx-auto" @submit.prevent="submit1">
+                                <div class="mb-5">
+                                    <label for="name"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                    <input type="text" id="name" v-model="form2.name" disabled
+                                        class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required />
+                                </div>
+                                <div class="mb-5">
+                                    <label for="email"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                    <input type="email" id="email" v-model="form2.email" disabled
+                                        class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required />
+                                </div>
+                                <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selected resources :</label>
+
+                                <div class="mb-6">
+                                    <template v-if="cart.length > 0">
+                                        <div v-for="item in cart" :key="item.name" class="badge-container flex flex-wrap gap-1 mb-1.5">
+                                            <span class="inline-flex items-center px-2 py-1 text-sm font-medium text-indigo-800 bg-indigo-100 rounded-full dark:bg-indigo-900 dark:text-indigo-300 max-w-xs truncate relative">
+                                                <span class="truncate pr-5" :title="item.name">{{ item.name }}</span>
+                                                <button type="button" class="mr-2 inline-flex items-center p-1 ms-2 text-md text-indigo-400 bg-transparent rounded-xs hover:bg-indigo-200 hover:text-indigo-900 dark:hover:bg-indigo-800 dark:hover:text-indigo-300 absolute right-0" aria-label="Remove" onclick="removeBadge(this)">
+                                                    <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                    </svg>
+                                                    <span class="sr-only">Remove badge</span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        <p class="text-sm pl-4 mb-2">Your cart is empty!</p>
+                                    </template>
+                                </div>
+                                <InputError class="mt-2" :message="form2.errors.paid_classes" />
+
+                                <label for="message"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Note</label>
+                                <textarea id="message" v-model="form2.note" rows="4"
+                                    class="mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Any note regarding your payment..."></textarea>
+
+                                <template v-if="total > 0">
+                                    <blockquote
+                                        class="text-lg italic font-semibold my-3 border-l-4 border-s-slate-400 bg-slate-100 text-gray-900 dark:text-white text-center py-4">
+                                        <p>Total Class Fees: Rs {{ total }}.00</p>
+                                    </blockquote>
+                                </template>
+
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    for="file_input">Upload
+                                    Slip</label>
+                                <input @input="form2.slip = $event.target.files[0]" accept=".pdf,.png,.jpg,.jpeg"
+                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                    aria-describedby="file_input_help" id="file_input" type="file">
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">
+                                    PNG, JPG or PDF (MAX 2MB).</p>
+                                <InputError class="mt-2" :message="form2.errors.slip" />
+
+                                <button type="submit"
+                                    class="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                            </form>
+
                         </template>
                     </div>
 

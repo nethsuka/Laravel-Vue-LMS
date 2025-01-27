@@ -252,16 +252,16 @@ function redirectpayement() {
                             </div>
                         </template>
                         <template #body>
-                            <div :style="{ maxHeight: '60vh', overflowY: 'auto' }">
+                            <div class="max-h-80 overflow-y-auto">
                                 <template v-if="cartarrya.length > 0">
                                     <fwb-table striped>
                                         <fwb-table-body>
                                             <template v-for="(y, index) in cartarrya" :key="index">
                                                 <fwb-table-row>
-                                                    <fwb-table-cell>
-                                                        <fwb-heading class="text-md">{{ y.name }} </fwb-heading>
+                                                    <fwb-table-cell class="max-w-xs" :title="y.name">
+                                                        <fwb-heading class="text-md truncate">{{ y.name }} </fwb-heading>
                                                     </fwb-table-cell>
-                                                    <fwb-table-cell>Rs {{ y.price }}</fwb-table-cell>
+                                                    <fwb-table-cell :title="y.name">Rs. {{ y.price }}</fwb-table-cell>
                                                     <fwb-table-cell>
                                                         <fwb-button gradient="red" size="xs" v-if="y.buy"
                                                             @click="removecart(y)">Remove Item</fwb-button>
@@ -284,7 +284,7 @@ function redirectpayement() {
                                     Clear
                                 </fwb-button>
                                 <div class="flex-1 text-center">
-                                    <fwb-heading tag="h5" color="text-green-400" v-if="total != 0">Total amount : {{
+                                    <fwb-heading tag="h5" color="text-gray-500" v-if="total != 0">Total amount : Rs. {{
                                         total }}</fwb-heading>
                                 </div>
                                
@@ -319,7 +319,7 @@ function redirectpayement() {
                                                 <fwb-table-cell>
                                                     <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                                 </fwb-table-cell>
-                                                <fwb-table-cell>Rs {{ y.price }}</fwb-table-cell>
+                                                <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                                 <fwb-table-cell>
                                                     <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
                                                         v-if="y.buy" @click="addtocart(y)"
@@ -342,7 +342,7 @@ function redirectpayement() {
                                             <fwb-table-cell>
                                                 <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                             </fwb-table-cell>
-                                            <fwb-table-cell>Rs {{ y.price }}</fwb-table-cell>
+                                            <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                             <fwb-table-cell>
                                                 <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
                                                     v-if="y.buy" @click="addtocart(y)" :disabled="isitemincart(y)">Add
@@ -364,7 +364,7 @@ function redirectpayement() {
                                         <fwb-table-cell>
                                             <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                         </fwb-table-cell>
-                                        <fwb-table-cell>Rs {{ y.price }}</fwb-table-cell>
+                                        <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                         <fwb-table-cell>
                                             <fwb-button gradient="lime" size="xs" class="mr-2 text-white" v-if="y.buy"
                                                 @click="addtocart(y)" :disabled="isitemincart(y)">Add To

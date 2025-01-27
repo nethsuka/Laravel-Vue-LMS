@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tuition_classes', function (Blueprint $table) {
+        Schema::create('resources', function (Blueprint $table) {
             $table->id();
-            $table->string('class_name');
-            $table->string('tele_group', 500)->nullable();
-            $table->string('zoom_link', 500)->nullable();
+            $table->string('name');
+            $table->string('price');
+            $table->string('category');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tuition_classes');
+        Schema::dropIfExists('resources');
     }
 };

@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tuition_classes', function (Blueprint $table) {
+        Schema::create('resource_videos', function (Blueprint $table) {
             $table->id();
-            $table->string('class_name');
-            $table->string('tele_group', 500)->nullable();
-            $table->string('zoom_link', 500)->nullable();
+            $table->foreignId('resource_id')
+                  ->constrained('resources')
+                  ->onDelete('cascade');
+            $table->string('name');
+            $table->string('link');
+            $table->string('index');
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tuition_classes');
+        Schema::dropIfExists('resource_videos');
     }
 };
