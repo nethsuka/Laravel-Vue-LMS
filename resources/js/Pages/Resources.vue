@@ -34,32 +34,33 @@ const activebutton = ref('unit');
 const total = ref(0);
 
 const objectarray = ref([
-    { name: 'Unit 1: Atomic Structure', price: 3000, buy: true, isunit: true },
-    { name: 'Unit 2: Structure and Bonding', price: 4000, buy: false, isunit: true },
-    { name: 'Unit 3: Chemical Calculations', price: 3000, buy: true, isunit: true },
-    { name: 'Unit 4: Gaseous State of Matter', price: 6000, buy: false, isunit: true },
-    { name: '2003, 2004, 2005', price: 3000, buy: true, isunit: false },
-    { name: 'Unit 5: Energetics', price: 3000, buy: false, isunit: true },
-    { name: 'Unit 6: Inorganic chemistry - s-block', price: 2500, buy: true, isunit: true },
-    { name: 'Unit 6: Inorganic chemistry - p-block', price: 7000, buy: true, isunit: true },
-    { name: 'Unit 6: Inorganic chemistry - d-block + lon analysis', price: 4500, buy: true, isunit: true },
-    { name: 'Unit 6: Question Discussion', price: 5500, buy: true, isunit: true },
-    { name: 'Unit 7-10: Organic chemistry - unit 7 & 8', price: 6500, buy: true, isunit: true },
-    { name: 'Unit 7-10: Organic chemistry - unit 9 & 10', price: 6500, buy: true, isunit: true },
-    { name: 'Unit 7-10: Question + Conversion Practice', price: 6500, buy: true, isunit: true },
-    { name: '2006, 2007, 2008', price: 3000, buy: true, isunit: false },
-    { name: 'Unit 11: Chemical Kinetics', price: 6000, buy: true, isunit: true },
-    { name: 'Unit 12: Chemical Equilibrium - Kp & Kc', price: 6500, buy: true, isunit: true },
-    { name: 'Unit 12: Chemical Equilibrium - Icon Equilibrium & Buffers', price: 6500, buy: true, isunit: true },
-    { name: 'Unit 12: Chemical Equilibrium - Ksp', price: 5500, buy: true, isunit: true },
-    { name: '2009, 2010, 2011', price: 3000, buy: true, isunit: false },
-    { name: 'Unit 12: Chemical Equilibrium - Phase Equilibrium', price: 5500, buy: true, isunit: true },
-    { name: '2012, 2013, 2014', price: 3000, buy: false, isunit: false },
-    { name: 'Unit 13: Electrochemistry', price: 1000, buy: true, isunit: true },
-    { name: '2015, 2016, 2017', price: 3000, buy: true, isunit: false },
-    { name: 'Unit 14 - Industry & polymers', price: 1000, buy: true, isunit: true },
-    { name: 'Unit 14 - Plant based products & environmental pollution', price: 1000, buy: true, isunit: true },
-])
+    { name: 'Unit 1: Atomic Structure', price: 3000, buy: true, isunit: true, id: 1, category: 'theory', expire_date: '2026/04/10', paid: true },
+    { name: 'Unit 2: Structure and Bonding', price: 4000, buy: false, isunit: true, id: 2, category: 'theory', expire_date: null, paid: true },
+    { name: 'Unit 3: Chemical Calculations', price: 3000, buy: true, isunit: true, id: 3, category: 'theory', expire_date: '2025/09/15', paid: false },
+    { name: 'Unit 4: Gaseous State of Matter', price: 6000, buy: false, isunit: true, id: 4, category: 'theory', expire_date: '2025/07/20', paid: true },
+    { name: '2003, 2004, 2005', price: 3000, buy: true, isunit: false, id: 5, category: 'paper', expire_date: '2022/12/30', paid: true },
+    { name: 'Unit 5: Energetics', price: 3000, buy: false, isunit: true, id: 6, category: 'theory', expire_date: null, paid: false },
+    { name: 'Unit 6: Inorganic chemistry - s-block', price: 2500, buy: true, isunit: true, id: 7, category: 'theory', expire_date: '2024/05/12', paid: true },
+    { name: 'Unit 6: Inorganic chemistry - p-block', price: 7000, buy: true, isunit: true, id: 8, category: 'theory', expire_date: null, paid: false },
+    { name: 'Unit 6: Inorganic chemistry - d-block + lon analysis', price: 4500, buy: true, isunit: true, id: 9, category: 'theory', expire_date: '2025/02/14', paid: true },
+    { name: 'Unit 6: Question Discussion', price: 5500, buy: true, isunit: true, id: 10, category: 'theory', expire_date: '2023/11/05', paid: false },
+    { name: 'Unit 7-10: Organic chemistry - unit 7 & 8', price: 6500, buy: true, isunit: true, id: 11, category: 'theory', expire_date: '2027/01/18', paid: true },
+    { name: 'Unit 7-10: Organic chemistry - unit 9 & 10', price: 6500, buy: true, isunit: true, id: 12, category: 'theory', expire_date: null, paid: false },
+    { name: 'Unit 7-10: Question + Conversion Practice', price: 6500, buy: true, isunit: true, id: 13, category: 'theory', expire_date: '2026/06/30', paid: true },
+    { name: '2006, 2007, 2008', price: 3000, buy: true, isunit: false, id: 14, category: 'paper', expire_date: '2022/04/25', paid: true },
+    { name: 'Unit 11: Chemical Kinetics', price: 6000, buy: true, isunit: true, id: 15, category: 'theory', expire_date: '2024/10/10', paid: false },
+    { name: 'Unit 12: Chemical Equilibrium - Kp & Kc', price: 6500, buy: true, isunit: true, id: 16, category: 'theory', expire_date: null, paid: true },
+    { name: 'Unit 12: Chemical Equilibrium - Icon Equilibrium & Buffers', price: 6500, buy: true, isunit: true, id: 17, category: 'theory', expire_date: '2025/08/08', paid: false },
+    { name: 'Unit 12: Chemical Equilibrium - Ksp', price: 5500, buy: true, isunit: true, id: 18, category: 'theory', expire_date: '2024/12/15', paid: true },
+    { name: '2009, 2010, 2011', price: 3000, buy: true, isunit: false, id: 19, category: 'paper', expire_date: '2023/03/22', paid: true },
+    { name: 'Unit 12: Chemical Equilibrium - Phase Equilibrium', price: 5500, buy: true, isunit: true, id: 20, category: 'theory', expire_date: null, paid: false },
+    { name: '2012, 2013, 2014', price: 3000, buy: false, isunit: false, id: 21, category: 'paper', expire_date: '2026/02/10', paid: true },
+    { name: 'Unit 13: Electrochemistry', price: 1000, buy: true, isunit: true, id: 22, category: 'theory', expire_date: '2025/09/28', paid: false },
+    { name: '2015, 2016, 2017', price: 3000, buy: true, isunit: false, id: 23, category: 'paper', expire_date: '2023/07/12', paid: true },
+    { name: 'Unit 14 - Industry & polymers', price: 1000, buy: true, isunit: true, id: 24, category: 'theory', expire_date: '2024/11/09', paid: false },
+    { name: 'Unit 14 - Plant based products & environmental pollution', price: 1000, buy: true, isunit: true, id: 25, category: 'theory', expire_date: null, paid: true }
+]);
+
 
 const boughtArray = ref([
     {
@@ -170,6 +171,20 @@ function redirectpayement() {
 
 }
 
+function expiredatecal(item){
+    if (item.expire_date == null) {
+        return true;
+    }
+    const today = new Date();
+    const expireDate = new Date(item.expire_date);
+    const timeDifference = expireDate - today;
+    const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+    if(daysDifference > 0){
+        return false;
+    }
+    return true;
+}
+
 </script>
 
 <template>
@@ -259,7 +274,8 @@ function redirectpayement() {
                                             <template v-for="(y, index) in cartarrya" :key="index">
                                                 <fwb-table-row>
                                                     <fwb-table-cell class="max-w-xs" :title="y.name">
-                                                        <fwb-heading class="text-md truncate">{{ y.name }} </fwb-heading>
+                                                        <fwb-heading class="text-md truncate">{{ y.name }}
+                                                        </fwb-heading>
                                                     </fwb-table-cell>
                                                     <fwb-table-cell :title="y.name">Rs. {{ y.price }}</fwb-table-cell>
                                                     <fwb-table-cell>
@@ -287,11 +303,11 @@ function redirectpayement() {
                                     <fwb-heading tag="h5" color="text-gray-500" v-if="total != 0">Total amount : Rs. {{
                                         total }}</fwb-heading>
                                 </div>
-                               
-                                    <fwb-button color="green" :disabled="cartarrya.length === 0" @click="redirectpayement">
-                                        Buy
-                                    </fwb-button>
-                                
+
+                                <fwb-button color="green" :disabled="cartarrya.length === 0" @click="redirectpayement">
+                                    Buy
+                                </fwb-button>
+
                             </div>
                         </template>
                     </fwb-modal>
@@ -315,14 +331,14 @@ function redirectpayement() {
                                 <template v-if="query.length > 0">
                                     <template v-if="showarray.length > 0">
                                         <template v-for="(y, index) in showarray" :key="index">
-                                            <fwb-table-row v-if="y.isunit">
+                                            <fwb-table-row v-if="y.category == 'paper'">
                                                 <fwb-table-cell>
                                                     <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                                 </fwb-table-cell>
                                                 <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                                 <fwb-table-cell>
                                                     <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
-                                                        v-if="y.buy" @click="addtocart(y)"
+                                                        v-if="expiredatecal(y)" @click="addtocart(y)"
                                                         :disabled="isitemincart(y)">Add To Cart</fwb-button>
                                                     <fwb-badge size="sm" class="w-15 float-end" type="purple"
                                                         v-else>Purchased</fwb-badge>
@@ -338,14 +354,14 @@ function redirectpayement() {
                                 </template>
                                 <template v-else>
                                     <template v-for="(y, index) in objectarray" :key="index">
-                                        <fwb-table-row v-if="y.isunit">
+                                        <fwb-table-row v-if="y.category == 'theory'">
                                             <fwb-table-cell>
                                                 <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
                                             </fwb-table-cell>
                                             <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                             <fwb-table-cell>
                                                 <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
-                                                    v-if="y.buy" @click="addtocart(y)" :disabled="isitemincart(y)">Add
+                                                v-if="expiredatecal(y)" @click="addtocart(y)" :disabled="isitemincart(y)">Add
                                                     To Cart</fwb-button>
                                                 <fwb-badge size="sm" class="w-15 float-end" type="purple"
                                                     v-else>Purchased</fwb-badge>
