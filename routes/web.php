@@ -63,6 +63,12 @@ Route::get('/resourceCPanel', function () {
     return Inertia::render('Admin/ResourceCPanel');
 })->middleware(['auth', 'verified'])->name('resourceCPanel');
 
+// Resources Edite page
+Route::get('resourceCPanel/edit', function () {
+    return Inertia::render('Admin/EditeResources');
+})->middleware(['auth', 'verified'])->name('resourceCPanel/edit');
+
+
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
     Route::patch('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');

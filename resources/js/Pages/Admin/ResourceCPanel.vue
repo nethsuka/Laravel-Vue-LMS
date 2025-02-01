@@ -66,10 +66,26 @@ const objectarray = ref([
 ]);
 const name = ref(null)
 const price = ref(null)
+const filteredarray = ref([])
+
+function getkey(evt) {
+    filteredarray.value = [];
+    if (query.value.length > 0) {
+        for (const y of objectarray.value) {
+            if (y.name.toLowerCase().includes(query.value.toLowerCase())) {
+                filteredarray.value.push(y);
+            }
+        }
+    }
+}
+
 function validatenumber(event) {
     const value = event.target.value;
     // Allow only numbers
     event.target.value = value.replace(/[^\d]/g, '');
+}
+function redirectEdite() {
+    window.location.href = 'resourceCPanel/edit';
 }
 const query = ref('')
 </script>
@@ -88,7 +104,8 @@ const query = ref('')
                         <div class="flex justify-end">
                             <fwb-button gradient="green" @click="showModal">+</fwb-button>
                         </div>
-                        <fwb-input v-model="query" label="Search" placeholder="Search for resources" size="md">
+                        <fwb-input v-on:input="getkey" v-model="query" label="Search" placeholder="Search for resources"
+                            size="md">
                             <template #prefix>
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -104,32 +121,73 @@ const query = ref('')
                                 <fwb-table-head-cell>Video count</fwb-table-head-cell>
                                 <fwb-table-head-cell>Action</fwb-table-head-cell>
                             </fwb-table-head>
-                            <fwb-table-body>
-                                <template v-for="(item, index) in objectarray" :key="index">
-                                    <fwb-table-row>
-
-                                        <fwb-table-cell>
-                                            <span style="font-size: larger;">
-                                                {{ item.name }}
-                                            </span>
-                                        </fwb-table-cell>
-                                        <fwb-table-cell>
-                                            <span style="font-size: large;">
-                                                {{ item.price }}
-                                            </span>
-                                        </fwb-table-cell>
-                                        <fwb-table-cell>
-                                            <span style="font-size: large;">
-                                                {{ item.count }}
-                                            </span>
-                                        </fwb-table-cell>
-                                        <fwb-table-cell>
-                                            <fwb-button gradient="cyan">Edit</fwb-button>
-                                        </fwb-table-cell>
-                                    </fwb-table-row>
+                            <template v-if="query.length > 0">
+                                <template v-if="filteredarray.length == 0">
+                                    <fwb-table-body>
+                                        <fwb-table-row>
+                                            <fwb-table-cell :colspan="4" class="text-center">
+                                                <div class="flex items-center justify-center py-4">
+                                                    <span class="text-lg text-gray-500">
+                                                        No data found
+                                                    </span>
+                                                </div>
+                                            </fwb-table-cell>
+                                        </fwb-table-row>
+                                    </fwb-table-body>
                                 </template>
+                                <fwb-table-body>
+                                    <template v-for="(item, index) in filteredarray" :key="index">
+                                        <fwb-table-row>
 
-                            </fwb-table-body>
+                                            <fwb-table-cell>
+                                                <span style="font-size: larger;">
+                                                    {{ item.name }}
+                                                </span>
+                                            </fwb-table-cell>
+                                            <fwb-table-cell>
+                                                <span style="font-size: large;">
+                                                    {{ item.price }}
+                                                </span>
+                                            </fwb-table-cell>
+                                            <fwb-table-cell>
+                                                <span style="font-size: large;">
+                                                    {{ item.count }}
+                                                </span>
+                                            </fwb-table-cell>
+                                            <fwb-table-cell>
+                                                <fwb-button gradient="cyan">Edit</fwb-button>
+                                            </fwb-table-cell>
+                                        </fwb-table-row>
+                                    </template>
+                                </fwb-table-body>
+                            </template>
+                            <template v-else>
+                                <fwb-table-body>
+                                    <template v-for="(item, index) in objectarray" :key="index">
+                                        <fwb-table-row>
+
+                                            <fwb-table-cell>
+                                                <span style="font-size: larger;">
+                                                    {{ item.name }}
+                                                </span>
+                                            </fwb-table-cell>
+                                            <fwb-table-cell>
+                                                <span style="font-size: large;">
+                                                    {{ item.price }}
+                                                </span>
+                                            </fwb-table-cell>
+                                            <fwb-table-cell>
+                                                <span style="font-size: large;">
+                                                    {{ item.count }}
+                                                </span>
+                                            </fwb-table-cell>
+                                            <fwb-table-cell>
+                                                <fwb-button @click="redirectEdite" gradient="cyan">Edit</fwb-button>
+                                            </fwb-table-cell>
+                                        </fwb-table-row>
+                                    </template>
+                                </fwb-table-body>
+                            </template>
                         </fwb-table>
                         <fwb-modal v-if="isShowModal" @close="closeModal" persistent>
                             <template #header>
