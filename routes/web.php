@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\ClassControlsController;
 use App\Http\Controllers\ClassFeeController;
 use App\Http\Controllers\DashboardController;
@@ -57,6 +58,11 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
 //     return Inertia::render('Payment');
 // })->name('payments');
 
+//Resource Control Panel
+Route::get('/resourceCPanel', function () {
+    return Inertia::render('Admin/ResourceCPanel');
+})->middleware(['auth', 'verified'])->name('resourceCPanel');
+
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
     Route::patch('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');
@@ -67,4 +73,4 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
 Route::get('/more-classes', [MoreClassesController::class, 'index'])->middleware(['auth', 'verified'])->name('classinfo');
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

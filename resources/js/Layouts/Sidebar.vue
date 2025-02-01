@@ -31,6 +31,12 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                     Manage class fees
                     </AdminNavLink>
                 </li>
+                <li class="hover:bg-gray-200">
+                    <AdminNavLink :href="route('resourceCPanel')" :active="route().current('resourceCPanel')">
+                    <i class="fas fa-tasks mr-2"></i>
+                    Resource Control Panel
+                    </AdminNavLink>
+                </li>
                 
                 <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
