@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Resource;
+use App\Models\ResourceSlip;
 use App\Models\Slip;
 use Inertia\Inertia;
 use App\Models\StuClaSlip;
+use App\Models\StuResSlip;
 use App\Models\TuitionClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +31,7 @@ class PaymentController extends Controller
 
     }
 
+
     public function store(Request $request) {
         
         $form1_data = $request->validate([
@@ -37,7 +41,7 @@ class PaymentController extends Controller
             'slip' => 'required|file|mimes:jpg,png,pdf|max:2048',
         ]);
 
-        //------------Saving data in Zip file starts------------
+        //------------Saving file in storage starts------------
         $classes_paid = implode(',', $form1_data['paid_classes']);
 
         $slip = $request->file('slip');
@@ -68,5 +72,47 @@ class PaymentController extends Controller
         return back()->with([
             'successMsg' => 'Payment details submitted successfully.',
         ]);
+    }
+
+
+    public function storeResourceSlip(Request $request) {
+
+        $form2_data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string',
+            'selected_resources' => 'required|array',
+            'slip' => 'required|file|mimes:jpg,png,pdf|max:2048',
+        ]);
+
+        $slip = $request->file('slip');
+        $fileName = time() . '_' . $slip->getClientOriginalName();
+        $path = $slip->storeAs('resource_slips', $fileName, 'public');
+
+        $namesString = implode(", ", array_map(fn($resource) => $resource["name"], $request->selected_resources));
+
+        ResourceSlip::create([
+            'st_name' => $request->name,
+            'st_email' => $request->email,
+            'resource_names' => $namesString,
+            'slip_url' => $path,
+            'note' => $request->note,
+        ]);
+
+        foreach ($form2_data['selected_resources'] as $resource) {
+            $classID = Resource::where('name', $resource)->value('id');
+            $slipID = ResourceSlip::where('slip_url', $path)->value('id');
+            $stID = Auth::user()->id;
+
+            StuResSlip::create([
+                'user_id' => $stID,
+                'resource_id' => $classID,
+                'slip_id' => $slipID,
+            ]);
+        }
+
+        return back()->with([
+            'successMsg' => 'Payment details submitted successfully.',
+        ]);
+        // return response()->json(['resources' => $namesString]);
     }
 }

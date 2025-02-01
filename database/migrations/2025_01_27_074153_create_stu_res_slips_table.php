@@ -23,7 +23,7 @@ return new class extends Migration
                   ->constrained('resource_slips') // This references the 'id' column on the 'users' table
                   ->onDelete('cascade');
             $table->string('paid')->default('no');
-            $table->date('expiry_date');
+            $table->date('expiry_date')->nullable();
             $table->timestamps();
         });
     }

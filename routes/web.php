@@ -6,6 +6,7 @@ use App\Http\Controllers\ExtraLessonsController;
 use App\Http\Controllers\MoreClassesController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResourcesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,14 +33,13 @@ Route::post('/dashboard/zoomlink', [DashboardController::class, 'joinOnline'])->
 
 Route::get('/payments', [PaymentController::class, 'index'])->middleware(['auth', 'verified'])->name('payments');
 Route::post('/payments', [PaymentController::class, 'store'])->middleware(['auth', 'verified'])->name('payments.upload');
+Route::post('/payments/resource-payment', [PaymentController::class, 'storeResourceSlip'])->middleware(['auth', 'verified'])->name('payments.resourceSlipUpload');
 
 
 Route::get('/extra-lessons', [ExtraLessonsController::class, 'index'])->middleware(['auth', 'verified'])->name('extra_lessons');
 
 
-Route::get('/resources', function () {
-    return Inertia::render('Resources');
-})->middleware(['auth', 'verified'])->name('resources');
+Route::get('/resources', [ResourcesController::class, 'index'])->middleware(['auth', 'verified'])->name('resources');
 
 
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {

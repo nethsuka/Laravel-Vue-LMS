@@ -17,7 +17,7 @@ const setActiveTab = (tab) => {
     activeTab.value = tab;
 };
 
-let cart = [];
+let cart = ref([]);
 
 onMounted(() => {
     discount();
@@ -29,12 +29,9 @@ onMounted(() => {
     }
 
     // cart array taken from the session storage
-    if(sessionStorage.getItem('cart')){
-        cart = JSON.parse(sessionStorage.getItem('cart'));
-        for (let i of cart) {
-            console.log(i)
-        }
-        // sessionStorage.removeItem('cart');
+    const storedCart = sessionStorage.getItem("cart");
+    if (storedCart) {
+        cart.value = JSON.parse(storedCart);
     }
 })
 
@@ -42,7 +39,7 @@ const { props } = usePage();
 const form1 = useForm({
     name: props.auth.user.name,
     email: props.auth.user.email,
-    paid_classes: cart,
+    paid_classes: [],
     note: '',
     slip: null,
 });
@@ -61,6 +58,20 @@ function submit1() {
         onSuccess: () => {
             total.value = 0;
             form1.reset();
+            window.scrollTo(0, 0);
+        },
+    });
+    showAlert.value = true;
+}
+
+function submit2() {
+    form2.selected_resources = cart;
+    form2.post('/payments/resource-payment', {
+        preserveScroll: true,
+        onSuccess: () => {
+            // total.value = 0;
+            form2.reset();
+            sessionStorage.removeItem('cart');
             window.scrollTo(0, 0);
         },
     });
@@ -333,7 +344,7 @@ const handleCheckboxChange = (value) => {
 
 
                                 <label for="message"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Note</label>
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white pt-2">Note</label>
                                 <textarea id="message" v-model="form1.note" rows="4"
                                     class="mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Any note regarding your payment..."></textarea>
@@ -363,18 +374,18 @@ const handleCheckboxChange = (value) => {
                         <template v-if="activeTab === 'Resources Payment'">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 pb-5">Resources Payment</h3>
                             
-                            <form class="max-w-sm mx-auto" @submit.prevent="submit1">
+                            <form class="max-w-sm mx-auto" @submit.prevent="submit2">
                                 <div class="mb-5">
-                                    <label for="name"
+                                    <label for="name1"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                    <input type="text" id="name" v-model="form2.name" disabled
+                                    <input type="text" id="name1" v-model="form2.name" disabled
                                         class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required />
                                 </div>
                                 <div class="mb-5">
-                                    <label for="email"
+                                    <label for="email2"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                    <input type="email" id="email" v-model="form2.email" disabled
+                                    <input type="email" id="email2" v-model="form2.email" disabled
                                         class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required />
                                 </div>
@@ -382,7 +393,7 @@ const handleCheckboxChange = (value) => {
 
                                 <div class="mb-6">
                                     <template v-if="cart.length > 0">
-                                        <div v-for="item in cart" :key="item.name" class="badge-container flex flex-wrap gap-1 mb-1.5">
+                                        <div v-for="item in cart" :key="item.id" class="badge-container flex flex-wrap gap-1 mb-1.5">
                                             <span class="inline-flex items-center px-2 py-1 text-sm font-medium text-indigo-800 bg-indigo-100 rounded-full dark:bg-indigo-900 dark:text-indigo-300 max-w-xs truncate relative">
                                                 <span class="truncate pr-5" :title="item.name">{{ item.name }}</span>
                                                 <button type="button" class="mr-2 inline-flex items-center p-1 ms-2 text-md text-indigo-400 bg-transparent rounded-xs hover:bg-indigo-200 hover:text-indigo-900 dark:hover:bg-indigo-800 dark:hover:text-indigo-300 absolute right-0" aria-label="Remove" onclick="removeBadge(this)">
@@ -398,27 +409,27 @@ const handleCheckboxChange = (value) => {
                                         <p class="text-sm pl-4 mb-2">Your cart is empty!</p>
                                     </template>
                                 </div>
-                                <InputError class="mt-2" :message="form2.errors.paid_classes" />
+                                <InputError class="mt-2 pb-2" :message="form2.errors.selected_resources" />
 
-                                <label for="message"
+                                <label for="message2"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Note</label>
-                                <textarea id="message" v-model="form2.note" rows="4"
+                                <textarea id="message2" v-model="form2.note" rows="4"
                                     class="mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Any note regarding your payment..."></textarea>
 
                                 <template v-if="total > 0">
                                     <blockquote
                                         class="text-lg italic font-semibold my-3 border-l-4 border-s-slate-400 bg-slate-100 text-gray-900 dark:text-white text-center py-4">
-                                        <p>Total Class Fees: Rs {{ total }}.00</p>
+                                        <p>Total Payment: Rs {{ total }}.00</p>
                                     </blockquote>
                                 </template>
 
                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    for="file_input">Upload
+                                    for="file_input2">Upload
                                     Slip</label>
                                 <input @input="form2.slip = $event.target.files[0]" accept=".pdf,.png,.jpg,.jpeg"
                                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                    aria-describedby="file_input_help" id="file_input" type="file">
+                                    aria-describedby="file_input_help" id="file_input2" type="file">
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">
                                     PNG, JPG or PDF (MAX 2MB).</p>
                                 <InputError class="mt-2" :message="form2.errors.slip" />

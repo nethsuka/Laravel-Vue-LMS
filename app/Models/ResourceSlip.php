@@ -12,7 +12,7 @@ class ResourceSlip extends Model
     protected $fillable = [
         'st_name',
         'st_email',
-        'resource_name',
+        'resource_names',
         'slip_url',
         'note',
     ];

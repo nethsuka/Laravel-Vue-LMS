@@ -25,6 +25,11 @@ import {
     FwbBadge,
 } from 'flowbite-vue';
 
+const Arrays = defineProps({
+    userResourcesInfo: Array,
+    userVideoData: Array,
+});
+
 const { props } = usePage();
 
 const isShowModal = ref(false)
@@ -33,73 +38,10 @@ const query = ref('');
 const activebutton = ref('unit');
 const total = ref(0);
 
-const objectarray = ref([
-    { name: 'Unit 1: Atomic Structure', price: 3000, buy: true, isunit: true, id: 1, category: 'theory', expire_date: '2026/04/10', paid: true },
-    { name: 'Unit 2: Structure and Bonding', price: 4000, buy: false, isunit: true, id: 2, category: 'theory', expire_date: null, paid: true },
-    { name: 'Unit 3: Chemical Calculations', price: 3000, buy: true, isunit: true, id: 3, category: 'theory', expire_date: '2025/09/15', paid: false },
-    { name: 'Unit 4: Gaseous State of Matter', price: 6000, buy: false, isunit: true, id: 4, category: 'theory', expire_date: '2025/07/20', paid: true },
-    { name: '2003, 2004, 2005', price: 3000, buy: true, isunit: false, id: 5, category: 'paper', expire_date: '2022/12/30', paid: true },
-    { name: 'Unit 5: Energetics', price: 3000, buy: false, isunit: true, id: 6, category: 'theory', expire_date: null, paid: false },
-    { name: 'Unit 6: Inorganic chemistry - s-block', price: 2500, buy: true, isunit: true, id: 7, category: 'theory', expire_date: '2024/05/12', paid: true },
-    { name: 'Unit 6: Inorganic chemistry - p-block', price: 7000, buy: true, isunit: true, id: 8, category: 'theory', expire_date: null, paid: false },
-    { name: 'Unit 6: Inorganic chemistry - d-block + lon analysis', price: 4500, buy: true, isunit: true, id: 9, category: 'theory', expire_date: '2025/02/14', paid: true },
-    { name: 'Unit 6: Question Discussion', price: 5500, buy: true, isunit: true, id: 10, category: 'theory', expire_date: '2023/11/05', paid: false },
-    { name: 'Unit 7-10: Organic chemistry - unit 7 & 8', price: 6500, buy: true, isunit: true, id: 11, category: 'theory', expire_date: '2027/01/18', paid: true },
-    { name: 'Unit 7-10: Organic chemistry - unit 9 & 10', price: 6500, buy: true, isunit: true, id: 12, category: 'theory', expire_date: null, paid: false },
-    { name: 'Unit 7-10: Question + Conversion Practice', price: 6500, buy: true, isunit: true, id: 13, category: 'theory', expire_date: '2026/06/30', paid: true },
-    { name: '2006, 2007, 2008', price: 3000, buy: true, isunit: false, id: 14, category: 'paper', expire_date: '2022/04/25', paid: true },
-    { name: 'Unit 11: Chemical Kinetics', price: 6000, buy: true, isunit: true, id: 15, category: 'theory', expire_date: '2024/10/10', paid: false },
-    { name: 'Unit 12: Chemical Equilibrium - Kp & Kc', price: 6500, buy: true, isunit: true, id: 16, category: 'theory', expire_date: null, paid: true },
-    { name: 'Unit 12: Chemical Equilibrium - Icon Equilibrium & Buffers', price: 6500, buy: true, isunit: true, id: 17, category: 'theory', expire_date: '2025/08/08', paid: false },
-    { name: 'Unit 12: Chemical Equilibrium - Ksp', price: 5500, buy: true, isunit: true, id: 18, category: 'theory', expire_date: '2024/12/15', paid: true },
-    { name: '2009, 2010, 2011', price: 3000, buy: true, isunit: false, id: 19, category: 'paper', expire_date: '2023/03/22', paid: true },
-    { name: 'Unit 12: Chemical Equilibrium - Phase Equilibrium', price: 5500, buy: true, isunit: true, id: 20, category: 'theory', expire_date: null, paid: false },
-    { name: '2012, 2013, 2014', price: 3000, buy: false, isunit: false, id: 21, category: 'paper', expire_date: '2026/02/10', paid: true },
-    { name: 'Unit 13: Electrochemistry', price: 1000, buy: true, isunit: true, id: 22, category: 'theory', expire_date: '2025/09/28', paid: false },
-    { name: '2015, 2016, 2017', price: 3000, buy: true, isunit: false, id: 23, category: 'paper', expire_date: '2023/07/12', paid: true },
-    { name: 'Unit 14 - Industry & polymers', price: 1000, buy: true, isunit: true, id: 24, category: 'theory', expire_date: '2024/11/09', paid: false },
-    { name: 'Unit 14 - Plant based products & environmental pollution', price: 1000, buy: true, isunit: true, id: 25, category: 'theory', expire_date: null, paid: true }
-]);
+const objectarray = ref(Arrays.userResourcesInfo);
 
 
-const boughtArray = ref([
-    {
-        name: 'Unit 1: Atomic Structure', expire_date: '2025/01/13', video_link: [
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`
-        ]
-    },
-    {
-        name: 'Unit 2: Structure and Bonding', expire_date: '2025/1/13', video_link: [
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`
-        ]
-    },
-    {
-        name: 'Unit 3: Chemical Calculations', expire_date: '2025/1/13', video_link: [
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`
-        ]
-    },
-    {
-        name: 'Unit 4: Gaseous State of Matter', expire_date: '2025/2/13', video_link: [
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-
-        ]
-    },
-    {
-        name: 'Unit 5: Energetics', expire_date: '2025/3/13', video_link: [
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-        ]
-    },
-    {
-        name: '2003, 2004, 2005', expire_date: '2025/4/13', video_link: [
-            `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-        ]
-    }
-])
+const boughtArray = ref(Arrays.userVideoData);
 function getkey(evt) {
     showarray.value = [];
     if (query.value.length > 0) {
