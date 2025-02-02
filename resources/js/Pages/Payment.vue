@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
 import { FwbCheckbox, FwbButton, FwbAlert } from 'flowbite-vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 const Arrays = defineProps({
     classDetails: Array,
@@ -224,6 +224,10 @@ function removeitem(name){
     sessionStorage.setItem("cart", JSON.stringify(cart.value));
 }
 
+const totalResourcePrice = computed(() => {
+  return cart.value.reduce((total, item) => total + (parseInt(item.price) || 0), 0);
+});
+
 </script>
 
 <template>
@@ -426,10 +430,10 @@ function removeitem(name){
                                     class="mb-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Any note regarding your payment..."></textarea>
 
-                                <template v-if="total > 0">
+                                <template v-if="totalResourcePrice > 0">
                                     <blockquote
                                         class="text-lg italic font-semibold my-3 border-l-4 border-s-slate-400 bg-slate-100 text-gray-900 dark:text-white text-center py-4">
-                                        <p>Total Payment: Rs {{ total }}.00</p>
+                                        <p>Total Payment: Rs {{ totalResourcePrice }}.00</p>
                                     </blockquote>
                                 </template>
 

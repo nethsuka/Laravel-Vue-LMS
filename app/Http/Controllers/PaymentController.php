@@ -88,7 +88,7 @@ class PaymentController extends Controller
         $fileName = time() . '_' . $slip->getClientOriginalName();
         $path = $slip->storeAs('resource_slips', $fileName, 'public');
 
-        $namesString = implode(", ", array_map(fn($resource) => $resource["name"], $request->selected_resources));
+        $namesString = implode(", ", array_map(fn($resource) => $resource["resource_name"], $request->selected_resources));
 
         ResourceSlip::create([
             'st_name' => $request->name,
@@ -99,13 +99,12 @@ class PaymentController extends Controller
         ]);
 
         foreach ($form2_data['selected_resources'] as $resource) {
-            $classID = Resource::where('name', $resource)->value('id');
             $slipID = ResourceSlip::where('slip_url', $path)->value('id');
             $stID = Auth::user()->id;
 
             StuResSlip::create([
                 'user_id' => $stID,
-                'resource_id' => $classID,
+                'resource_id' => $resource['resource_id'],
                 'slip_id' => $slipID,
             ]);
         }

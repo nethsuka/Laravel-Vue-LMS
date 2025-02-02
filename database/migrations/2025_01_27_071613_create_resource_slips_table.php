@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('st_email');
             $table->string('resource_names', 1000);
             $table->string('slip_url');
-            $table->string('note');
+            $table->string('note')->nullable();;
             $table->timestamps();
         });
     }
