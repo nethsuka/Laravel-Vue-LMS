@@ -135,11 +135,11 @@ onMounted(() => {
                         </template>
                         <template #footer>
                             <div class="flex justify-between">
-                                <fwb-button @click="SavecloseModal" color="alternative">
-                                    Save
-                                </fwb-button>
-                                <fwb-button @click="closeModal" color="green">
+                                <fwb-button @click="closeModal" color="alternative">
                                     Close
+                                </fwb-button>
+                                <fwb-button @click="SavecloseModal"  color="green">
+                                    Save
                                 </fwb-button>
                             </div>
                         </template>

@@ -46,7 +46,7 @@ function getkey(evt) {
     showarray.value = [];
     if (query.value.length > 0) {
         for (const y of objectarray.value) {
-            if (y.name.toLowerCase().includes(query.value.toLowerCase())) {
+            if (y.resource_name.toLowerCase().includes(query.value.toLowerCase())) {
                 showarray.value.push(y);
             }
         }
@@ -70,6 +70,9 @@ function showModal() {
 const cartarrya = ref([])
 
 onMounted(() => {
+    console.log(objectarray.value)
+    console.log(boughtArray.value)
+    
     // Retrieve items from session storage
     const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
     // Assign the retrieved items to cartarrya
@@ -105,7 +108,7 @@ function clearcart() {
 }
 
 function isitemincart(item) {
-    return cartarrya.value.some(cartItem => cartItem.name === item.name);
+    return cartarrya.value.some(cartItem => cartItem.resource_name === item.resource_name);
 }
 function redirectpayement() {
     sessionStorage.setItem('buy', 'true');
@@ -215,13 +218,13 @@ function expiredatecal(item){
                                         <fwb-table-body>
                                             <template v-for="(y, index) in cartarrya" :key="index">
                                                 <fwb-table-row>
-                                                    <fwb-table-cell class="max-w-xs" :title="y.name">
-                                                        <fwb-heading class="text-md truncate">{{ y.name }}
+                                                    <fwb-table-cell class="max-w-xs" :title="y.resource_name">
+                                                        <fwb-heading class="text-md truncate">{{ y.resource_name }}
                                                         </fwb-heading>
                                                     </fwb-table-cell>
                                                     <fwb-table-cell :title="y.name">Rs. {{ y.price }}</fwb-table-cell>
                                                     <fwb-table-cell>
-                                                        <fwb-button gradient="red" size="xs" v-if="y.buy"
+                                                        <fwb-button gradient="red" size="xs" 
                                                             @click="removecart(y)">Remove Item</fwb-button>
                                                     </fwb-table-cell>
                                                 </fwb-table-row>
@@ -245,7 +248,6 @@ function expiredatecal(item){
                                     <fwb-heading tag="h5" color="text-gray-500" v-if="total != 0">Total amount : Rs. {{
                                         total }}</fwb-heading>
                                 </div>
-
                                 <fwb-button color="green" :disabled="cartarrya.length === 0" @click="redirectpayement">
                                     Buy
                                 </fwb-button>
@@ -273,9 +275,9 @@ function expiredatecal(item){
                                 <template v-if="query.length > 0">
                                     <template v-if="showarray.length > 0">
                                         <template v-for="(y, index) in showarray" :key="index">
-                                            <fwb-table-row v-if="y.category == 'paper'">
+                                            <fwb-table-row v-if="y.category =='theory'">
                                                 <fwb-table-cell>
-                                                    <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
+                                                    <fwb-heading style="font-size: medium;">{{ y.resource_name }} </fwb-heading>
                                                 </fwb-table-cell>
                                                 <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                                 <fwb-table-cell>
@@ -298,7 +300,7 @@ function expiredatecal(item){
                                     <template v-for="(y, index) in objectarray" :key="index">
                                         <fwb-table-row v-if="y.category == 'theory'">
                                             <fwb-table-cell>
-                                                <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
+                                                <fwb-heading style="font-size: medium;">{{ y.resource_name }} </fwb-heading>
                                             </fwb-table-cell>
                                             <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                             <fwb-table-cell>
@@ -318,13 +320,13 @@ function expiredatecal(item){
                         <fwb-table striped>
                             <fwb-table-body>
                                 <template v-for="(y, index) in objectarray" :key="index">
-                                    <fwb-table-row v-if="!y.isunit">
+                                    <fwb-table-row v-if="y.category == 'paper'">
                                         <fwb-table-cell>
-                                            <fwb-heading style="font-size: medium;">{{ y.name }} </fwb-heading>
+                                            <fwb-heading style="font-size: medium;">{{ y.resource_name }} </fwb-heading>
                                         </fwb-table-cell>
                                         <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                         <fwb-table-cell>
-                                            <fwb-button gradient="lime" size="xs" class="mr-2 text-white" v-if="y.buy"
+                                            <fwb-button gradient="lime" size="xs" class="mr-2 text-white" v-if="expiredatecal(y)"
                                                 @click="addtocart(y)" :disabled="isitemincart(y)">Add To
                                                 Cart</fwb-button>
                                             <fwb-badge size="sm" class="w-15 float-end" type="purple"

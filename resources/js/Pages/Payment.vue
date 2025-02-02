@@ -33,6 +33,7 @@ onMounted(() => {
     if (storedCart) {
         cart.value = JSON.parse(storedCart);
     }
+    console.log(cart.value);
 })
 
 const { props } = usePage();
@@ -217,6 +218,11 @@ const handleCheckboxChange = (value) => {
     }
 
 };
+function removeitem(name){
+    console.log(name);
+    cart.value = cart.value.filter(item => item.resource_name !== name);
+    sessionStorage.setItem("cart", JSON.stringify(cart.value));
+}
 
 </script>
 
@@ -395,8 +401,8 @@ const handleCheckboxChange = (value) => {
                                     <template v-if="cart.length > 0">
                                         <div v-for="item in cart" :key="item.id" class="badge-container flex flex-wrap gap-1 mb-1.5">
                                             <span class="inline-flex items-center px-2 py-1 text-sm font-medium text-indigo-800 bg-indigo-100 rounded-full dark:bg-indigo-900 dark:text-indigo-300 max-w-xs truncate relative">
-                                                <span class="truncate pr-5" :title="item.name">{{ item.name }}</span>
-                                                <button type="button" class="mr-2 inline-flex items-center p-1 ms-2 text-md text-indigo-400 bg-transparent rounded-xs hover:bg-indigo-200 hover:text-indigo-900 dark:hover:bg-indigo-800 dark:hover:text-indigo-300 absolute right-0" aria-label="Remove" onclick="removeBadge(this)">
+                                                <span class="truncate pr-5" :title="item.name">{{ item.resource_name }}</span>
+                                                <button @click="removeitem(item.resource_name)" type="button" class="mr-2 inline-flex items-center p-1 ms-2 text-md text-indigo-400 bg-transparent rounded-xs hover:bg-indigo-200 hover:text-indigo-900 dark:hover:bg-indigo-800 dark:hover:text-indigo-300 absolute right-0" aria-label="Remove" >
                                                     <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                                     </svg>
@@ -406,7 +412,10 @@ const handleCheckboxChange = (value) => {
                                         </div>
                                     </template>
                                     <template v-else>
-                                        <p class="text-sm pl-4 mb-2">Your cart is empty!</p>
+                                        <p class="text-sm pl-4 mb-2">You can pick Resources from the<a href="/resources">
+                                            HERE
+                                        </a>
+                                        </p>
                                     </template>
                                 </div>
                                 <InputError class="mt-2 pb-2" :message="form2.errors.selected_resources" />
