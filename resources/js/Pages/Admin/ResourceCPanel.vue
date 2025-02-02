@@ -34,7 +34,7 @@ function showModal() {
 
 const selected = ref('')
 const category = [
-    { value: 'unite', name: 'Unite' },
+    { value: 'unit', name: 'Unit' },
     { value: 'paper', name: 'Paper' },
 ]
 const objectarray = ref([
@@ -102,9 +102,9 @@ const query = ref('')
                         <fwb-heading tag="h2">Resources</fwb-heading>
                         <br>
                         <div class="flex justify-end">
-                            <fwb-button gradient="green" @click="showModal">+</fwb-button>
+                            <fwb-button gradient="green" @click="showModal">Add Resources</fwb-button>
                         </div>
-                        <fwb-input v-on:input="getkey" v-model="query" label="Search" placeholder="Search for resources"
+                        <fwb-input style="max-width: 1000px;" v-on:input="getkey" v-model="query" label="Search" placeholder="Search for resources"
                             size="md">
                             <template #prefix>
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
@@ -114,7 +114,7 @@ const query = ref('')
                                 </svg>
                             </template>
                         </fwb-input>
-                        <fwb-table striped style="margin-top: 20px; max-width: 1200px;">
+                        <fwb-table striped style="margin-top: 20px; max-width: 1000px;">
                             <fwb-table-head>
                                 <fwb-table-head-cell>Resources name</fwb-table-head-cell>
                                 <fwb-table-head-cell>Price</fwb-table-head-cell>
