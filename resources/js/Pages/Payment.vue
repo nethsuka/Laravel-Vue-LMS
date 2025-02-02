@@ -33,6 +33,9 @@ onMounted(() => {
     if (storedCart) {
         cart.value = JSON.parse(storedCart);
     }
+
+    // Selected item taken from the session storage , saved by in more classes page
+    redirectedFromMoreclass();
     console.log(cart.value);
 })
 
@@ -52,6 +55,24 @@ const form2 = useForm({
     note: '',
     slip: null,
 });
+
+
+function redirectedFromMoreclass(){
+    const selectedClass = sessionStorage.getItem('class')
+    sessionStorage.removeItem('class');
+    if (selectedClass){
+        if(selectedClass.length > 13){
+            const year = selectedClass.substring(0,4);
+            const class1 = year +' Paper';
+            const class2 = year +' Theory';
+            handleCheckboxChange(class1);
+            handleCheckboxChange(class2);
+        }else{
+            fromsession.value.push(selectedClass);
+            handleCheckboxChange(selectedClass);
+        }
+    }
+}
 
 function submit1() {
     form1.post('/payments', {
@@ -94,7 +115,6 @@ function creatingshowarray() {
 
 // form payment calculation
 const total = ref(0);
-
 const st_paid = ref(Arrays.paidClasses);
 const showarray = ref([]);
 const discount_class = ref([]);
@@ -104,26 +124,20 @@ function discount() {
     let paper = '';
     let theory = '';
 
-    // Check if st_paid.value is a string or array and ensure lowercase comparison
     const st_paid_value = Array.isArray(st_paid.value) 
-        ? st_paid.value.map(item => item.toLowerCase())  // If it's an array, map each element to lowercase
-        : st_paid.value.toLowerCase();                   // If it's a string, convert it to lowercase
+        ? st_paid.value.map(item => item.toLowerCase())
+        : st_paid.value.toLowerCase();
 
-    // Get the current year and extract the last two digits
     let currentYear = new Date().getFullYear() % 100;
-
-    // Create an array for the current year and the next two years
     let years = [currentYear-1, currentYear, currentYear + 1, currentYear + 2];
 
     for (let i of years) {
         paper = '20' + i + ' Paper';
         theory = '20' + i + ' Theory';
 
-        // Convert paper and theory to lowercase
         const paper_lower = paper.toLowerCase();
         const theory_lower = theory.toLowerCase();
 
-        // If st_paid_value is an array, use includes() to check; if it's a string, the same logic applies
         if (!(st_paid_value.includes(paper_lower) && st_paid_value.includes(theory_lower))) {
             if (st_paid_value.includes(paper_lower)) {
                 discount_class.value.push(theory);
@@ -138,19 +152,20 @@ function class_fees() {
     total.value = 0;
     let paper = '';
     let theory = '';
+
     for (let y of [25, 26, 27, 28, 29, 30]) {
         paper = '20' + y + ' Paper';
         theory = '20' + y + ' Theory';
-        if (form1.paid_classes.includes(theory) &&
-            form1.paid_classes.includes(paper)) {
-            total.value = total.value + 7000;
-        }
-        else {
-            if (form1.paid_classes.includes(theory)) {
-                total.value = total.value + 5000;
+        
+        if (form1.paid_classes.includes(theory) && form1.paid_classes.includes(paper)) {
+            if (y >= 26) {
+                total.value = total.value + 7500;  // New combined price for 2026 onwards
+            } else {
+                total.value = total.value + 7000;  // Original combined price for 2025
             }
-            else if (form1.paid_classes.includes(paper)) {
-                total.value = total.value + 5000;
+        } else {
+            if (form1.paid_classes.includes(theory) || form1.paid_classes.includes(paper)) {
+                total.value = total.value + 5000;  // Single class price remains same
             }
         }
     }
@@ -159,32 +174,36 @@ function class_fees() {
 function already_paid() {
     total.value = 0;
     let count = 0;
+    
     for (let i of form1.paid_classes) {
         if (discount_class.value.includes(i)) {
-            if (i.includes('Theory')) {
-                total.value = total.value + 2000
-            } else if (i.includes('Paper')) {
-                total.value = total.value + 2000
+            const year = parseInt(i.substring(2, 4));  // Extract year from class name
+            if (year >= 26) {
+                total.value = total.value + 2500;  // Discount price for 2026 onwards
+            } else {
+                total.value = total.value + 2000;  // Original discount price for 2025
             }
-        }
-        else {
+        } else {
             if (count === 0) {
                 let paper = '';
                 let theory = '';
+                
                 for (let y of [25, 26, 27, 28, 29, 30]) {
                     paper = '20' + y + ' Paper';
                     theory = '20' + y + ' Theory';
-                    if (form1.paid_classes.includes(theory) &&
-                        form1.paid_classes.includes(paper)) {
-                        total.value = total.value + 7000;
-                    }
-                    else {
+                    
+                    if (form1.paid_classes.includes(theory) && form1.paid_classes.includes(paper)) {
+                        if (y >= 26) {
+                            total.value = total.value + 7500;  // New combined price for 2026 onwards
+                        } else {
+                            total.value = total.value + 7000;  // Original combined price for 2025
+                        }
+                    } else {
                         if (form1.paid_classes.includes(theory)) {
                             if (!discount_class.value.includes(theory)) {
                                 total.value = total.value + 5000;
                             }
-                        }
-                        else if (form1.paid_classes.includes(paper)) {
+                        } else if (form1.paid_classes.includes(paper)) {
                             if (!discount_class.value.includes(paper)) {
                                 total.value = total.value + 5000;
                             }
@@ -192,13 +211,14 @@ function already_paid() {
                     }
                 }
             }
-            count = count + 1
+            count = count + 1;
         }
     }
 }
 
 // Handle the checkbox selection
 const handleCheckboxChange = (value) => {
+
     if (st_paid.length === 0) {
         if (form1.paid_classes.includes(value)) {
             form1.paid_classes = form1.paid_classes.filter(item => item !== value);

@@ -15,7 +15,10 @@ const showarray = ref([]);
 
 onMounted(() => {
     CREATING_ARRAYS()
-    console.log(Arrays.paidClassDetails)
+    creatingbudle()
+    showarray.value.sort((a, b) => a.name.substring(0,4).localeCompare(b.name.substring(0,4)))
+    // console.log(showarray.value)
+    // console.log(Arrays.paidClassDetails)
 })
 
 
@@ -25,26 +28,68 @@ function CREATING_ARRAYS() {
             if (Arrays.paidClassDetails.some(c=> c.paid === 'yes')){
                 const newobj = {
                     name: x.class_name,
-                    paid: 'yes'
+                    paid: 'yes',
+                    price: 5000
                 }
                 showarray.value.push(newobj)
             }
             else {
             const newobj = {
                 name: x.class_name,
-                paid: 'no'
+                paid: 'no',
+                price: 5000
             }
             showarray.value.push(newobj)
         }
         } else {
             const newobj = {
                 name: x.class_name,
-                paid: 'no'
+                paid: 'no',
+                price: 5000
+
             }
             showarray.value.push(newobj)
         }
     }
 }
+
+// function that creating bundle of classes , ---- need to add class years accordingly 
+function creatingbudle(){
+    const yearsarray = [2025,2026,2027,2028,2029,2030]
+    // const count = ref(0)
+    for (let x of yearsarray){
+        const buddlearray = showarray.value.filter(item => item.name.includes(x.toString()))
+        const count = buddlearray.length;
+        
+        if (count == 2 ){
+            const newbudle = ref(null)
+            if(buddlearray[0].paid == 'yes' && buddlearray[1].paid == 'yes'){
+                newbudle.value = {
+                    name: x.toString() + ' Paper + ' + x.toString() + ' Theory',
+                    paid: 'yes',
+                    price: 7000
+                }
+            }
+            else {
+                newbudle.value = {
+                    name: x.toString() + ' Paper + ' + x.toString() + ' Theory',
+                    paid: 'no',
+                    price: 7000
+                }
+            }
+            if(parseInt(newbudle.value.name.substring(0,4)) >= 2026 ){
+                newbudle.value.price = 7500
+            }
+            showarray.value.push(newbudle.value)
+        }
+    }
+}
+
+function redirectPayment(item){
+    sessionStorage.setItem('class', item.name)
+    window.location.href = '/payments'
+}
+
 
 </script>
 
@@ -82,7 +127,7 @@ function CREATING_ARRAYS() {
                                             </h5>
                                         </div>
                                         <div class="p-6">
-                                            <p class="mb-3 font-medium text-gray-700 dark:text-gray-400 pb-3">Price - Rs.5000/=</p>
+                                            <p class="mb-3 font-medium text-gray-700 dark:text-gray-400 pb-3">Price - Rs.{{x.price}}/=</p>
                                             <span class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Purchased</span>
                                         </div>
                                     </div>
@@ -96,8 +141,8 @@ function CREATING_ARRAYS() {
                                             </h5>
                                         </div>
                                         <div class="p-6">
-                                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 pb-3">Price - Rs.5000/=</p>
-                                            <a :href="route('payments')"><fwb-button gradient="purple-blue">Purchase</fwb-button></a>
+                                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 pb-3">Price - Rs.{{x.price}}/=</p>
+                                            <fwb-button @click="redirectPayment(x)" gradient="purple-blue">Purchase</fwb-button>
                                         </div>
                                     </div>
                                 </template>
