@@ -78,14 +78,14 @@ onMounted(() => {
     // Assign the retrieved items to cartarrya
     cartarrya.value = storedCart;
     for (let i = 0; i < cartarrya.value.length; i++) {
-        total.value += cartarrya.value[i].price
+        total.value += parseInt(cartarrya.value[i].price)
     }
     console.log(cartarrya.value)
 });
 
 function addtocart(item) {
     cartarrya.value.push(item)
-    total.value += item.price
+    total.value += parseInt(item.price)
     console.log(total.value)
     sessionStorage.setItem('cart', JSON.stringify(cartarrya.value));
     console.log(cartarrya.value)
@@ -94,7 +94,7 @@ function addtocart(item) {
 }
 function removecart(item) {
     cartarrya.value = cartarrya.value.filter((x) => x !== item)
-    total.value -= item.price
+    total.value -= parseInt(item.price)
     sessionStorage.setItem('cart', JSON.stringify(cartarrya.value));
     let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     console.log(cart);
@@ -117,11 +117,11 @@ function redirectpayement() {
 }
 
 function expiredatecal(item){
-    if (item.expire_date == null) {
+    if (item.expiry_date == null) {
         return true;
     }
     const today = new Date();
-    const expireDate = new Date(item.expire_date);
+    const expireDate = new Date(item.expiry_date);
     const timeDifference = expireDate - today;
     const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
     if(daysDifference > 0){
