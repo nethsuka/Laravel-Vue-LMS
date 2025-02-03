@@ -39,7 +39,7 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                 </li>
                 
                 <li class="hover:bg-gray-200">
-                    <AdminNavLink :href="route('studentCPanel')" :active="route().current('dashboard')">
+                    <AdminNavLink :href="route('studentCPanel')" :active="route().current('studentCPanel')">
                     <i class="fas fa-tasks mr-2"></i>
                     Student Control Panel
                     </AdminNavLink>
