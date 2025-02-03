@@ -1,12 +1,12 @@
 <script setup>
 import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 import sha256 from 'js-sha256';
+import Logo from '../../assets/Logo.svg'
 
 const showingNavigationDropdown = ref(false);
 
@@ -26,12 +26,10 @@ function getGravatarURL( email ) {
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex">
-                            <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
-                                    />
+                                    <!-- MHCHEM Logo -->
+                                    <img :src=Logo alt='Logo' />
                                 </Link>
                             </div>
 
