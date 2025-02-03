@@ -68,6 +68,10 @@ Route::get('resourceCPanel/edit', function () {
     return Inertia::render('Admin/EditeResources');
 })->middleware(['auth', 'verified'])->name('resourceCPanel/edit');
 
+// Student control page
+Route::get('/studentCPanel', function () {
+    return Inertia::render('Admin/StudentControl');
+})->middleware(['auth', 'verified'])->name('studentCPanel');
 
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
