@@ -32,9 +32,9 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
-                    <AdminNavLink :href="route('resourceCPanel')" :active="route().current('resourceCPanel')">
+                    <AdminNavLink :href="route('resourceControls')" :active="route().current('resourceControls')">
                     <i class="fas fa-tasks mr-2"></i>
-                    Resource Control Panel
+                    Resource Controls
                     </AdminNavLink>
                 </li>
                 

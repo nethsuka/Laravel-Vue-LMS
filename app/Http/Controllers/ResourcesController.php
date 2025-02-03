@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StuResSlip;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,11 +49,17 @@ class ResourcesController extends Controller
             ->get();
 
 
+        $paidResources = StuResSlip::join('resources', 'stu_res_slips.resource_id', '=', 'resources.id')
+            ->where('stu_res_slips.user_id', Auth::id())
+            ->where('stu_res_slips.expiry_date', '>=', $todayInSriLanka)
+            ->select('stu_res_slips.*', 'resources.name as resource_name')
+            ->get();
+
         return Inertia::render('Resources', [ 
             'userResourcesInfo' => $userResourcesInfo,
-            'userVideoData' => $userVideoData
+            'userVideoData' => $userVideoData,
+            'paidResources' => $paidResources,
         ]);
         // return response()->json(['userVideoData' => $userVideoData]);
-
     }
 }

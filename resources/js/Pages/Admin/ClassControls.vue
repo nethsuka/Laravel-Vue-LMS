@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import 'primeicons/primeicons.css'
 import { Head, useForm, usePage, router } from '@inertiajs/vue3';
-import { FwbTab, FwbAlert, FwbTabs, FwbButton, FwbModal, FwbTextarea, FwbInput, FwbSelect, FwbFileInput } from 'flowbite-vue'
+import { FwbTab, FwbAlert, FwbTabs, FwbButton, FwbModal, FwbTextarea, FwbInput, FwbSelect, FwbFileInput, FwbHeading } from 'flowbite-vue'
 
 const isShowModal = ref(false)
 const isShowModalclass = ref(false)
@@ -326,292 +326,297 @@ function isExpired(expiryDate) {
     <Head title="Admin Panel" />
     <Sidebar>
         <div class="py-12" >
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '95vh' }">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                     <!-- content -->
-                    <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success">
-                        <p>{{ $page.props.flash.successMsg }}</p>
-                    </fwb-alert>
-                    <fwb-button type="button" @click="addclassmodal"
-                        class="float-end focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mt-5">+
-                        Add Class</fwb-button><br><br>
-                    <fwb-tabs v-model="activeTab" class="p-5">
-                        <template v-if="Arrays.classDetails.length > 0">
-                            <template v-for="tuteClass in classlist" :key="tuteClass.id">
-                                <fwb-tab :name="tuteClass.class_name" :title="tuteClass.class_name">
-                                    <form class="max-w-2xl mx-auto mt-6 border-2 pt-5 py-2 px-14 rounded-md bg-slate-50">
-                                        <div class="mb-5 flex items-center">
-                                            <label for="l1"
-                                                class="text-sm font-medium text-gray-900 dark:text-white mr-3 whitespace-nowrap">Class
-                                                Name</label>
-                                            <input type="text" id="l1" aria-label="disabled input"
-                                                class="cursor-not-allowed bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flex-grow"
-                                                placeholder="class name" disabled :value="tuteClass.class_name"
-                                                required />
-                                        </div>
-                                        <div class="mb-5 flex items-center">
-                                            <label for="l2"
-                                                class="text-sm  font-medium text-gray-900 dark:text-white mr-3 whitespace-nowrap">Zoom
-                                                Link</label>
-                                            <textarea id="l2" rows="3"
-                                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-200 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="Enter your content here..." :value="tuteClass.zoom_link"
-                                                @input="tuteClass.zoom_link = $event.target.value"></textarea>
-                                        </div>
-                                        <div class="mb-5 flex items-center">
-                                            <label for="l3"
-                                                class="text-sm font-medium text-gray-900 dark:text-white mr-3 whitespace-nowrap">Telegram
-                                                Link</label>
-                                            <textarea id="l3" rows="3"
-                                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-200 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="Enter your content here..." :value="tuteClass.tele_group"
-                                                @input="tuteClass.tele_group = $event.target.value"></textarea>
-                                        </div>
-                                        <fwb-button type="button" size="sm" class="float-end"
-                                            @click="saveclasslist(tuteClass.id)">Save Changes</fwb-button>
+                    <div class="p-14">
+                        <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success">
+                            <p>{{ $page.props.flash.successMsg }}</p>
+                        </fwb-alert>
+                        <fwb-heading tag="h4" size="lg" class="mb-10">
+                            Class Controls
+                        </fwb-heading>
+                        <fwb-button type="button" @click="addclassmodal"
+                            class="float-end focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">+
+                            Add Class</fwb-button><br><br>
+                        <fwb-tabs v-model="activeTab" class="p-5">
+                            <template v-if="Arrays.classDetails.length > 0">
+                                <template v-for="tuteClass in classlist" :key="tuteClass.id">
+                                    <fwb-tab :name="tuteClass.class_name" :title="tuteClass.class_name">
+                                        <form class="max-w-2xl mx-auto mt-6 border-2 pt-5 py-2 px-14 rounded-md bg-slate-50">
+                                            <div class="mb-5 flex items-center">
+                                                <label for="l1"
+                                                    class="text-sm font-medium text-gray-900 dark:text-white mr-3 whitespace-nowrap">Class
+                                                    Name</label>
+                                                <input type="text" id="l1" aria-label="disabled input"
+                                                    class="cursor-not-allowed bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 flex-grow"
+                                                    placeholder="class name" disabled :value="tuteClass.class_name"
+                                                    required />
+                                            </div>
+                                            <div class="mb-5 flex items-center">
+                                                <label for="l2"
+                                                    class="text-sm  font-medium text-gray-900 dark:text-white mr-3 whitespace-nowrap">Zoom
+                                                    Link</label>
+                                                <textarea id="l2" rows="3"
+                                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-200 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    placeholder="Enter your content here..." :value="tuteClass.zoom_link"
+                                                    @input="tuteClass.zoom_link = $event.target.value"></textarea>
+                                            </div>
+                                            <div class="mb-5 flex items-center">
+                                                <label for="l3"
+                                                    class="text-sm font-medium text-gray-900 dark:text-white mr-3 whitespace-nowrap">Telegram
+                                                    Link</label>
+                                                <textarea id="l3" rows="3"
+                                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-200 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    placeholder="Enter your content here..." :value="tuteClass.tele_group"
+                                                    @input="tuteClass.tele_group = $event.target.value"></textarea>
+                                            </div>
+                                            <fwb-button type="button" size="sm" class="float-end"
+                                                @click="saveclasslist(tuteClass.id)">Save Changes</fwb-button>
+                                            <br><br>
+                                        </form>
+
                                         <br><br>
-                                    </form>
-
-                                    <br><br>
-                                    <div class="mb-5 flex w-1/2">
-                                        <label for="l3" class="text-sm font-medium text-gray-900 dark:text-white mr-8 whitespace-nowrap">Tutes:</label>
-                                        <div class="flex flex-col w-full">
-                                            <button @click="addtuteopen" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
-                                                </svg>
-                                                <span>&nbsp;Add Tute</span>
-                                            </button>
-                                            <div class="flex flex-col gap-2 p-4 w-full bg-gray-500/5 rounded-b-md">
-                                                <template v-for="tute in getTutesAccordingToClass(tuteClass.id)" :key="tute.id">
-                                                    <div class="h-auto bg-gray-500/5 px-4 py-2 rounded flex items-center justify-between">
-                                                        <div class="flex flex-row w-full gap-4">
-                                                            <div class="flex flex-col flex-1">
-                                                                <a :href="'storage/'+tute.tute_path" :download="tute.tute_name" class="flex justify-between items-center max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                                                                    <p class="flex font-normal text-gray-700 dark:text-gray-400">
-                                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                                            <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7ZM8 16a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1-5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
+                                        <div class="mb-5 flex w-1/2">
+                                            <label for="l3" class="text-sm font-medium text-gray-900 dark:text-white mr-8 whitespace-nowrap">Tutes:</label>
+                                            <div class="flex flex-col w-full">
+                                                <button @click="addtuteopen" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
+                                                    </svg>
+                                                    <span>&nbsp;Add Tute</span>
+                                                </button>
+                                                <div class="flex flex-col gap-2 p-4 w-full bg-gray-500/5 rounded-b-md">
+                                                    <template v-for="tute in getTutesAccordingToClass(tuteClass.id)" :key="tute.id">
+                                                        <div class="h-auto bg-gray-500/5 px-4 py-2 rounded flex items-center justify-between">
+                                                            <div class="flex flex-row w-full gap-4">
+                                                                <div class="flex flex-col flex-1">
+                                                                    <a :href="'storage/'+tute.tute_path" :download="tute.tute_name" class="flex justify-between items-center max-w-sm p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                                                                        <p class="flex font-normal text-gray-700 dark:text-gray-400">
+                                                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                                                <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7ZM8 16a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1-5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
+                                                                            </svg>
+                                                                            &nbsp;&nbsp;{{tute.tute_name + '.' + tute.tute_path.split('.').pop()}}
+                                                                        </p>
+                                                                        <svg class="mr-3 w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                                            <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
+                                                                            <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
                                                                         </svg>
-                                                                        &nbsp;&nbsp;{{tute.tute_name + '.' + tute.tute_path.split('.').pop()}}
-                                                                    </p>
-                                                                    <svg class="mr-3 w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                                        <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
-                                                                        <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
-                                                                    </svg>
-                                                                </a>
+                                                                    </a>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <!-- Remove Button -->
-                                                        <button class="cursor-pointer ml-4" @click="removeTute(tute.id)">
-                                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                                <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                </template>
+                                                            <!-- Remove Button -->
+                                                            <button class="cursor-pointer ml-4" @click="removeTute(tute.id)">
+                                                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                                    <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </template>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="mb-5 flex w-full">
-                                        <label for="l3"
-                                            class="text-sm font-medium text-gray-900 dark:text-white mr-8 whitespace-nowrap">Video
-                                            : </label>
-                                        <div class="flex flex-col w-full">
-                                            <button @click="showModal"
-                                                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
+                                        <div class="mb-5 flex w-full">
+                                            <label for="l3"
+                                                class="text-sm font-medium text-gray-900 dark:text-white mr-8 whitespace-nowrap">Video
+                                                : </label>
+                                            <div class="flex flex-col w-full">
+                                                <button @click="showModal"
+                                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
+                                                    </svg>
+                                                    <span>&nbsp;Add Video</span>
+                                                </button>
+                                                <VueDraggable v-model="listobj" :animation="150" handle=".handle"
+                                                        class="flex flex-col gap-2 p-4 w-300px bg-gray-500/5 rounded"
+                                                        v-on:update="onup(tuteClass.id)">
+                                                    <template v-for="(item, index) in listobj" :key="item.id || index">
+                                                        <div v-show="item.tuition_class_id === tuteClass.id"
+                                                            class="h-50px bg-gray-500/5 px-2 rounded flex items-center justify-between relative">
+                                                            
+                                                            <!-- Expired Label (conditionally rendered) -->
+                                                            <span  v-if="isExpired(item.expiry_date)" class="absolute top-0 right-0 bg-red-500 text-white text-xs py-1 px-2 rounded-bl-lg">
+                                                                Expired
+                                                            </span>
+
+                                                            <button class="handle cursor-move mr-4">
+                                                                <i class="pi pi-list" style="font-size: 1.5rem"></i>
+                                                            </button>
+                                                            <div class="flex flex-row">
+                                                                <div class="flex flex-col mb-4 mt-4 mr-4">
+                                                                    <label for="small-input"
+                                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video name</label>
+                                                                    <input type="text" v-model="item.video_name"
+                                                                        id="small-input"
+                                                                        class="mr-3 block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                                    <fwb-alert type="warning"
+                                                                        v-if="item.video_name === null || item.video_name.trim() === ''">
+                                                                        Video name is required
+                                                                    </fwb-alert>
+                                                                </div>
+                                                                <div class="flex flex-col mb-4">
+                                                                    <label for="message"
+                                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video link</label>
+                                                                    <textarea id="message" rows="4"
+                                                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                        placeholder="Write your thoughts here..."
+                                                                        v-model="item.video_link"></textarea>
+                                                                    <fwb-alert type="warning"
+                                                                        v-if="item.video_link === null || item.video_link.trim() === ''">
+                                                                        Video link is required
+                                                                    </fwb-alert>
+                                                                </div>
+
+                                                                <div class="flex flex-col mb-4 ml-5">
+                                                                    <label for="email"
+                                                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-3">Expiry date</label>
+                                                                    <input type="date"
+                                                                        class="border bg-gray-50 border-gray-300 rounded-lg p-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                                        v-model="item.expiry_date">
+                                                                    <fwb-alert type="warning"
+                                                                        v-if="item.expiry_date === null || item.expiry_date.trim() === ''">
+                                                                        Expiry date is required
+                                                                    </fwb-alert>
+                                                                </div>
+                                                            </div>
+
+                                                            <button class="cursor-pointer" @click="remove(index)">
+                                                                <i class="pi pi-times" style="font-size: 1.5rem"></i>
+                                                            </button>
+                                                        </div>
+                                                    </template>
+                                                </VueDraggable>
+                                            </div>
+                                        </div>
+                                        <fwb-button @click="sendList()" size="sm" color="green" class="float-end"
+                                            :disabled="disabledsavechanges()">Save
+                                            Changes</fwb-button>
+
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div id="alert-additional-content-2"
+                                            class="p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+                                            role="alert">
+                                            <div class="flex items-center">
+                                                <svg class="flex-shrink-0 w-4 h-4 me-2" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                                                 </svg>
-                                                <span>&nbsp;Add Video</span>
-                                            </button>
-                                            <VueDraggable v-model="listobj" :animation="150" handle=".handle"
-                                                    class="flex flex-col gap-2 p-4 w-300px bg-gray-500/5 rounded"
-                                                    v-on:update="onup(tuteClass.id)">
-                                                <template v-for="(item, index) in listobj" :key="item.id || index">
-                                                    <div v-show="item.tuition_class_id === tuteClass.id"
-                                                        class="h-50px bg-gray-500/5 px-2 rounded flex items-center justify-between relative">
-                                                        
-                                                        <!-- Expired Label (conditionally rendered) -->
-                                                        <span  v-if="isExpired(item.expiry_date)" class="absolute top-0 right-0 bg-red-500 text-white text-xs py-1 px-2 rounded-bl-lg">
-                                                            Expired
-                                                        </span>
+                                                <span class="sr-only">Info</span>
+                                                <h3 class="text-lg font-medium">Delete The Class</h3>
+                                            </div>
+                                            <div class="mt-2 mb-4 text-sm">
+                                                Once this class is deleted, all data will be permanently erased and cannot
+                                                be recovered. </div>
+                                            <div class="flex">
+                                                <button type="button" @click="deleteClass(tuteClass.id)"
+                                                    class="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
 
-                                                        <button class="handle cursor-move mr-4">
-                                                            <i class="pi pi-list" style="font-size: 1.5rem"></i>
-                                                        </button>
-                                                        <div class="flex flex-row">
-                                                            <div class="flex flex-col mb-4 mt-4 mr-4">
-                                                                <label for="small-input"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video name</label>
-                                                                <input type="text" v-model="item.video_name"
-                                                                    id="small-input"
-                                                                    class="mr-3 block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <fwb-alert type="warning"
-                                                                    v-if="item.video_name === null || item.video_name.trim() === ''">
-                                                                    Video name is required
-                                                                </fwb-alert>
-                                                            </div>
-                                                            <div class="flex flex-col mb-4">
-                                                                <label for="message"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Video link</label>
-                                                                <textarea id="message" rows="4"
-                                                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                    placeholder="Write your thoughts here..."
-                                                                    v-model="item.video_link"></textarea>
-                                                                <fwb-alert type="warning"
-                                                                    v-if="item.video_link === null || item.video_link.trim() === ''">
-                                                                    Video link is required
-                                                                </fwb-alert>
-                                                            </div>
-
-                                                            <div class="flex flex-col mb-4 ml-5">
-                                                                <label for="email"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-3">Expiry date</label>
-                                                                <input type="date"
-                                                                    class="border bg-gray-50 border-gray-300 rounded-lg p-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                                                    v-model="item.expiry_date">
-                                                                <fwb-alert type="warning"
-                                                                    v-if="item.expiry_date === null || item.expiry_date.trim() === ''">
-                                                                    Expiry date is required
-                                                                </fwb-alert>
-                                                            </div>
+                                        <fwb-modal v-if="istuteModal" @close="addtuteclose">
+                                            <template #header>
+                                                <div class="flex items-center text-lg">
+                                                    Add Tute for : {{ tuteClass.class_name }}
+                                                </div>
+                                            </template>
+                                            <template #body>
+                                                <fwb-input v-model="tute_name" placeholder="Enter Tute Name"
+                                                    label="File name" />
+                                                <br>
+                                                <div class="flex items-center justify-center w-full" 
+                                                    id="dropzone" 
+                                                    @dragover.prevent 
+                                                    @drop="handleDrop">
+                                                    <label for="dropzone-file" 
+                                                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                                            </svg>
+                                                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                                            <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or PDF</p>
+                                                            <p v-if="file" class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ file.name }}</p>
                                                         </div>
-
-                                                        <button class="cursor-pointer" @click="remove(index)">
-                                                            <i class="pi pi-times" style="font-size: 1.5rem"></i>
-                                                        </button>
-                                                    </div>
-                                                </template>
-                                            </VueDraggable>
-                                        </div>
-                                    </div>
-                                    <fwb-button @click="sendList()" size="sm" color="green" class="float-end"
-                                        :disabled="disabledsavechanges()">Save
-                                        Changes</fwb-button>
-
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <div id="alert-additional-content-2"
-                                        class="p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
-                                        role="alert">
-                                        <div class="flex items-center">
-                                            <svg class="flex-shrink-0 w-4 h-4 me-2" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                viewBox="0 0 20 20">
-                                                <path
-                                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                                            </svg>
-                                            <span class="sr-only">Info</span>
-                                            <h3 class="text-lg font-medium">Delete The Class</h3>
-                                        </div>
-                                        <div class="mt-2 mb-4 text-sm">
-                                            Once this class is deleted, all data will be permanently erased and cannot
-                                            be recovered. </div>
-                                        <div class="flex">
-                                            <button type="button" @click="deleteClass(tuteClass.id)"
-                                                class="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <fwb-modal v-if="istuteModal" @close="addtuteclose">
-                                        <template #header>
-                                            <div class="flex items-center text-lg">
-                                                Add Tute for : {{ tuteClass.class_name }}
-                                            </div>
-                                        </template>
-                                        <template #body>
-                                            <fwb-input v-model="tute_name" placeholder="Enter Tute Name"
-                                                label="File name" />
-                                            <br>
-                                            <div class="flex items-center justify-center w-full" 
-                                                id="dropzone" 
-                                                @dragover.prevent 
-                                                @drop="handleDrop">
-                                                <label for="dropzone-file" 
-                                                    class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                                        <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                                        </svg>
-                                                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or PDF</p>
-                                                        <p v-if="file" class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ file.name }}</p>
-                                                    </div>
-                                                    <input id="dropzone-file" 
-                                                        @change="handleFileChange" 
-                                                        accept=".pdf,.png,.jpg,.jpeg,.doc,.xlsx,.txt" 
-                                                        type="file" 
-                                                        class="hidden" 
-                                                        aria-describedby="file_input_help" />
-                                                </label>
-                                            </div>
-                                        </template>
-                                        <template #footer>
-                                            <div class="flex justify-between">
-                                                <fwb-button @click="addtuteclose" color="alternative">
-                                                    Close
-                                                </fwb-button>
-                                                <fwb-button @click="addtute(tuteClass.id)" color="green"
-                                                    :disabled="!file || !tute_name">
-                                                    Save
-                                                </fwb-button>
-                                            </div>
-                                        </template>
-                                    </fwb-modal>
-                                    <fwb-modal v-if="isShowModal" @close="closeModal">
-                                        <template #header>
-                                            <div class="flex items-center text-lg">
-                                                Add video for : {{ tuteClass.class_name }}
-                                            </div>
-                                        </template>
-                                        <template #body>
-                                            <fwb-input class="mb-4" v-model="video_name" label="Video Name"
-                                                placeholder="Enter Class Name" size="md" />
-                                            <fwb-textarea v-model="video_link" :rows="4" label="Class Link"
-                                                placeholder="Enter link..." />
-                                            <label for="email"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-3">Expiry
-                                                date</label>
-                                            <input type="date" v-model="video_expiry_date"
-                                                class="border bg-gray-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                        </template>
-                                        <template #footer>
-                                            <div class="flex justify-between">
-                                                <fwb-button @click="closeModal" color="alternative">
-                                                    Close
-                                                </fwb-button>
-                                                <fwb-button @click="saveAndClose(tuteClass.id)" color="green"
-                                                    :disabled="!video_name || !video_link || !video_expiry_date">
-                                                    Save
-                                                </fwb-button>
-                                            </div>
-                                        </template>
-                                    </fwb-modal>
-                                </fwb-tab>
+                                                        <input id="dropzone-file" 
+                                                            @change="handleFileChange" 
+                                                            accept=".pdf,.png,.jpg,.jpeg,.doc,.xlsx,.txt" 
+                                                            type="file" 
+                                                            class="hidden" 
+                                                            aria-describedby="file_input_help" />
+                                                    </label>
+                                                </div>
+                                            </template>
+                                            <template #footer>
+                                                <div class="flex justify-between">
+                                                    <fwb-button @click="addtuteclose" color="alternative">
+                                                        Close
+                                                    </fwb-button>
+                                                    <fwb-button @click="addtute(tuteClass.id)" color="green"
+                                                        :disabled="!file || !tute_name">
+                                                        Save
+                                                    </fwb-button>
+                                                </div>
+                                            </template>
+                                        </fwb-modal>
+                                        <fwb-modal v-if="isShowModal" @close="closeModal">
+                                            <template #header>
+                                                <div class="flex items-center text-lg">
+                                                    Add video for : {{ tuteClass.class_name }}
+                                                </div>
+                                            </template>
+                                            <template #body>
+                                                <fwb-input class="mb-4" v-model="video_name" label="Video Name"
+                                                    placeholder="Enter Class Name" size="md" />
+                                                <fwb-textarea v-model="video_link" :rows="4" label="Class Link"
+                                                    placeholder="Enter link..." />
+                                                <label for="email"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-3">Expiry
+                                                    date</label>
+                                                <input type="date" v-model="video_expiry_date"
+                                                    class="border bg-gray-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                            </template>
+                                            <template #footer>
+                                                <div class="flex justify-between">
+                                                    <fwb-button @click="closeModal" color="alternative">
+                                                        Close
+                                                    </fwb-button>
+                                                    <fwb-button @click="saveAndClose(tuteClass.id)" color="green"
+                                                        :disabled="!video_name || !video_link || !video_expiry_date">
+                                                        Save
+                                                    </fwb-button>
+                                                </div>
+                                            </template>
+                                        </fwb-modal>
+                                    </fwb-tab>
+                                </template>
                             </template>
-                        </template>
-                        <template v-else>
-                            <p class="pt-1 pb-3 pl-4">No class records available.</p>
-                        </template>
+                            <template v-else>
+                                <p class="pt-1 pb-3 pl-4">No class records available.</p>
+                            </template>
 
-                        <!-- <fwb-tab name="2025 Paper" title="2025 Paper">
-                            Lorem ipsum dolor... 2
-                        </fwb-tab>
-                        <fwb-tab name="2026 Theory" title="2026 Theory">
-                            Lorem ipsum dolor... 3
-                        </fwb-tab>
-                        <fwb-tab name="fourth" title="Fourth" disabled>
-                            Lorem ipsum dolor... 4 -->
-                        <!-- </fwb-tab> -->
-                    </fwb-tabs>
+                            <!-- <fwb-tab name="2025 Paper" title="2025 Paper">
+                                Lorem ipsum dolor... 2
+                            </fwb-tab>
+                            <fwb-tab name="2026 Theory" title="2026 Theory">
+                                Lorem ipsum dolor... 3
+                            </fwb-tab>
+                            <fwb-tab name="fourth" title="Fourth" disabled>
+                                Lorem ipsum dolor... 4 -->
+                            <!-- </fwb-tab> -->
+                        </fwb-tabs>
+                    </div>
                 </div>
 
                 <!-- Add class modal -->

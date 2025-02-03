@@ -10,6 +10,7 @@ use App\Models\ClassVideo;
 use App\Models\StuClaSlip;
 use App\Models\StExtendDate;
 use App\Models\TuitionClass;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +26,8 @@ class DashboardController extends Controller
         $paidClassDetails = StuClaSlip::where('user_id', Auth::id())->get(['tuition_class_id','paid']);
         // $videoLinks = ClassVideo::all();
         $videoLinks = ClassVideo::where(function ($query) {
-            $query->whereDate('expiry_date', '>=', today())  // Expiry date greater than or equal to today
-                  ->orWhereNull('expiry_date');             // Or expiry date is NULL
+            $query->whereDate('expiry_date', '>=', Carbon::now('Asia/Colombo')->toDateString())  // Expiry date greater than or equal to today in Asia/Colombo time
+                  ->orWhereNull('expiry_date'); // Or expiry date is NULL
         })
         ->get();
     

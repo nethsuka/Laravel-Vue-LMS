@@ -3,10 +3,12 @@
 use App\Http\Controllers\ClassControlsController;
 use App\Http\Controllers\ClassFeeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EditResourceController;
 use App\Http\Controllers\ExtraLessonsController;
 use App\Http\Controllers\MoreClassesController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResourceControlsController;
 use App\Http\Controllers\ResourcesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -58,16 +60,13 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
 //     return Inertia::render('Payment');
 // })->name('payments');
 
-//Resource Control Panel
-Route::get('/resourceCPanel', function () {
-    return Inertia::render('Admin/ResourceCPanel');
-})->middleware(['auth', 'verified'])->name('resourceCPanel');
-
-// Resources Edite page
-Route::get('resourceCPanel/edit', function () {
-    return Inertia::render('Admin/EditeResources');
-})->middleware(['auth', 'verified'])->name('resourceCPanel/edit');
-
+// have to add admin middleware to these routs
+Route::get('/resource-controls', [ResourceControlsController::class, 'index'])->middleware(['auth', 'verified'])->name('resourceControls');
+// Route::get('resourceCPanel/edit', function () {
+//     return Inertia::render('Admin/EditResource');
+// })->middleware(['auth', 'verified'])->name('resourceCPanel/edit');
+Route::get('/resource-controls/edit/{resourceId}', [EditResourceController::class, 'show'])->middleware(['auth', 'verified'])->name('resourceControls.edit');
+Route::patch('/resource-controls/edit/save-changes', [EditResourceController::class, 'saveResourceChanges'])->middleware(['auth', 'verified'])->name('resourceControls.edit');
 
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');

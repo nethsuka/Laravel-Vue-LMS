@@ -17,7 +17,7 @@ return new class extends Migration
                   ->constrained('resources')
                   ->onDelete('cascade');
             $table->string('name');
-            $table->string('link');
+            $table->string('link', 800);
             $table->string('index');
             $table->timestamps();
         });

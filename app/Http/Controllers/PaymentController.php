@@ -98,6 +98,16 @@ class PaymentController extends Controller
             'note' => $request->note,
         ]);
 
+        $previousRecords = StuResSlip::where('user_id', Auth::user()->id)->get();
+
+        foreach($previousRecords as $record) {
+            foreach($form2_data['selected_resources'] as $resource){
+                if($record['resource_id'] == $resource['resource_id']) {
+                    StuResSlip::where('user_id', Auth::user()->id)->where('resource_id', $resource['resource_id'])->delete();
+                }
+            }
+        }
+
         foreach ($form2_data['selected_resources'] as $resource) {
             $slipID = ResourceSlip::where('slip_url', $path)->value('id');
             $stID = Auth::user()->id;

@@ -14,4 +14,9 @@ class Resource extends Model
         'price',
         'category',
     ];
+
+    public function videos()
+    {
+        return $this->hasMany(ResourceVideo::class);
+    }
 }

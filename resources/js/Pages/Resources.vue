@@ -28,6 +28,7 @@ import {
 const Arrays = defineProps({
     userResourcesInfo: Array,
     userVideoData: Array,
+    paidResources: Array,
 });
 
 const { props } = usePage();
@@ -41,7 +42,7 @@ const total = ref(0);
 const objectarray = ref(Arrays.userResourcesInfo);
 
 
-const boughtArray = ref(Arrays.userVideoData);
+const boughtArray = ref(Arrays.paidResources);
 function getkey(evt) {
     showarray.value = [];
     if (query.value.length > 0) {
@@ -116,27 +117,30 @@ function redirectpayement() {
 
 }
 
-function expiredatecal(item){
-    if (item.expiry_date == null ) {
+function isExpired(date){
+    const currentDate = new Date();
+    const givenDate = new Date(date);
+    if (givenDate < currentDate) {
         return true;
-    }
-    const today = new Date();
-    const expireDate = new Date(item.expiry_date);
-    const timeDifference = expireDate - today;
-    const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
-    if(daysDifference > 0){
+    } else {
         return false;
     }
-    return true;
 }
 
-function determineCanbuy(item){
-    if (expiredatecal(item) && item.buy == 1) {
-        return true;
-    }else if(expiredatecal(item) && item.buy == 0){
-        return true;
-    }}
+function buyState(item){
+    if(item.buy == 1 && item.expiry_date == null) {
+        return 3;
+    }else if ((item.buy == 0 && item.expiry_date == null) || (item.buy == 1 && isExpired(item.expiry_date)==true)){
+        return 2;
+    }else if(item.buy == 1 && isExpired(item.expiry_date)==false){
+        return 1;
+    }
+}
 
+function getVideosByResourceId(resourceId) {
+    if (!Arrays.userVideoData) return [];
+    return Arrays.userVideoData.filter(item => item.resource_id === resourceId);
+}
 
 </script>
 
@@ -288,12 +292,14 @@ function determineCanbuy(item){
                                                     <fwb-heading style="font-size: medium;">{{ y.resource_name }} </fwb-heading>
                                                 </fwb-table-cell>
                                                 <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
-                                                <fwb-table-cell>
+                                                <fwb-table-cell class="flex justify-center items-center">
                                                     <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
-                                                        v-if="determineCanbuy(y)" @click="addtocart(y)"
+                                                        v-if="buyState(y)==2" @click="addtocart(y)"
                                                         :disabled="isitemincart(y)">Add To Cart</fwb-button>
                                                     <fwb-badge size="sm" class="w-15 float-end" type="purple"
-                                                        v-else>Purchased</fwb-badge>
+                                                        v-else-if="buyState(y)==1">Purchased</fwb-badge>
+                                                    <fwb-badge size="sm" class="w-15 float-end"
+                                                        v-else-if="buyState(y)==3">Processing...</fwb-badge>
                                                 </fwb-table-cell>
                                             </fwb-table-row>
                                         </template>
@@ -311,12 +317,14 @@ function determineCanbuy(item){
                                                 <fwb-heading style="font-size: medium;">{{ y.resource_name }} </fwb-heading>
                                             </fwb-table-cell>
                                             <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
-                                            <fwb-table-cell>
-                                                <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
-                                                v-if="determineCanbuy(y)" @click="addtocart(y)" :disabled="isitemincart(y)">Add
-                                                    To Cart</fwb-button>
-                                                <fwb-badge size="sm" class="w-15 float-end" type="purple"
-                                                    v-else>Purchased</fwb-badge>
+                                            <fwb-table-cell class="flex justify-center items-center">
+                                                    <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
+                                                        v-if="buyState(y)==2" @click="addtocart(y)"
+                                                        :disabled="isitemincart(y)">Add To Cart</fwb-button>
+                                                    <fwb-badge size="sm" class="w-15 float-end" type="purple"
+                                                        v-else-if="buyState(y)==1">Purchased</fwb-badge>
+                                                    <fwb-badge size="sm" class="w-15 float-end"
+                                                        v-else-if="buyState(y)==3">Processing...</fwb-badge>
                                             </fwb-table-cell>
                                         </fwb-table-row>
                                     </template>
@@ -333,12 +341,14 @@ function determineCanbuy(item){
                                             <fwb-heading style="font-size: medium;">{{ y.resource_name }} </fwb-heading>
                                         </fwb-table-cell>
                                         <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
-                                        <fwb-table-cell>
-                                            <fwb-button gradient="lime" size="xs" class="mr-2 text-white" v-if="determineCanbuy(y)"
-                                                @click="addtocart(y)" :disabled="isitemincart(y)">Add To
-                                                Cart</fwb-button>
+                                        <fwb-table-cell class="flex justify-center items-center">
+                                            <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
+                                                v-if="buyState(y)==2" @click="addtocart(y)"
+                                                :disabled="isitemincart(y)">Add To Cart</fwb-button>
                                             <fwb-badge size="sm" class="w-15 float-end" type="purple"
-                                                v-else>Purchased</fwb-badge>
+                                                v-else-if="buyState(y)==1">Purchased</fwb-badge>
+                                            <fwb-badge size="sm" class="w-15 float-end"
+                                                    v-else-if="buyState(y)==3">Processing...</fwb-badge>
                                         </fwb-table-cell>
                                     </fwb-table-row>
                                 </template>
@@ -350,18 +360,26 @@ function determineCanbuy(item){
                             <fwb-accordion-panel v-for="(y, index) in boughtArray" :key="index">
                                 <fwb-accordion-header>
                                     <div style="display: flex; justify-content: space-between; width: 100%">
-                                        <span>{{ y.name }}</span>
-                                        <span>Days Left: {{ calculateExpireDate(y.expire_date) }}</span>
-                                        <span class="text-gray-500 dark:text-gray-400">Expire Date {{ y.expire_date
+                                        <span>{{ y.resource_name }}</span>
+                                        <span>Days Left: {{ calculateExpireDate(y.expiry_date) }}</span>
+                                        <span class="text-gray-500 dark:text-gray-400">Expire Date {{ y.expiry_date
                                             }}</span>
                                     </div>
                                 </fwb-accordion-header>
                                 <fwb-accordion-content>
-                                    <div>
-                                        <div v-for="(video, index) in y.video_link" :key="index"
-                                            class="grid grid-cols-3">
-                                            <div v-html="video"></div>
-                                        </div>
+                                    <div v-if="getVideosByResourceId(y.resource_id) && getVideosByResourceId(y.resource_id).length > 0"
+                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        <template v-for="(video, index) in getVideosByResourceId(y.resource_id)"
+                                            :key="index">
+                                            <div>
+                                                <div class="p-4">
+                                                    <div v-html="video.video_link"></div>
+                                                </div>  
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div v-else>
+                                        <p class="pt-3 pb-7 pl-4">No vidoes available</p>
                                     </div>
                                 </fwb-accordion-content>
                             </fwb-accordion-panel>

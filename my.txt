@@ -56,18 +56,3 @@ INSERT INTO resources (name, price, category) VALUES
 ('2015, 2016, 2017', 3000, 'paper'),
 ('Unit 14 - Industry & polymers', 1000, 'theory'),
 ('Unit 14 - Plant based products & environmental pollution', 1000, 'theory');
-
-
-Schema::create('resource_videos', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('resource_id')
-                  ->constrained('resources')
-                  ->onDelete('cascade');
-            $table->string('name');
-            $table->string('link');
-            $table->string('index');
-            $table->timestamps();
-        });
-
-this is my resources videos table
-now i need to gather resources date , video data for that resource, where videos are not expired(comapred with current date), for a specific user id
