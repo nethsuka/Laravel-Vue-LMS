@@ -117,7 +117,7 @@ function redirectpayement() {
 }
 
 function expiredatecal(item){
-    if (item.expiry_date == null) {
+    if (item.expiry_date == null ) {
         return true;
     }
     const today = new Date();
@@ -129,6 +129,14 @@ function expiredatecal(item){
     }
     return true;
 }
+
+function determineCanbuy(item){
+    if (expiredatecal(item) && item.buy == 1) {
+        return true;
+    }else if(expiredatecal(item) && item.buy == 0){
+        return true;
+    }}
+
 
 </script>
 
@@ -282,7 +290,7 @@ function expiredatecal(item){
                                                 <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                                 <fwb-table-cell>
                                                     <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
-                                                        v-if="expiredatecal(y)" @click="addtocart(y)"
+                                                        v-if="determineCanbuy(y)" @click="addtocart(y)"
                                                         :disabled="isitemincart(y)">Add To Cart</fwb-button>
                                                     <fwb-badge size="sm" class="w-15 float-end" type="purple"
                                                         v-else>Purchased</fwb-badge>
@@ -305,7 +313,7 @@ function expiredatecal(item){
                                             <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                             <fwb-table-cell>
                                                 <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
-                                                v-if="expiredatecal(y)" @click="addtocart(y)" :disabled="isitemincart(y)">Add
+                                                v-if="determineCanbuy(y)" @click="addtocart(y)" :disabled="isitemincart(y)">Add
                                                     To Cart</fwb-button>
                                                 <fwb-badge size="sm" class="w-15 float-end" type="purple"
                                                     v-else>Purchased</fwb-badge>
@@ -326,7 +334,7 @@ function expiredatecal(item){
                                         </fwb-table-cell>
                                         <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                         <fwb-table-cell>
-                                            <fwb-button gradient="lime" size="xs" class="mr-2 text-white" v-if="expiredatecal(y)"
+                                            <fwb-button gradient="lime" size="xs" class="mr-2 text-white" v-if="determineCanbuy(y)"
                                                 @click="addtocart(y)" :disabled="isitemincart(y)">Add To
                                                 Cart</fwb-button>
                                             <fwb-badge size="sm" class="w-15 float-end" type="purple"
