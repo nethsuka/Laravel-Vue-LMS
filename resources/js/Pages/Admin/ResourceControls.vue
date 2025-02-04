@@ -57,7 +57,6 @@ const category = [
 ]
 
 function SavecloseModal() {
-    // objectarray.value.push({ name: name.value, price: price.value, id: objectarray.value.length + 1, count: 3, category: selected.value })
     form1.name = name.value;
     form1.price = price.value;
     form1.category = selected.value;
@@ -71,18 +70,14 @@ const objectarray = ref(Arrays.resourcesWithVideoCount);
 
 const name = ref(null)
 const price = ref(null)
-const filteredarray = ref([])
 
-function getkey(evt) {
-    filteredarray.value = [];
-    if (query.value.length > 0) {
-        for (const y of objectarray.value) {
-            if (y.name.toLowerCase().includes(query.value.toLowerCase())) {
-                filteredarray.value.push(y);
-            }
-        }
-    }
-}
+const query = ref('')
+const filteredarray = computed(() => {
+    const lowerKeyword = query.value.toLowerCase();
+    return Arrays.resourcesWithVideoCount.filter(obj =>
+        obj.name.toLowerCase().includes(lowerKeyword)
+    );
+});
 
 function validatenumber(event) {
     const value = event.target.value;
@@ -93,8 +88,6 @@ function validatenumber(event) {
 function redirectEdite(resourceId) {
     window.location.href = `/resource-controls/edit/${resourceId}`;
 }
-
-const query = ref('')
 
 function deleteResource(resourceId) {
     form2.resource_id = resourceId;
@@ -147,75 +140,45 @@ function deleteResource(resourceId) {
                                     <fwb-table-head-cell>Video count</fwb-table-head-cell>
                                     <fwb-table-head-cell>Action</fwb-table-head-cell>
                                 </fwb-table-head>
-                                <template v-if="query.length > 0">
-                                    <template v-if="filteredarray.length == 0">
-                                        <fwb-table-body>
-                                            <fwb-table-row>
-                                                <fwb-table-cell :colspan="4" class="text-center">
-                                                    <div class="flex items-center justify-center py-4">
-                                                        <span class="text-lg text-gray-500">
-                                                            No data found
-                                                        </span>
-                                                    </div>
-                                                </fwb-table-cell>
-                                            </fwb-table-row>
-                                        </fwb-table-body>
+                                <template v-if="filteredarray.length == 0">
+                                    <fwb-table-body>
+                                        <fwb-table-row>
+                                            <fwb-table-cell :colspan="4" class="text-center">
+                                                <div class="flex items-center justify-center py-4">
+                                                    <span class="text-lg text-gray-500">
+                                                        No data found
+                                                    </span>
+                                                </div>
+                                            </fwb-table-cell>
+                                        </fwb-table-row>
+                                    </fwb-table-body>
+                                </template>
+                                <fwb-table-body>
+                                    <template v-for="(item, index) in filteredarray" :key="index">
+                                        <fwb-table-row>
+
+                                            <fwb-table-cell>
+                                                <span  class="text-base">
+                                                    {{ item.name }}
+                                                </span>
+                                            </fwb-table-cell>
+                                            <fwb-table-cell>
+                                                <span  class="text-base">
+                                                    {{ item.price }}
+                                                </span>
+                                            </fwb-table-cell>
+                                            <fwb-table-cell>
+                                                <span  class="text-base flex justify-center">
+                                                    {{ item.videos_count }}
+                                                </span>
+                                            </fwb-table-cell>
+                                            <fwb-table-cell class="flex justify-center">
+                                                <fwb-button @click="redirectEdite(item.id)" gradient="cyan">Edit</fwb-button>
+                                                <fwb-button gradient="red" @click="deleteResource(item.id)" class="ml-2">Delete</fwb-button>
+                                            </fwb-table-cell>
+                                        </fwb-table-row>
                                     </template>
-                                    <fwb-table-body>
-                                        <template v-for="(item, index) in filteredarray" :key="index">
-                                            <fwb-table-row>
-
-                                                <fwb-table-cell>
-                                                    <span  class="text-base">
-                                                        {{ item.name }}
-                                                    </span>
-                                                </fwb-table-cell>
-                                                <fwb-table-cell>
-                                                    <span  class="text-base">
-                                                        {{ item.price }}
-                                                    </span>
-                                                </fwb-table-cell>
-                                                <fwb-table-cell>
-                                                    <span  class="text-base flex justify-center">
-                                                        {{ item.videos_count }}
-                                                    </span>
-                                                </fwb-table-cell>
-                                                <fwb-table-cell class="flex justify-center">
-                                                    <fwb-button @click="redirectEdite(item.id)" gradient="cyan">Edit</fwb-button>
-                                                    <fwb-button gradient="red" @click="deleteResource(item.id)" class="ml-2">Delete</fwb-button>
-                                                </fwb-table-cell>
-                                            </fwb-table-row>
-                                        </template>
-                                    </fwb-table-body>
-                                </template>
-                                <template v-else>
-                                    <fwb-table-body>
-                                        <template v-for="(item, index) in objectarray" :key="index">
-                                            <fwb-table-row>
-
-                                                <fwb-table-cell>
-                                                    <span class="text-base">
-                                                        {{ item.name }}
-                                                    </span>
-                                                </fwb-table-cell>
-                                                <fwb-table-cell>
-                                                    <span class="text-base">
-                                                        {{ item.price }}
-                                                    </span>
-                                                </fwb-table-cell>
-                                                <fwb-table-cell>
-                                                    <span class="text-base flex justify-center">
-                                                        {{ item.videos_count }}
-                                                    </span>
-                                                </fwb-table-cell>
-                                                <fwb-table-cell class="flex justify-center">
-                                                    <fwb-button @click="redirectEdite(item.id)" gradient="cyan">Edit</fwb-button>
-                                                    <fwb-button gradient="red" @click="deleteResource(item.id)" class="ml-2">Delete</fwb-button>
-                                                </fwb-table-cell>
-                                            </fwb-table-row>
-                                        </template>
-                                    </fwb-table-body>
-                                </template>
+                                </fwb-table-body>
                             </fwb-table>
                             <fwb-modal v-if="isShowModal" @close="closeModal" persistent>
                                 <template #header>

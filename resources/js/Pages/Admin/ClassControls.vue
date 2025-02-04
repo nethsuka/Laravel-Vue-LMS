@@ -128,8 +128,6 @@ function addclasses() {
         preserveScroll: false,
         onSuccess: () => {
             form2.reset();
-            showalert("Class Created Successfully")
-            location.reload();
         },
     });
 }
@@ -240,7 +238,7 @@ function handleAdd(classid) {
 
 function saveclasslist(classid) {
     const classobj = classlist.value.find(i => i.id === classid)
-    console.log(classobj)
+    // console.log(classobj)
     form3.class_name = classobj.class_name;
     form3.zoom_link = classobj.zoom_link;
     form3.tele_group = classobj.tele_group;
@@ -341,7 +339,7 @@ function isExpired(expiryDate) {
                             Add Class</fwb-button><br><br>
                         <fwb-tabs v-model="activeTab" class="p-5">
                             <template v-if="Arrays.classDetails.length > 0">
-                                <template v-for="tuteClass in classlist" :key="tuteClass.id">
+                                <template v-for="tuteClass in Arrays.classDetails" :key="tuteClass.id">
                                     <fwb-tab :name="tuteClass.class_name" :title="tuteClass.class_name">
                                         <form class="max-w-2xl mx-auto mt-6 border-2 pt-5 py-2 px-14 rounded-md bg-slate-50">
                                             <div class="mb-5 flex items-center">
