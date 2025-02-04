@@ -2,8 +2,8 @@
 import { Head } from '@inertiajs/vue3';
 import Sidebar from '@/Layouts/Sidebar.vue';
 import { ref, onMounted } from 'vue';
-import { VueDraggable } from 'vue-draggable-plus'
 import { useForm, usePage, router } from '@inertiajs/vue3';
+import { VueDraggable } from 'vue-draggable-plus'
 import 'primeicons/primeicons.css'
 import {
     FwbInput,
@@ -12,7 +12,8 @@ import {
     FwbTextarea,
     FwbButton,
     FwbModal,
-    FwbAlert
+    FwbAlert,
+    FwbP
 } from 'flowbite-vue';
 
 
@@ -77,10 +78,27 @@ const Resource = ref({
 
 })
 
-function remove(index) {
-    Resource.value.links.splice(index, 1)
-}
+const links = ref([
+    {
+        title: 'Link 1',
+        url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
+    },
+    {
+        title: 'Link 2',
+        url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
+    },
+    {
+        title: 'Link 3',
+        url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
+    },
+])
 
+function remove(index) {
+    links.value.splice(index, 1)
+}
+function onup() {
+    console.log(links.value)
+}
 function validatenumber(event) {
     const value = event.target.value;
     // Allow only numbers
@@ -115,6 +133,10 @@ onMounted(() => {
     price.value = Arrays.resource.price
     selected.value = Arrays.resource.category
 })
+
+function isurlempty() {
+    return links.value.some(link => !link.url || link.url.trim() === '')
+}
 </script>
 <template>
     <Sidebar>
@@ -125,22 +147,27 @@ onMounted(() => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                     <div class="p-14">
                         <div>
-                            <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success" class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
+                            <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success"
+                                class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
                                 <p>{{ $page.props.flash.successMsg }}</p>
                             </fwb-alert>
-                            <fwb-alert v-if="$page.props.flash.errorMsg" closable icon type="danger" class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
+                            <fwb-alert v-if="$page.props.flash.errorMsg" closable icon type="danger"
+                                class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
                                 <p>{{ $page.props.flash.errorMsg }}</p>
                             </fwb-alert>
                             <fwb-heading tag="h3" size="lg" class="mb-10">
                                 Resource Edit
                             </fwb-heading>
-                            <div class="space-y-4 max-w-4xl p-4" style="border: 2px solid #dbdae0; border-radius: 10px;">
-                                <fwb-input v-model="name" label="Resource Name" placeholder="Enter Resource name" size="sm" />
+                            <div class="space-y-4 max-w-4xl p-4"
+                                style="border: 2px solid #dbdae0; border-radius: 10px;">
+                                <fwb-input v-model="name" label="Resource Name" placeholder="Enter Resource name"
+                                    size="sm" />
                                 <fwb-input v-model="price" label="Price" placeholder="Enter Price" size="sm" type="text"
                                     @input="validatenumber" />
                                 <fwb-select v-model="selected" :options="category" label="Select a country" />
                                 <div class="flex justify-end mt-4">
-                                    <fwb-button @click="saveResourceChanges" gradient="green">Save changes</fwb-button>
+                                    <fwb-button @click="saveResourceChanges" :disabled="!name || !price || !selected"
+                                        gradient="green">Save changes</fwb-button>
                                 </div>
                             </div>
 
@@ -153,25 +180,36 @@ onMounted(() => {
                                         + Add Video
                                     </fwb-button>
                                 </div>
-                                <VueDraggable style="padding-top: 10px;" v-model="Resource.links"
-                                    class="flex flex-col gap-2 w-300px bg-gray-500/5 rounded" target=".sort-target" :scroll="true">
-                                    <TransitionGroup type="transition" tag="ul" name="fade" class="sort-target">
-                                        <li v-for="(item, index) in Resource.links" :key="item.id" style="padding: 0.5rem"
-                                            class="h-50px bg-gray-500/5 rounded flex items-center justify-between px-2">
-                                            <button class="handle cursor-move mr-4">
+                                <div class="flex justify-between">
+                                    <VueDraggable v-model="links" :animation="150" handle=".handle" style="width: 100%;"
+                                        class="flex flex-col gap-2 p-4 w-300px bg-gray-500/5 rounded"
+                                        v-on:update="onup">
+                                        <div v-for="(item, index) in links" :key="item.id" style="margin-top: 10px; padding-top: 10px;"
+                                            class="h-50px bg-gray-500/5 px-2 rounded flex items-center justify-between">
+
+                                            <button class="handle cursor-move">
                                                 <i class="pi pi-list" style="font-size: 1.5rem"></i>
                                             </button>
-                                            <fwb-input v-model="item.title" placeholder="Enter a title" label="Video title" />
-                                            <fwb-textarea v-model="item.url" :rows="4" :cols="45" label="Video URL"
-                                                placeholder="Add video link" />
+
+                                            <fwb-input v-model="item.title" label="Video name" placeholder="
+                                            Enter Video name" size="sm" />
+                                            <div>
+
+                                                <fwb-textarea v-model="item.url" label="Video url" style="width: 100%;" />
+                                                <fwb-p v-if="!item.url || item.url.trim() === ''" style="color: red;">
+                                                    Please enter a video URL
+                                                </fwb-p>
+                                            </div>
+
                                             <button class="cursor-pointer" @click="remove(index)">
                                                 <i class="pi pi-times" style="font-size: 1.5rem"></i>
                                             </button>
-                                        </li>
-                                    </TransitionGroup>
-                                </VueDraggable>
+
+                                        </div>
+                                    </VueDraggable>
+                                </div>
                                 <div class="flex justify-end mt-4">
-                                    <fwb-button gradient="green">Save changes</fwb-button>
+                                    <fwb-button gradient="green" :disabled="isurlempty()">Save changes</fwb-button>
                                 </div>
                             </div>
                             <fwb-modal v-if="isShowModal" @close="closeModal">
@@ -182,7 +220,8 @@ onMounted(() => {
                                 </template>
                                 <template #body>
                                     <div class="space-y-4">
-                                        <fwb-input v-model="new_title" label="Video Title" placeholder="Enter Video Title" />
+                                        <fwb-input v-model="new_title" label="Video Title"
+                                            placeholder="Enter Video Title" />
                                         <fwb-input v-model="new_url" label="Video URL" placeholder="Enter Video URL" />
                                     </div>
                                 </template>
@@ -191,7 +230,8 @@ onMounted(() => {
                                         <fwb-button @click="closeModal" color="alternative">
                                             Close
                                         </fwb-button>
-                                        <fwb-button @click="SavecloseModal"  color="green">
+                                        <fwb-button :disabled="!new_title || !new_url" @click="SavecloseModal"
+                                            color="green">
                                             Save
                                         </fwb-button>
                                     </div>
@@ -204,7 +244,7 @@ onMounted(() => {
         </div>
     </Sidebar>
 </template>
-<style scoped>
+<!-- <style scoped>
 .fade-move,
 .fade-enter-active,
 .fade-leave-active {
@@ -224,4 +264,4 @@ onMounted(() => {
 .sort-target {
     padding: 0 1rem;
 }
-</style>
+</style> -->
