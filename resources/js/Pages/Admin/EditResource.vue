@@ -81,14 +81,17 @@ const Resource = ref({
 
 const links = ref([
     {
+        index:1,
         title: 'Link 1',
         url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
     },
     {
+        index:2,
         title: 'Link 2',
         url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
     },
     {
+        index:3,
         title: 'Link 3',
         url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
     },
@@ -98,6 +101,12 @@ function remove(index) {
     links.value.splice(index, 1)
 }
 function onup() {
+    let i = 1;
+    for (const item of links.value) {
+        item.index = i
+        i++;
+
+    }
     console.log(links.value)
 }
 function validatenumber(event) {
@@ -107,10 +116,14 @@ function validatenumber(event) {
 }
 const isShowModal = ref(false)
 function SavecloseModal() {
-    Resource.value.links.push({
+    let lastindex = links.value[links.value.length - 1].index;
+    links.value.push({
         title: new_title.value,
-        url: new_url.value
+        url: new_url.value,
+        index: lastindex + 1,
     })
+    console.log(links.value)
+    // console.log(lastindex)
     // form2.resource_id = Arrays.resource.id;
     // form2.name = new_title.value;
     // form2.link = new_url.value;
