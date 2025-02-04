@@ -136,6 +136,9 @@ function validatenumber(event) {
     // Allow only numbers
     event.target.value = value.replace(/[^\d]/g, '');
 }
+function iscountempty(){
+    return seacrharray.value.filter(student => student.count == 0).length > 0;
+}
 </script>
 <template>
 
@@ -158,10 +161,15 @@ function validatenumber(event) {
                             <template #suffix>
                             </template>
                         </fwb-input>
-                        <fwb-button gradient="teal-lime" @click="extentedStundents" v-if="!isextended">View Extended
+                        <fwb-button gradient="green-blue" @click="extentedStundents">View
+                            <span v-if="!isextended">
+                                Extended
+                            </span>
+                            <span v-if="isextended">
+                                All
+                            </span>
                             Stundents</fwb-button>
-                        <fwb-button gradient="teal-lime" @click="extentedStundents" v-if="isextended">View All
-                            Stundents</fwb-button>
+                        <fwb-button gradient="green" :disabled="iscountempty()">Save Changes</fwb-button>
 
                         <fwb-table striped style="max-width: 1200px; margin: 20px 0 20px 0 ;">
                             <fwb-table-head>
@@ -257,8 +265,8 @@ function validatenumber(event) {
                                                             </svg>
                                                             <span class="font-semibold text-gray-700">Date
                                                                 Count: &nbsp;&nbsp;</span>
-                                                            <fwb-input v-model="stu.count" @input="validatenumber" placeholder="Enter count"
-                                                                size="sm" />
+                                                            <fwb-input v-model="stu.count" @input="validatenumber"
+                                                                placeholder="Enter count" size="sm" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -269,11 +277,7 @@ function validatenumber(event) {
                             </fwb-table-body>
                         </fwb-table>
                         <div class="flex justify-center mt-4">
-                            <fwb-pagination 
-                                v-model="currentPage" 
-                                :total-pages="totalPages" 
-                                show-icons
-                            ></fwb-pagination>
+                            <fwb-pagination v-model="currentPage" :total-pages="totalPages" show-icons></fwb-pagination>
                         </div>
                     </div>
                 </div>
