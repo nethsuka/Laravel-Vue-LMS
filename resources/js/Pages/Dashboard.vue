@@ -101,11 +101,11 @@ function getTutesAccordingToClass(tuteClassId) {
                             </button>
                         </template>
                         <template v-else>
+                            <button type="button" 
+                                class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80">
+                                Add Classes
+                            </button>
                         </template>
-                        <button type="button"
-                            class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80">
-                            Add Classes
-                        </button>
 
                     </a>
                     <a href="/class-controls" v-if="props.auth.user.role === 'admin'">

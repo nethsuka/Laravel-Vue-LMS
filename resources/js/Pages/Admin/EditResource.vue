@@ -81,12 +81,12 @@ const Resource = ref({
 
 const links = ref([
     {
-        index:1,
+        index:2,
         title: 'Link 1',
         url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
     },
     {
-        index:2,
+        index:1,
         title: 'Link 2',
         url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
     },
@@ -99,6 +99,7 @@ const links = ref([
 
 function remove(index) {
     links.value.splice(index, 1)
+    onup()
 }
 function onup() {
     let i = 1;
@@ -146,6 +147,8 @@ onMounted(() => {
     name.value = Arrays.resource.name
     price.value = Arrays.resource.price
     selected.value = Arrays.resource.category
+    links.value.sort((a, b) => a.index - b.index)
+    console.log(links.value)
 })
 
 function isurlempty() {

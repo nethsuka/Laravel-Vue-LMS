@@ -68,7 +68,7 @@ function redirectedFromMoreclass(){
             handleCheckboxChange(class1);
             handleCheckboxChange(class2);
         }else{
-            fromsession.value.push(selectedClass);
+            // fromsession.value.push(selectedClass);
             handleCheckboxChange(selectedClass);
         }
     }
