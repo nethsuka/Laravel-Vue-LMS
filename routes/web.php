@@ -66,7 +66,11 @@ Route::get('/resource-controls', [ResourceControlsController::class, 'index'])->
 //     return Inertia::render('Admin/EditResource');
 // })->middleware(['auth', 'verified'])->name('resourceCPanel/edit');
 Route::get('/resource-controls/edit/{resourceId}', [EditResourceController::class, 'show'])->middleware(['auth', 'verified'])->name('resourceControls.edit');
-Route::patch('/resource-controls/edit/save-changes', [EditResourceController::class, 'saveResourceChanges'])->middleware(['auth', 'verified'])->name('resourceControls.edit');
+Route::patch('/resource-controls/edit/save-changes', [EditResourceController::class, 'saveResourceChanges'])->middleware(['auth', 'verified'])->name('resourceControls.saveChanges');
+Route::post('/resource-controls/add-resource', [ResourceControlsController::class, 'addResource'])->middleware(['auth', 'verified'])->name('resourceControls.addResource');
+Route::delete('/resource-controls/delete-resource', [ResourceControlsController::class, 'deleteResource'])->middleware(['auth', 'verified'])->name('resourceControls.deleteResource');
+Route::post('/resource-controls/resource/add-video', [EditResourceController::class, 'addVideo'])->middleware(['auth', 'verified'])->name('resourceControls.addVideo');
+
 
 // Student control page
 Route::get('/studentCPanel', function () {

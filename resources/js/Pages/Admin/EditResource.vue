@@ -59,47 +59,12 @@ const selected = ref('')
 const new_title = ref(null)
 const new_url = ref(null)
 
-const Resource = ref({
-    name: 'Unit 2: Structure and Bonding',
-    links: [{
-        title: 'Link 1',
-        url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-    },
-    {
-        title: 'Link 2',
-        url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-    },
-    {
-        title: 'Link 3',
-        url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-    },
-    ],
-    price: 3500,
-    category: 'unit',
-
-})
-
-const links = ref([
-    {
-        index:1,
-        title: 'Link 1',
-        url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-    },
-    {
-        index:2,
-        title: 'Link 2',
-        url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-    },
-    {
-        index:3,
-        title: 'Link 3',
-        url: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1012272588?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="video1074884583"></iframe></div>`,
-    },
-])
+const links = ref(Arrays.videos);
 
 function remove(index) {
     links.value.splice(index, 1)
 }
+
 function onup() {
     let i = 1;
     for (const item of links.value) {
@@ -109,35 +74,40 @@ function onup() {
     }
     console.log(links.value)
 }
+
 function validatenumber(event) {
     const value = event.target.value;
     // Allow only numbers
     event.target.value = value.replace(/[^\d]/g, '');
 }
+
 const isShowModal = ref(false)
+
 function SavecloseModal() {
     let lastindex = links.value[links.value.length - 1].index;
-    links.value.push({
-        title: new_title.value,
-        url: new_url.value,
-        index: lastindex + 1,
-    })
+    // links.value.push({
+    //     title: new_title.value,
+    //     url: new_url.value,
+    //     index: lastindex + 1,
+    // })
     console.log(links.value)
-    // console.log(lastindex)
-    // form2.resource_id = Arrays.resource.id;
-    // form2.name = new_title.value;
-    // form2.link = new_url.value;
-    // form2.index = ;
-    // form2.patch('/resource-controls/edit/save-changes', {
-    //     preserveScroll: false,
-    // });
+    console.log(lastindex)
+    form2.resource_id = Arrays.resource.id;
+    form2.name = new_title.value;
+    form2.link = new_url.value;
+    form2.index = lastindex;
+    form2.post('/resource-controls/resource/add-video', {
+        preserveScroll: false,
+    });
     new_title.value = ''
     new_url.value = ''
     closeModal()
 }
+
 function closeModal() {
     isShowModal.value = false
 }
+
 function showModal() {
     isShowModal.value = true
 }
@@ -149,7 +119,7 @@ onMounted(() => {
 })
 
 function isurlempty() {
-    return links.value.some(link => !link.url || link.url.trim() === '')
+    return links.value.some(link => !link.link || link.link.trim() === '')
 }
 </script>
 <template>
@@ -205,12 +175,12 @@ function isurlempty() {
                                                 <i class="pi pi-list" style="font-size: 1.5rem"></i>
                                             </button>
 
-                                            <fwb-input v-model="item.title" label="Video name" placeholder="
+                                            <fwb-input v-model="item.name" label="Video name" placeholder="
                                             Enter Video name" size="sm" />
                                             <div>
 
-                                                <fwb-textarea v-model="item.url" label="Video url" style="width: 100%;" />
-                                                <fwb-p v-if="!item.url || item.url.trim() === ''" style="color: red;">
+                                                <fwb-textarea v-model="item.link" label="Video embed code" style="width: 100%;" />
+                                                <fwb-p v-if="!item.link || item.link.trim() === ''" style="color: red;">
                                                     Please enter a video URL
                                                 </fwb-p>
                                             </div>
@@ -222,6 +192,7 @@ function isurlempty() {
                                         </div>
                                     </VueDraggable>
                                 </div>
+                                <div v-if="links.length <= 0" class="flex justify-start bg-gray-500/5 p-5">No Videos added.</div>
                                 <div class="flex justify-end mt-4">
                                     <fwb-button gradient="green" :disabled="isurlempty()">Save changes</fwb-button>
                                 </div>
@@ -258,24 +229,3 @@ function isurlempty() {
         </div>
     </Sidebar>
 </template>
-<!-- <style scoped>
-.fade-move,
-.fade-enter-active,
-.fade-leave-active {
-    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-    transform: scaleY(0.01) translate(30px, 0);
-}
-
-.fade-leave-active {
-    position: absolute;
-}
-
-.sort-target {
-    padding: 0 1rem;
-}
-</style> -->

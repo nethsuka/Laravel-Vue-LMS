@@ -21,4 +21,37 @@ class ResourceControlsController extends Controller
         // return response()->json(['resourcesWithVideoCount' => $resourcesWithVideoCount]);
 
     }
+
+    public function addResource(Request $request) {
+
+        $videoAdd = Resource::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'category' => $request->category
+        ]);
+
+        if($videoAdd){
+            return back()->with([
+                'successMsg' => 'Resource added successfully',
+            ]);
+        }else{
+            return back()->with([
+                'errorMsg' => 'Error occured !',
+            ]);
+        }
+    }
+
+    public function deleteResource(Request $request) {
+        $deleteResource = Resource::where('id', $request->resource_id)->delete();
+
+        if($deleteResource){
+            return back()->with([
+                'successMsg' => 'Resource deleted successfully',
+            ]);            
+        }else{
+            return back()->with([
+                'errorMsg' => 'Error occured !',
+            ]);
+        }
+    }
 }

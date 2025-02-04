@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Resource;
 use App\Models\ResourceVideo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class EditResourceController extends Controller
@@ -32,6 +33,26 @@ class EditResourceController extends Controller
         if($updated){
             return back()->with([
                 'successMsg' => 'Changes saved successfully',
+            ]);
+        }else{
+            return back()->with([
+                'errorMsg' => 'Error occured !',
+            ]);
+        }
+    }
+
+    public function addVideo(Request $request) {
+
+        $videoAdd = ResourceVideo::create([
+            'resource_id' => $request->resource_id,
+            'name' => $request->name,
+            'link' => $request->link,
+            'index' => $request->index
+        ]);
+
+        if($videoAdd){
+            return back()->with([
+                'successMsg' => 'Video added successfully',
             ]);
         }else{
             return back()->with([
