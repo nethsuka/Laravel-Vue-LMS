@@ -21,6 +21,7 @@ const { props } = usePage();
 
 const Arrays = defineProps({
     resource: Object,
+    videos: Array,
 });
 
 const category = [
