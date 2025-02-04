@@ -20,7 +20,8 @@ import {
     FwbAccordionHeader,
     FwbAccordionPanel,
     FwbBadge,
-    FwbPagination
+    FwbPagination,
+    FwbModal
 } from 'flowbite-vue'
 
 const currentPage = ref(1)
@@ -136,8 +137,17 @@ function validatenumber(event) {
     // Allow only numbers
     event.target.value = value.replace(/[^\d]/g, '');
 }
-function iscountempty(){
+function iscountempty(item) {
     return seacrharray.value.filter(student => student.count == 0).length > 0;
+}
+
+const isShowModal = ref(false)
+
+function closeModal () {
+  isShowModal.value = false
+}
+function showModal () {
+  isShowModal.value = true
 }
 </script>
 <template>
@@ -169,8 +179,6 @@ function iscountempty(){
                                 All
                             </span>
                             Stundents</fwb-button>
-                        <fwb-button gradient="green" :disabled="iscountempty()">Save Changes</fwb-button>
-
                         <fwb-table striped style="max-width: 1200px; margin: 20px 0 20px 0 ;">
                             <fwb-table-head>
                                 <fwb-table-head-cell>Name</fwb-table-head-cell>
@@ -178,12 +186,14 @@ function iscountempty(){
                                 <fwb-table-head-cell>Phone Number</fwb-table-head-cell>
                                 <fwb-table-head-cell>Exam Year</fwb-table-head-cell>
                                 <fwb-table-head-cell>More details</fwb-table-head-cell>
+                                <fwb-table-head-cell>Delete student</fwb-table-head-cell>
                             </fwb-table-head>
                             <fwb-table-body>
                                 <template v-for="(stu, index) in paginatedArray" :key="index">
                                     <fwb-table-row>
                                         <fwb-table-cell>{{ stu.name }}
-                                            <fwb-badge href="#" size="sm" v-if="parseInt(stu.count) > 7">
+                                            <fwb-badge href="#" size="sm" v-if="parseInt(stu.count) > 7"
+                                                style="max-width: 60%; margin-top: 5px;">
                                                 Extended
                                             </fwb-badge>
                                         </fwb-table-cell>
@@ -194,9 +204,15 @@ function iscountempty(){
                                             <fwb-button @click="moredetails(index)" gradient="teal"
                                                 style="margin-right: 50%; ">View</fwb-button>
                                         </fwb-table-cell>
+                                        <fwb-table-cell>
+                                            <fwb-button @click="remove(index)" gradient="red"
+                                                style="margin-right : 50%; ">
+                                                Delete
+                                            </fwb-button>
+                                        </fwb-table-cell>
                                     </fwb-table-row>
                                     <fwb-table-row v-if="indexof == index">
-                                        <fwb-table-cell :colspan="5">
+                                        <fwb-table-cell :colspan="6">
                                             <div class="bg-gray-50 p-6 rounded-lg shadow-md">
                                                 <div class="grid grid-cols-2 gap-4">
                                                     <div class="space-y-2">
@@ -224,8 +240,19 @@ function iscountempty(){
                                                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                                             </svg>
                                                             <span class="font-semibold text-gray-700">Address:</span>
+                                                            <p class="ml-2 text-gray-600">{{ stu.address }}</p>
                                                         </div>
-                                                        <p class="ml-7 text-gray-600">{{ stu.address }}</p>
+                                                        <div class="flex items-center">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="h-5 w-5 mr-2 text-yellow-500" fill="none"
+                                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h11a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z" />
+                                                            </svg>
+                                                            <fwb-button color="yellow" pill @click="showModal">Add extra
+                                                                lessons</fwb-button>
+                                                        </div>
                                                     </div>
 
                                                     <div class="space-y-2">
@@ -267,6 +294,7 @@ function iscountempty(){
                                                                 Count: &nbsp;&nbsp;</span>
                                                             <fwb-input v-model="stu.count" @input="validatenumber"
                                                                 placeholder="Enter count" size="sm" />
+                                                                <fwb-button style="margin-left: 10px;" gradient="green" :disabled="!stu.count > 0" pill>Save Changes</fwb-button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -282,6 +310,35 @@ function iscountempty(){
                     </div>
                 </div>
             </div>
+            <fwb-modal v-if="isShowModal" @close="closeModal">
+                <template #header>
+                    <div class="flex items-center text-lg">
+                        Terms of Service
+                    </div>
+                </template>
+                <template #body>
+                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                        With less than a month to go before the European Union enacts new consumer privacy laws for its
+                        citizens, companies around the world are updating their terms of service agreements to comply.
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25
+                        and is meant to ensure a common set of data rights in the European Union. It requires
+                        organizations to notify users as soon as possible of high-risk data breaches that could
+                        personally affect them.
+                    </p>
+                </template>
+                <template #footer>
+                    <div class="flex justify-between">
+                        <fwb-button @click="closeModal" color="alternative">
+                            Decline
+                        </fwb-button>
+                        <fwb-button @click="closeModal" color="green">
+                            I accept
+                        </fwb-button>
+                    </div>
+                </template>
+            </fwb-modal>
         </Sidebar>
     </div>
 </template>
