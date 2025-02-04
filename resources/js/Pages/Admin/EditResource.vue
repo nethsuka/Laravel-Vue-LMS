@@ -63,6 +63,7 @@ const links = ref(Arrays.videos);
 
 function remove(index) {
     links.value.splice(index, 1)
+    onup()
 }
 
 function onup() {
@@ -116,6 +117,8 @@ onMounted(() => {
     name.value = Arrays.resource.name
     price.value = Arrays.resource.price
     selected.value = Arrays.resource.category
+    links.value.sort((a, b) => a.index - b.index)
+    console.log(links.value)
 })
 
 function isurlempty() {
