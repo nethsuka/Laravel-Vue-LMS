@@ -68,6 +68,11 @@ Route::get('/resource-controls', [ResourceControlsController::class, 'index'])->
 Route::get('/resource-controls/edit/{resourceId}', [EditResourceController::class, 'show'])->middleware(['auth', 'verified'])->name('resourceControls.edit');
 Route::patch('/resource-controls/edit/save-changes', [EditResourceController::class, 'saveResourceChanges'])->middleware(['auth', 'verified'])->name('resourceControls.edit');
 
+// Student control page
+Route::get('/studentCPanel', function () {
+    return Inertia::render('Admin/StudentControl');
+})->middleware(['auth', 'verified'])->name('studentCPanel');
+
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
     Route::patch('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');
