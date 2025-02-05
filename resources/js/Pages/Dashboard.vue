@@ -17,6 +17,7 @@ const Arrays = defineProps({
 // const activeTab = ref('2023AL');
 // const activeTab = ref(Arrays.classDetails[0].class_name);
 const activeTab = ref((Arrays.classDetails.length > 0 ? Arrays.classDetails[0].class_name : 'no data'));
+let changedVideoArray;
 
 const { props } = usePage();
 
@@ -71,7 +72,7 @@ function checkDateRange() {
 function getVideoList(classID) {
     var videoList = [];
     for (let element of Arrays.videoLinks) {
-        if (element.tuition_class_id == classID) {
+        if (element.tuition_class_id === classID) {
             videoList.push(element);
         }
     }
@@ -91,12 +92,12 @@ function getTutesAccordingToClass(tuteClassId) {
     <AuthenticatedLayout>
         <template #header>
             <div class="flex justify-between">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
+                <h2 class="font-semibold text-2xl text-gray-800 leading-tight">Dashboard</h2>
                 <div>
                     <a href="/more-classes">
                         <template v-if="classDetails.length > 0">
                             <button type="button"
-                                class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80">
+                                class="text-white bg-gradient-to-r bg-sky-700  focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-md px-4 py-1.5 text-center shadow-lg hover:shadow-sky-600/100 dark:shadow-lg dark:shadow-cyan-800/80">
                                 Add More Classes
                             </button>
                         </template>
@@ -106,11 +107,10 @@ function getTutesAccordingToClass(tuteClassId) {
                                 Add Classes
                             </button>
                         </template>
-
                     </a>
                     <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
-                            class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center ml-3">
+                            class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg hover:shadow-purple-500/100 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-md px-4 py-1.5 text-center ml-3">
                             Admin Panel
                         </button>
                     </a>
@@ -127,9 +127,10 @@ function getTutesAccordingToClass(tuteClassId) {
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p> -->
 
 
-                    <h4 class="text-2xl mt-2 font-bold dark:text-white text-center">My Classes</h4>
-
-                    <hr class="h-px my-6 bg-gray-200 border-0 dark:bg-gray-700">
+                    <h3 class="text-5xl font-extrabold text-center text-gray-800 dark:text-white mt-4 mb-6">
+                        My Classes
+                    </h3>
+                    <hr class="h-px my-6 bg-gray-200 border-0 dark:bg-gray-900">
 
                     <div class="md:flex">
                         <template v-if="Arrays.classDetails.length > 0">
@@ -154,30 +155,32 @@ function getTutesAccordingToClass(tuteClassId) {
                                             <button @click="submit(record.id)" type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-white">Join Class</button>
                                         </div> -->
                                         <div v-if="checkPaidOrNot(record.id) || checkDateRange()">
-                                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{
+                                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{
                                                 record.class_name }} Class</h3>
                                             <!-- <p class="mb-2">This is some placeholder content for the Profile tab's associated content. Clicking another tab will toggle the visibility of this one.</p>
                                             <p>The tab JavaScript swaps classes to control the content visibility and styling.</p> -->
                                             <div class="mt-5 mb-10 flex">
                                                 <a href="#" @click="joinOnline(record.id)"
-                                                    class="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                                                    Join Online Class
+                                                    class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-xl text-sm px-6 py-3 text-center flex items-center justify-center me-2 mb-2 space-x-2">
+                                                    <!-- <img src="../../assets/zoom.svg" class="w-8"/> -->
+                                                    <span>Join Zoom Class</span>
                                                 </a>
                                                 <a :href="record.tele_group"
-                                                    class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                                                    Telegram Channel
+                                                class="text-white bg-[#0088cc] hover:bg-[#007ab8] focus:ring-4 focus:outline-none focus:ring-[#004d6a] dark:focus:ring-[#003f58] font-medium rounded-xl text-sm px-6 py-3 text-center flex items-center justify-center me-2 mb-2 space-x-2">
+                                                <!-- <img src="../../assets/telegram.svg" class="w-8"/> -->
+                                                    <span>Telegram Channel</span>
                                                 </a>
                                             </div>
 
                                             <div class="pb-9">
-                                                <h6 class="pb-1"><b>Tutes</b></h6>
+                                                <h6 class="pb-1 text-lg"><b>Tutes</b></h6>
                                                 <hr class="pb-3">
                                                 <template v-if="getTutesAccordingToClass(record.id).length !== 0">
                                                     <template v-for="tute in getTutesAccordingToClass(record.id)"
                                                         :key="tute.id">
                                                         <a :href="'storage/' + tute.tute_path"
                                                             :download="tute.tute_name"
-                                                            class="mb-3 flex justify-between items-center max-w-xs p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                                                            class="mb-3 flex justify-between items-center max-w-xs p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-cyan-50   dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                                                             <p
                                                                 class="flex font-normal text-gray-700 dark:text-gray-400 truncate">
                                                                 <svg class="w-6 h-6 text-gray-800 dark:text-white"
@@ -210,24 +213,29 @@ function getTutesAccordingToClass(tuteClassId) {
                                                 </template>
                                             </div>
 
-                                            <h6 class="pb-1"><b>Recordings</b></h6>
+                                            <h6 class="pb-1 text-lg"><b>Recordings</b></h6>
                                             <hr class="pb-3">
                                             <div v-if="getVideoList(record.id).length > 0"
                                                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
                                                 <template v-for="(video, index) in getVideoList(record.id)"
-                                                    :key="index">
-                                                    <div>
-                                                        <div class="py-2 pl-4">{{ video.video_name }}</div>
-                                                        <div v-html="video.video_link"></div>
+                                                        :key="index">
+                                                    <div class="bg-white shadow-md rounded-lg mb-4 p-4 hover:bg-gray-100 transition-colors duration-300">
+                                                        <div class="flex justify-end">
+                                                            <div class="inline-block bg-sky-100 text-gray-800 text-sm py-1 px-3 rounded-full">
+                                                                Expires on <span class="font-bold">{{ video.expiry_date }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mt-2 text-sm text-gray-600">
+                                                            <div v-html="video.video_link" class="cursor-pointer"></div>
+                                                        </div>
                                                     </div>
                                                 </template>
-
                                                 <!-- <div v-html="record.video_link"></div>
                                                 <div v-html="record.video_link"></div> -->
                                                 <!-- Add more video links as needed -->
                                             </div>
                                             <div v-else>
-                                                <p class="pt-3 pb-7 pl-4">No recordings available.</p>
+                                                <p>No recordings available.</p>
                                             </div>
                                         </div>
                                         <div v-else class="container flex justify-center items-center py-20">
@@ -253,17 +261,16 @@ function getTutesAccordingToClass(tuteClassId) {
                             </div>
                         </template>
                     </div>
-
-
                 </div>
             </div>
         </div>
+
     </AuthenticatedLayout>
 </template>
 
 <style scoped>
 .back-color {
-    background-color: #2f7dd1;
+    background-color: #1cbed0;
     color: white;
 }
 

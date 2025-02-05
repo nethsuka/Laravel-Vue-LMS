@@ -1,13 +1,13 @@
 <script setup>
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
+import Logo from "../../assets/Logo.svg"
 </script>
 
 <template>
     <div class="min-h-screen flex flex-col sm:justify-center items-center py-10 bg-gray-100">
         <div>
             <Link href="/">
-                <ApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
+                <img :src=Logo class="w-40 h-20 fill-current text-gray-500" />
             </Link>
         </div>
 

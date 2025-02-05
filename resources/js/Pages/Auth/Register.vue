@@ -5,6 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import GuestLayoutRegister from '@/Layouts/GuestLayoutRegister.vue';
+import Logo from "../../../assets/Logo.svg"
 
 const form = useForm({
     name: '',
@@ -33,9 +34,13 @@ const submit = () => {
     <GuestLayoutRegister>
         <Head title="Register" />
 
+        <div class="text-center pt-2 pb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Student Registration</h1>
+        </div>
+
         <form @submit.prevent="submit" enctype="multipart/form-data">
             <div>
-                <InputLabel for="name" value="Name*" />
+                <InputLabel class="text-gray-600 text-sm" for="first_name">1. Name</InputLabel>
 
                 <TextInput
                     id="name"
@@ -45,15 +50,14 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="name"
-                    placeholder="First Name & Last Name"
+                    placeholder="John Doe"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="nic" value="Student NIC Number*" />
-
+                <InputLabel class="text-gray-600 text-sm" for="nic">2. Student NIC Number</InputLabel>
                 <TextInput
                     id="nic"
                     type="number"
@@ -61,28 +65,29 @@ const submit = () => {
                     v-model="form.NIC"
                     required
                     autocomplete="nic"
+                    placeholder="200xxxxxxxxx"
                 />
 
                 <InputError class="mt-2" :message="form.errors.NIC" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="year" value="Exam Year*" />
-
+                <InputLabel class="text-gray-600 text-sm" for="exam_year">3. Exam Year</InputLabel>
                 <TextInput
                     id="year"
                     type="number"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full no-spinner"
                     v-model="form.exam_year"
                     required
                     autocomplete="year"
+                    placeholder="202X"
                 />
 
                 <InputError class="mt-2" :message="form.errors.exam_year" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="school" value="School" />
+                <InputLabel class="text-gray-600 text-sm" for="school">4. School</InputLabel>
 
                 <TextInput
                     id="school"
@@ -96,7 +101,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <label for="know" class="block font-medium text-sm text-gray-700">How did you get to know about the teacher ?*</label>
+                <InputLabel class="text-gray-600 text-sm" for="getToKnow">5. How did you get to know about the teacher</InputLabel>
                 <textarea 
                     id="know" 
                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" 
@@ -109,7 +114,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <label for="address" class="block font-medium text-sm text-gray-700">Address (With Town)*</label>
+                <InputLabel class="text-gray-600 text-sm" for="address">6. Address (With Town)</InputLabel>
                 <textarea 
                     id="address" 
                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full" 
@@ -122,7 +127,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="fnum" value="Father's Number" />
+                <InputLabel class="text-gray-600 text-sm" for="f_number">7. Father's Contact Number</InputLabel>
 
                 <TextInput
                     id="fnum"
@@ -130,42 +135,45 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.f_number"
                     autocomplete="Father's Number"
-                />
-
-                <InputError class="mt-2" :message="form.errors.f_number" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="mnum" value="Mother's Number" />
-
-                <TextInput
+                    placeholder="07xxxxxxxx"
+                    />
+                    
+                    <InputError class="mt-2" :message="form.errors.f_number" />
+                </div>
+                
+                <div class="mt-4">
+                    <InputLabel class="text-gray-600 text-sm" for="m_number">8. Mother's Contact Number</InputLabel>
+                    
+                    <TextInput
                     id="mnum"
                     type="tel"
                     class="mt-1 block w-full"
                     v-model="form.m_number"
                     autocomplete="Mother's Number"
-                />
-
-                <InputError class="mt-2" :message="form.errors.m_number" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="wnum" value="Whatsapp Number*" />
-
-                <TextInput
+                    placeholder="07xxxxxxxx"
+                    />
+                    
+                    <InputError class="mt-2" :message="form.errors.m_number" />
+                </div>
+                
+                <div class="mt-4">
+                    <InputLabel class="text-gray-600 text-sm" for="whatsapp">9. Whatsapp Number</InputLabel>
+                    
+                    <TextInput
                     id="wnum"
                     type="tel"
                     class="mt-1 block w-full"
                     v-model="form.whatsapp_number"
                     required
                     autocomplete="whatsapp_number"
+                    placeholder="07xxxxxxxx"
                 />
 
                 <InputError class="mt-2" :message="form.errors.whatsapp_number" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email*" />
+                <InputLabel class="text-gray-600 text-sm" for="email">10. Email</InputLabel>
 
                 <TextInput
                     id="email"
@@ -180,7 +188,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel class="text-gray-600 text-sm" for="password">11. Password</InputLabel>
 
                 <TextInput
                     id="password"
@@ -194,7 +202,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel class="text-gray-600 text-sm" for="password_confirmation">12. Confirm Password</InputLabel>
 
                 <TextInput
                     id="password_confirmation"
@@ -215,10 +223,41 @@ const submit = () => {
                     Already registered?
                 </Link>
 
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton class="ms-4 text-white bg-gradient-to-r from-[#25BECF] to-[#076F94] hover:from-[#076F94] hover:to-[#25BECF]" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Register
                 </PrimaryButton>
+                <!-- Footer -->
             </div>
         </form>
     </GuestLayoutRegister>
+    <div class="bg-gradient-to-r from-[#066C92] to-[#25BECF] text-white py-8 px-6">
+        <div class="max-w-2xl mx-auto space-y-2">
+            <p><b>*Conditions applied when registering for classes</b></p>
+            <p>1. Only English medium students who follow the G.C.E Advanced Level Chemistry syllabus may register.</p>
+            <p>2. Access to classes will be denied if the registration is suspicious</p>
+            <p>3. Privacy of all the details provided at the registration will be protected.</p>
+            <p>4. To continue the classes for one month period, the class fee should be settled on or before 7th of the respective month.</p>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+/* For Chrome, Safari, Edge */
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* For Firefox */
+.no-spinner {
+    -moz-appearance: textfield;
+}
+
+</style>
+
+<style scoped>
+input, textarea, select {
+    @apply border-gray-300 focus:border-[#076F94] focus:ring-[#076F94] rounded-md;
+}
+</style>
