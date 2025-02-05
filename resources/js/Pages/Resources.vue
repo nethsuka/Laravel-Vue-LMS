@@ -150,18 +150,18 @@ function getVideosByResourceId(resourceId) {
     <AuthenticatedLayout>
         <template #header>
             <div class="flex justify-between">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Resources</h2>
+                <h2 class="font-semibold text-2xl text-gray-800 leading-tight">Resources</h2>
                 <div>
                     <a href="/more-classes">
                         <button type="button"
-                            class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80">
+                        class="text-white bg-gradient-to-r bg-sky-700  focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-md px-4 py-1.5 text-center shadow-lg hover:shadow-sky-600/100 dark:shadow-lg dark:shadow-cyan-800/80">
                             Add More Classes
                         </button>
                     </a>
                     <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
-                            class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center ml-3">
-                            Admin Panel
+                        class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg hover:shadow-purple-500/100 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-md px-4 py-1.5 text-center ml-3">
+                        Admin Panel
                         </button>
                     </a>
                 </div>
@@ -173,29 +173,29 @@ function getVideosByResourceId(resourceId) {
                     <div class="flex justify-center relative">
                         <div id="app" class="inline-flex rounded-md shadow-sm mt-2" role="group">
                             <button type="button" @click="activebutton = 'unit'" :class="[
-                                'px-4 py-2 text-sm font-medium',
-                                activebutton === 'unit' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
+                                'px-4 py-2 text-lg font-medium',
+                                activebutton === 'unit' ? 'text-sky-700 bg-gray-100' : 'text-gray-900 bg-white',
                                 'border border-gray-200 rounded-s-lg',
-                                'hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700',
-                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white'
+                                'hover:bg-gray-100 hover:text-sky-700 focus:z-10 focus:ring-2 focus:ring-sky-700 focus:text-sky-700',
+                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-sky-500 dark:focus:text-white'
                             ]">
-                                Unite base lessons
+                                Unit Based Lessons
                             </button>
                             <button type="button" @click="activebutton = 'paper'" :class="[
-                                'px-4 py-2 text-sm font-medium',
-                                activebutton === 'paper' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
+                                'px-4 py-2 text-lg font-medium',
+                                activebutton === 'paper' ? 'text-sky-700 bg-gray-100' : 'text-gray-900 bg-white',
                                 'border-t border-b border-gray-200',
-                                'hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700',
-                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white'
+                                'hover:bg-gray-100 hover:text-sky-700 focus:z-10 focus:ring-2 focus:ring-sky-700 focus:text-sky-700',
+                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-sky-500 dark:focus:text-white'
                             ]">
-                                Past papers
+                                Past Papers
                             </button>
                             <button type="button" @click="activebutton = 'myresources'" :class="[
-                                'px-4 py-2 text-sm font-medium',
-                                activebutton === 'myresources' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
+                                'px-4 py-2 text-lg font-medium',
+                                activebutton === 'myresources' ? 'text-sky-700 bg-gray-100' : 'text-gray-900 bg-white',
                                 'border border-gray-200 rounded-e-lg',
-                                'hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700',
-                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white'
+                                'hover:bg-gray-100 hover:text-sky-700 focus:z-10 focus:ring-2 focus:ring-sky-700 focus:text-sky-700',
+                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-sky-500 dark:focus:text-white'
                             ]">
                                 My Resources
                             </button>

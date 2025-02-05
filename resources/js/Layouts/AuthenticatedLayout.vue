@@ -41,7 +41,7 @@ function getGravatarURL( email ) {
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('extra_lessons')" :active="route().current('extra_lessons')">
-                                    Extra Lessons
+                                    Additional Lessons
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
