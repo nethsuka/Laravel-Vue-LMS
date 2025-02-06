@@ -21,7 +21,8 @@ import {
     FwbAccordionPanel,
     FwbBadge,
     FwbPagination,
-    FwbModal
+    FwbModal,
+    FwbTextarea 
 } from 'flowbite-vue'
 
 const currentPage = ref(1)
@@ -142,12 +143,25 @@ function iscountempty(item) {
 }
 
 const isShowModal = ref(false)
+const stuName = ref(null)
+const stuemail = ref(null)
+const videoName =ref(null)
+const videoLink = ref(null)
+const videoexDate = ref(null)
 
-function closeModal () {
-  isShowModal.value = false
+
+function closeModal() {
+    stuName.value = null
+    stuemail.value = null
+    videoName.value = null
+    videoLink.value = null
+    videoexDate.value = null
+    isShowModal.value = false
 }
-function showModal () {
-  isShowModal.value = true
+function showModal(item) {
+    stuName.value = item.name
+    stuemail.value = item.email
+    isShowModal.value = true
 }
 </script>
 <template>
@@ -171,14 +185,16 @@ function showModal () {
                             <template #suffix>
                             </template>
                         </fwb-input>
-                        <fwb-button gradient="green-blue" @click="extentedStundents">View
-                            <span v-if="!isextended">
-                                Extended
-                            </span>
-                            <span v-if="isextended">
-                                All
-                            </span>
-                            Stundents</fwb-button>
+                        <div class="flex justify-end mb-4">
+                            <fwb-button gradient="green-blue" @click="extentedStundents" class="flex justify-end mb-4">View
+                                <span v-if="!isextended" >
+                                    Extended
+                                </span>
+                                <span v-if="isextended">
+                                    All
+                                </span>
+                                Stundents</fwb-button>
+                        </div>
                         <fwb-table striped style="max-width: 1200px; margin: 20px 0 20px 0 ;">
                             <fwb-table-head>
                                 <fwb-table-head-cell>Name</fwb-table-head-cell>
@@ -250,7 +266,8 @@ function showModal () {
                                                                     stroke-width="2"
                                                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h11a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z" />
                                                             </svg>
-                                                            <fwb-button color="yellow" pill @click="showModal">Add extra
+                                                            <fwb-button color="yellow" pill @click="showModal(stu)">Add
+                                                                extra
                                                                 lessons</fwb-button>
                                                         </div>
                                                     </div>
@@ -294,7 +311,9 @@ function showModal () {
                                                                 Count: &nbsp;&nbsp;</span>
                                                             <fwb-input v-model="stu.count" @input="validatenumber"
                                                                 placeholder="Enter count" size="sm" />
-                                                                <fwb-button style="margin-left: 10px;" gradient="green" :disabled="!stu.count > 0" pill>Save Changes</fwb-button>
+                                                            <fwb-button style="margin-left: 10px;" gradient="green"
+                                                                :disabled="!stu.count > 0" pill>Save
+                                                                Changes</fwb-button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -313,28 +332,32 @@ function showModal () {
             <fwb-modal v-if="isShowModal" @close="closeModal">
                 <template #header>
                     <div class="flex items-center text-lg">
-                        Terms of Service
+                        Add Extra Lessons
                     </div>
                 </template>
                 <template #body>
-                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        With less than a month to go before the European Union enacts new consumer privacy laws for its
-                        citizens, companies around the world are updating their terms of service agreements to comply.
-                    </p>
-                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25
-                        and is meant to ensure a common set of data rights in the European Union. It requires
-                        organizations to notify users as soon as possible of high-risk data breaches that could
-                        personally affect them.
-                    </p>
+                    <fwb-heading tag="h6">Student name : {{ stuName }}</fwb-heading>
+                    <fwb-heading tag="h6" class="mb-2">Stundent Email : {{ stuemail }}</fwb-heading>
+                    <hr>
+                    <fwb-input v-model="videoName" label="Video name" placeholder="enter your name" size="sm" class="mb-2 mt-2" />
+                    
+                    <fwb-textarea v-model="videoLink" :rows="4" label="URL"
+                        placeholder="Paste URL" class="mb-2" />
+                                        
+                    <label for="email"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-1">Expiry date</label>
+                                        
+                    <input type="date"
+                        class="border bg-gray-50 border-gray-300 rounded-lg p-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        v-model="videoexDate">
                 </template>
                 <template #footer>
                     <div class="flex justify-between">
-                        <fwb-button @click="closeModal" color="alternative">
-                            Decline
+                        <fwb-button @click="closeModal" color="alternative" >
+                            Close
                         </fwb-button>
-                        <fwb-button @click="closeModal" color="green">
-                            I accept
+                        <fwb-button @click="closeModal" color="green" :disabled ="!videoLink || !videoexDate">
+                            Save
                         </fwb-button>
                     </div>
                 </template>
