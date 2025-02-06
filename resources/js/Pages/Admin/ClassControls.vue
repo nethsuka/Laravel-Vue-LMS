@@ -251,7 +251,6 @@ const handleAdd= async(classid) => {
                     listobj.value =[...list.value];
                     createlist();
                 }
-                showalert("Video added successfully")
             },
         });
     }catch(error){
@@ -332,7 +331,7 @@ function deleteClass(classId) {
             preserveScroll: false,
             onSuccess: () => {
                 form7.reset();
-                location.reload();
+                this.activeTab = this.Arrays.classDetails.length > 0 ? this.Arrays.classDetails[0].class_name : 'no data';
             },
         });
     }

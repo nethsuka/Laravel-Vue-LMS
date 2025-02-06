@@ -1,6 +1,6 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import {
     FwbA,
@@ -82,6 +82,20 @@ const showModal = (item) => {
     tomodel.value = item;
     isShowModal.value = true;
 }
+
+const form1 = useForm({
+    slipID: ''
+})
+
+function confirmDelete(id) {
+    const confirmed = confirm('Are you sure you want to delete this slip?');
+    if (confirmed) {
+        form1.slipID = id;
+        form1.delete('/classfees/delete-slip', {
+        preserveScroll: false,
+    });
+    }
+}
 </script>
 
 <template>
@@ -145,9 +159,14 @@ const showModal = (item) => {
                                                         <fwb-table-cell>
                                                             <fwb-button color="default" @click="showModal(element)" class="whitespace-nowrap px-3 py-1" outline>Slip Details</fwb-button>
                                                         </fwb-table-cell>
-                                                        <fwb-table-cell>
+                                                        <fwb-table-cell class="flex justify-center">
                                                             <Link href="/classfees" method="patch" :data="{ slipID: element.slip_id, paidClasses: element.paid_classes, stID: element.stID }" as="button" type="button" class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
                                                                 Accept
+                                                            </Link>
+                                                            <Link href="" @click="confirmDelete(element.slip_id)" as="button" type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3.5 text-center ml-1.5">
+                                                                <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24">
+                                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                                                </svg>
                                                             </Link>
                                                         </fwb-table-cell>
                                                     </template>

@@ -82,6 +82,7 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::patch('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');
     Route::patch('/classfees/undo-payment', [ClassFeeController::class, 'undoPayment'])->name('classfees.undo');
     Route::delete('/classfees/delete/slips', [ClassFeeController::class, 'clearSlipTable'])->name('');
+    Route::delete('/classfees/delete-slip', [ClassFeeController::class, 'deleteStudentSlip'])->name('classfees.deleteSlip');
 });
 
 Route::get('/more-classes', [MoreClassesController::class, 'index'])->middleware(['auth', 'verified'])->name('classinfo');

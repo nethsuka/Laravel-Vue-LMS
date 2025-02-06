@@ -148,4 +148,14 @@ class ClassFeeController extends Controller
         }
 
     }
+
+    public function deleteStudentSlip(Request $request) {
+        $data = Slip::find($request->slipID);
+        $filePath = storage_path('app/public/'.$data->slip_url);
+
+        if (File::exists($filePath)) {
+            File::delete($filePath);
+            Slip::destroy($request->slipID);
+        }
+    }
 }
