@@ -1,6 +1,6 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue';
-import { onMounted, ref } from 'vue'
+import { onMounted, ref,watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import 'primeicons/primeicons.css'
 import { Head, useForm, usePage, router } from '@inertiajs/vue3';
@@ -38,7 +38,7 @@ const form4 = useForm({
     video_link: '',
     video_name: '',
     expiry_date: '',
-    index: '',
+    index: 0,
 });
 
 const form5 = useForm({
@@ -168,12 +168,24 @@ const form1 = useForm({
     modifiedList: [],
 });
 
-function sendList() {
-    form1.modifiedList = listobj;
-    form1.post('/class-controls/video-list-update', {
-        preserveScroll: false,
-    });
-}
+const sendList = async()=> {
+    try{
+        form1.modifiedList = listobj.value;
+        await form1.post('/class-controls/video-list-update',{
+            preserveScroll: false,
+            onSuccess: (page) => {
+                if(page.props.videoDetails){
+                    list.value = page.props.videoDetails;
+                    listobj.value = [...list.value];
+                    createlist()
+                }
+            },
+        });
+    }catch (error){
+        console.log("error : ",error)
+    }
+};
+
 function createlist() {
     listobj.value.sort((a, b) => a.index - b.index);
 }
@@ -197,44 +209,59 @@ function onup(classid) {
     console.log(listobj.value)
 }
 
-function created_class_video_list(classid) {
-    classvideoobj.value = listobj.value.filter(i => i.tuition_class_id === classid)
-}
+// function created_class_video_list(classid) {
+//     classvideoobj.value = listobj.value.filter(i => i.tuition_class_id === classid)
+// }
 
-function handleAdd(classid) {
-    created_class_video_list(classid)
-    const lastindex = classvideoobj.value[classvideoobj.value.length - 1]?.index || 0;
-    console.log(lastindex)
-    const videobj = {
-        video_name: video_name.value,
-        video_link: video_link.value,
-        id: classvideoobj.length + 1,
-        index: lastindex + 1,
-        created_at: null,
-        updated_at: null,
-        tuition_class_id: classid
+const handleAdd= async(classid) => {
+    try{
+        const lastindex = listobj.value
+            .filter(item => item.tuition_class_id === classid)
+            .reduce((max, item) => Math.max(max, item.index), 0);
+        console.log(lastindex)
+        const videobj = {
+            video_name: video_name.value,
+            video_link: video_link.value,
+            id: classvideoobj.length + 1,
+            index: lastindex + 1,
+            created_at: null,
+            updated_at: null,
+            tuition_class_id: classid
+        }
+        form4.tuition_class_id = classid;
+        form4.video_link = video_link.value;
+        form4.video_name = video_name.value;
+        form4.expiry_date = video_expiry_date.value;
+        form4.index = lastindex + 1;
+
+        
+        // listobj.value.push(videobj);
+        // console.log(classvideoobj.value);
+        
+        //sending data to backend
+        await form4.post('/class-controls/addnewvideo', {
+            preserveScroll: true,
+            onSuccess: (page) => {
+                video_link.value = '';
+                video_name.value = '';
+                video_expiry_date.value = '';
+                
+                if(page.props.videoDetails){
+                    list.value = page.props.videoDetails;
+                    listobj.value =[...list.value];
+                    createlist();
+                }
+                showalert("Video added successfully")
+            },
+        });
+    }catch(error){
+        console.log("handle error : ",error)
     }
+};
 
-    listobj.value.push(videobj);
-    console.log(classvideoobj.value);
-
-    //sending data to backend
-    form4.tuition_class_id = classid;
-    form4.video_link = video_link.value;
-    form4.video_name = video_name.value;
-    form4.expiry_date = video_expiry_date.value;
-    form4.index = lastindex + 1;
-    form4.post('/class-controls/addnewvideo', {
-        preserveScroll: true,
-        onSuccess: () => {
-            video_link.value = '';
-            video_name.value = '';
-            video_expiry_date.value = '';
-            showalert("Video added successfully")
-            location.reload();
-        },
-    });
-}
+watch(listobj,()=>{
+    createlist();   
+},{deep:true})
 
 function saveclasslist(classid) {
     const classobj = classlist.value.find(i => i.id === classid)

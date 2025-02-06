@@ -28,6 +28,13 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+function validatenumber(event) {
+    const value = event.target.value;
+    // Allow only numbers
+    event.target.value = value.replace(/[^\d]/g, '');
+}
+
+
 </script>
 
 <template>
@@ -59,8 +66,9 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel class="text-gray-600 text-sm" for="nic">2. Student NIC Number</InputLabel>
                 <TextInput
+                @input="validatenumber" 
                     id="nic"
-                    type="number"
+                    type="text"
                     class="mt-1 block w-full"
                     v-model="form.NIC"
                     required
@@ -74,9 +82,10 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel class="text-gray-600 text-sm" for="exam_year">3. Exam Year</InputLabel>
                 <TextInput
+                @input="validatenumber" 
                     id="year"
-                    type="number"
                     class="mt-1 block w-full no-spinner"
+                    type="text"
                     v-model="form.exam_year"
                     required
                     autocomplete="year"
@@ -130,6 +139,8 @@ const submit = () => {
                 <InputLabel class="text-gray-600 text-sm" for="f_number">7. Father's Contact Number</InputLabel>
 
                 <TextInput
+                @input="validatenumber"
+                
                     id="fnum"
                     type="tel"
                     class="mt-1 block w-full"
@@ -151,6 +162,7 @@ const submit = () => {
                     v-model="form.m_number"
                     autocomplete="Mother's Number"
                     placeholder="07xxxxxxxx"
+                    @input="validatenumber"
                     />
                     
                     <InputError class="mt-2" :message="form.errors.m_number" />
@@ -167,6 +179,7 @@ const submit = () => {
                     required
                     autocomplete="whatsapp_number"
                     placeholder="07xxxxxxxx"
+                    @input="validatenumber"
                 />
 
                 <InputError class="mt-2" :message="form.errors.whatsapp_number" />

@@ -44,6 +44,7 @@ const form = useForm({
                     required
                     autofocus
                     autocomplete="name"
+                    disabled
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
@@ -59,6 +60,7 @@ const form = useForm({
                     v-model="form.email"
                     required
                     autocomplete="username"
+                    disabled
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -86,8 +88,8 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-
+                <!-- <PrimaryButton  :disabled="form.processing">Save</PrimaryButton> -->
+                                <PrimaryButton :disabled="true">Save</PrimaryButton>
                 <Transition
                     enter-active-class="transition ease-in-out"
                     enter-from-class="opacity-0"
