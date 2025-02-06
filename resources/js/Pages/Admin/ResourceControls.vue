@@ -123,7 +123,7 @@ function deleteResource(resourceId) {
                             <div class="flex justify-end mb-4">
                                 <fwb-button gradient="green" @click="showModal">+ Add Resource</fwb-button>
                             </div>
-                            <fwb-input v-on:input="getkey" v-model="query" placeholder="Search for resources"
+                            <fwb-input  v-model="query" placeholder="Search for resources"
                                 size="md">
                                 <template #prefix>
                                     <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"

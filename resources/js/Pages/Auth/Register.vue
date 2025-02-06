@@ -27,6 +27,13 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+function validatenumber(event) {
+    const value = event.target.value;
+    // Allow only numbers
+    event.target.value = value.replace(/[^\d]/g, '');
+}
+
+
 </script>
 
 <template>
@@ -55,8 +62,9 @@ const submit = () => {
                 <InputLabel for="nic" value="Student NIC Number*" />
 
                 <TextInput
+                @input="validatenumber" 
                     id="nic"
-                    type="number"
+                    type="text"
                     class="mt-1 block w-full"
                     v-model="form.NIC"
                     required
@@ -70,8 +78,9 @@ const submit = () => {
                 <InputLabel for="year" value="Exam Year*" />
 
                 <TextInput
+                @input="validatenumber" 
                     id="year"
-                    type="number"
+                    type="text"
                     class="mt-1 block w-full"
                     v-model="form.exam_year"
                     required
@@ -125,6 +134,8 @@ const submit = () => {
                 <InputLabel for="fnum" value="Father's Number" />
 
                 <TextInput
+                @input="validatenumber"
+                placeholder="078XXXXXXX"
                     id="fnum"
                     type="tel"
                     class="mt-1 block w-full"
@@ -139,6 +150,8 @@ const submit = () => {
                 <InputLabel for="mnum" value="Mother's Number" />
 
                 <TextInput
+                 @input="validatenumber"
+                 placeholder="078XXXXXXX"
                     id="mnum"
                     type="tel"
                     class="mt-1 block w-full"
@@ -153,6 +166,8 @@ const submit = () => {
                 <InputLabel for="wnum" value="Whatsapp Number*" />
 
                 <TextInput
+                 @input="validatenumber"
+                 placeholder="078XXXXXXX"
                     id="wnum"
                     type="tel"
                     class="mt-1 block w-full"

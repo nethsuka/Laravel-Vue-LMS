@@ -170,8 +170,8 @@ function showModal(item) {
     <div>
         <Sidebar>
             <div class="py-12">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '95vh' }">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
+                <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                         <fwb-heading tag="h2" style="margin-bottom: 20px;">Students</fwb-heading>
                         <fwb-input v-on:input="getkey" class="max-w-sm mx-auto" v-model="query"
                             placeholder="Find student by name">
@@ -193,7 +193,7 @@ function showModal(item) {
                                 <span v-if="isextended">
                                     All
                                 </span>
-                                Stundents</fwb-button>
+                                </fwb-button>
                         </div>
                         <fwb-table striped style="max-width: 1200px; margin: 20px 0 20px 0 ;">
                             <fwb-table-head>
@@ -307,9 +307,8 @@ function showModal(item) {
                                                                     stroke-width="2"
                                                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                             </svg>
-                                                            <span class="font-semibold text-gray-700">Date
-                                                                Count: &nbsp;&nbsp;</span>
-                                                            <fwb-input v-model="stu.count" @input="validatenumber"
+                                                            <span class="font-semibold text-gray-700">Extend till: &nbsp;&nbsp;</span>
+                                                            <fwb-input style="width: 40px;" v-model="stu.count" @input="validatenumber"
                                                                 placeholder="Enter count" size="sm" />
                                                             <fwb-button style="margin-left: 10px;" gradient="green"
                                                                 :disabled="!stu.count > 0" pill>Save
