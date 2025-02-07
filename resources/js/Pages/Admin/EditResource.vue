@@ -65,15 +65,16 @@ function remove(index) {
     links.value.splice(index, 1)
     onup()
 }
-
+onMounted(()=>{
+    links.value.sort((a, b) => a.index - b.index);
+})
 function onup() {
     let i = 1;
     for (const item of links.value) {
-        item.index = i
+        item.index = i;
         i++;
-
     }
-    console.log(links.value)
+    links.value.sort((a, b) => a.index - b.index);
 }
 
 function validatenumber(event) {
@@ -85,14 +86,20 @@ function validatenumber(event) {
 const isShowModal = ref(false)
 
 function SavecloseModal() {
-    let lastindex = links.value[links.value.length - 1].index;
-    // links.value.push({
-    //     title: new_title.value,
-    //     url: new_url.value,
-    //     index: lastindex + 1,
-    // })
-    console.log(links.value)
-    console.log(lastindex)
+    let lastindex = 1
+
+    if(links.value.length == 0){
+        console.log("thinula")
+        lastindex = 1
+    } else{
+        lastindex = Math.max(...links.value.map(link => link.index)) + 1;
+    }
+    console.log('hi')
+    links.value.push({
+        name: new_title.value,
+        link: new_url.value,
+        index: lastindex ,
+    })
     form2.resource_id = Arrays.resource.id;
     form2.name = new_title.value;
     form2.link = new_url.value;

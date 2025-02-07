@@ -77,6 +77,11 @@ Route::get('/studentCPanel', function () {
     return Inertia::render('Admin/StudentControl');
 })->middleware(['auth', 'verified'])->name('studentCPanel');
 
+//student' classes page
+Route::get('/studentsClasses', function () {
+    return Inertia::render('Admin/FilterStuClass');
+})->middleware(['auth', 'verified'])->name('studentsClasses');
+
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
     Route::patch('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');

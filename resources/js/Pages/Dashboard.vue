@@ -1,8 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import { FwbButton } from 'flowbite-vue'
+import { onMounted, ref } from 'vue';
+import { FwbButton, FwbAlert } from 'flowbite-vue'
 
 const Arrays = defineProps({
     //   stclassRecords: Array,
@@ -24,6 +24,13 @@ const { props } = usePage();
 function setActiveTab(tab) {
     activeTab.value = tab;
 }
+
+// onMounted(() => {
+//     console.log('onMounted called');
+//     console.log(Arrays.paidClassDetails)
+//     console.log(Arrays.classDetails)
+//     console.log(Arrays.extendDetails)
+// })
 
 // const form = useForm({
 //     classID: '',
@@ -102,7 +109,7 @@ function getTutesAccordingToClass(tuteClassId) {
                             </button>
                         </template>
                         <template v-else>
-                            <button type="button" 
+                            <button type="button"
                                 class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80">
                                 Add Classes
                             </button>
@@ -157,6 +164,9 @@ function getTutesAccordingToClass(tuteClassId) {
                                         <div v-if="checkPaidOrNot(record.id) || checkDateRange()">
                                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{
                                                 record.class_name }} Class</h3>
+    <fwb-alert  style="background-color: #FF303E;color: wheat;font-size: 18px;font-weight: 800;" closable icon type="warning">
+      Setle the this month payment {{ record.class_name }} Class before {{ Arrays.extendDetails.extend_date }} th of  month.
+    </fwb-alert>
                                             <!-- <p class="mb-2">This is some placeholder content for the Profile tab's associated content. Clicking another tab will toggle the visibility of this one.</p>
                                             <p>The tab JavaScript swaps classes to control the content visibility and styling.</p> -->
                                             <div class="mt-5 mb-10 flex">
@@ -166,8 +176,8 @@ function getTutesAccordingToClass(tuteClassId) {
                                                     <span>Join Zoom Class</span>
                                                 </a>
                                                 <a :href="record.tele_group"
-                                                class="text-white bg-[#0088cc] hover:bg-[#007ab8] focus:ring-4 focus:outline-none focus:ring-[#004d6a] dark:focus:ring-[#003f58] font-medium rounded-xl text-sm px-6 py-3 text-center flex items-center justify-center me-2 mb-2 space-x-2">
-                                                <!-- <img src="../../assets/telegram.svg" class="w-8"/> -->
+                                                    class="text-white bg-[#0088cc] hover:bg-[#007ab8] focus:ring-4 focus:outline-none focus:ring-[#004d6a] dark:focus:ring-[#003f58] font-medium rounded-xl text-sm px-6 py-3 text-center flex items-center justify-center me-2 mb-2 space-x-2">
+                                                    <!-- <img src="../../assets/telegram.svg" class="w-8"/> -->
                                                     <span>Telegram Channel</span>
                                                 </a>
                                             </div>
@@ -218,11 +228,14 @@ function getTutesAccordingToClass(tuteClassId) {
                                             <div v-if="getVideoList(record.id).length > 0"
                                                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
                                                 <template v-for="(video, index) in getVideoList(record.id)"
-                                                        :key="index">
-                                                    <div class="bg-white shadow-md rounded-lg mb-4 p-4 hover:bg-gray-100 transition-colors duration-300">
+                                                    :key="index">
+                                                    <div
+                                                        class="bg-white shadow-md rounded-lg mb-4 p-4 hover:bg-gray-100 transition-colors duration-300">
                                                         <div class="flex justify-end">
-                                                            <div class="inline-block bg-sky-100 text-gray-800 text-sm py-1 px-3 rounded-full">
-                                                                Expires on <span class="font-bold">{{ video.expiry_date }}</span>
+                                                            <div
+                                                                class="inline-block bg-sky-100 text-gray-800 text-sm py-1 px-3 rounded-full">
+                                                                Expires on <span class="font-bold">{{ video.expiry_date
+                                                                    }}</span>
                                                             </div>
                                                         </div>
                                                         <div class="mt-2 text-sm text-gray-600">

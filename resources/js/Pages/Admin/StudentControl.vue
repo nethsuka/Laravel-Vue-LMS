@@ -22,7 +22,7 @@ import {
     FwbBadge,
     FwbPagination,
     FwbModal,
-    FwbTextarea 
+    FwbTextarea
 } from 'flowbite-vue'
 
 const currentPage = ref(1)
@@ -145,7 +145,7 @@ function iscountempty(item) {
 const isShowModal = ref(false)
 const stuName = ref(null)
 const stuemail = ref(null)
-const videoName =ref(null)
+const videoName = ref(null)
 const videoLink = ref(null)
 const videoexDate = ref(null)
 
@@ -186,14 +186,15 @@ function showModal(item) {
                             </template>
                         </fwb-input>
                         <div class="flex justify-end mb-4">
-                            <fwb-button gradient="green-blue" @click="extentedStundents" class="flex justify-end mb-4">View
-                                <span v-if="!isextended" >
+                            <fwb-button gradient="green-blue" @click="extentedStundents"
+                                class="flex justify-end mb-4">View
+                                <span v-if="!isextended">
                                     Extended
                                 </span>
                                 <span v-if="isextended">
                                     All
                                 </span>
-                                </fwb-button>
+                            </fwb-button>
                         </div>
                         <fwb-table striped style="max-width: 1200px; margin: 20px 0 20px 0 ;">
                             <fwb-table-head>
@@ -307,9 +308,11 @@ function showModal(item) {
                                                                     stroke-width="2"
                                                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                             </svg>
-                                                            <span class="font-semibold text-gray-700">Extend till: &nbsp;&nbsp;</span>
-                                                            <fwb-input style="width: 40px;" v-model="stu.count" @input="validatenumber"
-                                                                placeholder="Enter count" size="sm" />
+                                                            <span class="font-semibold text-gray-700">Extend till:
+                                                                &nbsp;&nbsp;</span>
+                                                            <fwb-input style="width: 40px;" v-model="stu.count"
+                                                                @input="validatenumber" placeholder="Enter count"
+                                                                size="sm" />
                                                             <fwb-button style="margin-left: 10px;" gradient="green"
                                                                 :disabled="!stu.count > 0" pill>Save
                                                                 Changes</fwb-button>
@@ -338,24 +341,24 @@ function showModal(item) {
                     <fwb-heading tag="h6">Student name : {{ stuName }}</fwb-heading>
                     <fwb-heading tag="h6" class="mb-2">Stundent Email : {{ stuemail }}</fwb-heading>
                     <hr>
-                    <fwb-input v-model="videoName" label="Video name" placeholder="enter your name" size="sm" class="mb-2 mt-2" />
-                    
-                    <fwb-textarea v-model="videoLink" :rows="4" label="URL"
-                        placeholder="Paste URL" class="mb-2" />
-                                        
-                    <label for="email"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-1">Expiry date</label>
-                                        
+                    <fwb-input v-model="videoName" label="Video name" placeholder="enter your name" size="sm"
+                        class="mb-2 mt-2" />
+
+                    <fwb-textarea v-model="videoLink" :rows="4" label="URL" placeholder="Paste URL" class="mb-2" />
+
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-1">Expiry
+                        date</label>
+
                     <input type="date"
                         class="border bg-gray-50 border-gray-300 rounded-lg p-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         v-model="videoexDate">
                 </template>
                 <template #footer>
                     <div class="flex justify-between">
-                        <fwb-button @click="closeModal" color="alternative" >
+                        <fwb-button @click="closeModal" color="alternative">
                             Close
                         </fwb-button>
-                        <fwb-button @click="closeModal" color="green" :disabled ="!videoLink || !videoexDate">
+                        <fwb-button @click="closeModal" color="green" :disabled="!videoLink || !videoexDate">
                             Save
                         </fwb-button>
                     </div>
