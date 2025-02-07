@@ -172,6 +172,10 @@ function showModal(item) {
     stuemail.value = item.email
     isShowModal.value = true
 }
+
+function savechange(item){
+    console.log(item)
+}
 </script>
 <template>
 
@@ -320,10 +324,10 @@ function showModal(item) {
                                                             <span class="font-semibold text-gray-700">Extend till:
                                                                 &nbsp;&nbsp;</span>
                                                             <fwb-input style="width: 40px;" 
-                                                                @input="validatenumber" placeholder="Enter count" :value="stu.extend_date"
+                                                                @input="validatenumber" placeholder="Enter count" v-model="stu.extend_date"
                                                                 size="sm" />
                                                             <fwb-button style="margin-left: 10px;" gradient="green"
-                                                                :disabled="!stu.extend_date > 0" pill>Save
+                                                                :disabled="!stu.extend_date > 0" @click="savechange(stu)" pill>Save
                                                                 Changes</fwb-button>
                                                         </div>
                                                     </div>
