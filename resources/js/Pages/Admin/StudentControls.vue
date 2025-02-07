@@ -82,7 +82,7 @@ function createarray() {
         extendDate.value.some(extendItem => extendItem.user_email === student.email)
     ).map(student => {
         const matchedExtendData = extendDate.value.find(extendItem =>
-            extendItem.email === student.email
+            extendItem.user_email === student.email
         )
         return {
             ...student,
@@ -117,7 +117,7 @@ function getkey() {
 const isextended = ref(null)
 function extentedStundents() {
     currentPage.value = 1 // Reset to first page on filtering
-    seacrharray.value = seacrharray.value.filter(student => student.count > 7);
+    seacrharray.value = seacrharray.value.filter(student => student.extend_date > 7);
     if (isextended.value == null) {
         isextended.value = true;
         return;
@@ -218,7 +218,7 @@ function showModal(item) {
                                 <template v-for="(stu, index) in paginatedArray" :key="index">
                                     <fwb-table-row>
                                         <fwb-table-cell>{{ stu.name }}
-                                            <fwb-badge href="#" size="sm" v-if="parseInt(stu.count) > 7"
+                                            <fwb-badge href="#" size="sm" v-if="parseInt(stu.extend_date) > 7"
                                                 style="max-width: 60%; margin-top: 5px;">
                                                 Extended
                                             </fwb-badge>
@@ -320,10 +320,10 @@ function showModal(item) {
                                                             <span class="font-semibold text-gray-700">Extend till:
                                                                 &nbsp;&nbsp;</span>
                                                             <fwb-input style="width: 40px;" 
-                                                                @input="validatenumber" placeholder="Enter count"
+                                                                @input="validatenumber" placeholder="Enter count" :value="stu.extend_date"
                                                                 size="sm" />
                                                             <fwb-button style="margin-left: 10px;" gradient="green"
-                                                                :disabled="!stu.count > 0" pill>Save
+                                                                :disabled="!stu.extend_date > 0" pill>Save
                                                                 Changes</fwb-button>
                                                         </div>
                                                     </div>
