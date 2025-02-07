@@ -15,41 +15,42 @@ import {
     FwbBadge,
     FwbButton,
     FwbInput,
+    FwbCheckbox
 } from 'flowbite-vue'
 //assign class names from backend 
 const classes = ["2025 Paper", "2025 Theory", "2026 Paper", "2026 Paper"]
 
 // these arrays for generate demo data
 const names = [
-  "Thinula", "Kasun", "Nimal", "Saman", "Amal", "Ruwan", "Dilan", "Kavindu", "Isuru", "Chathura",
-  "Lakshan", "Vimukthi", "Sandeepa", "Roshan", "Gayan", "Mahesh", "Nuwan", "Tharindu", "Ashen",
-  "Janith", "Chaminda", "Sameera", "Heshan", "Sandun", "Pradeep", "Dinuka", "Charitha", "Ravindu",
-  "Thushara", "Pubudu"
+    "Thinula", "Kasun", "Nimal", "Saman", "Amal", "Ruwan", "Dilan", "Kavindu", "Isuru", "Chathura",
+    "Lakshan", "Vimukthi", "Sandeepa", "Roshan", "Gayan", "Mahesh", "Nuwan", "Tharindu", "Ashen",
+    "Janith", "Chaminda", "Sameera", "Heshan", "Sandun", "Pradeep", "Dinuka", "Charitha", "Ravindu",
+    "Thushara", "Pubudu"
 ];
 // these arrays for generate demo data
 const classNames = ["2025 Paper", "2025 Theory", "2026 Paper", "2026 Theory", "2027 Paper"];
 const paymentStatuses = ["yes", "no"];
 
 function getRandomElement(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+    return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function generateRandomNumber() {
-  return "07" + Math.floor(10000000 + Math.random() * 90000000); // Generates a random 10-digit Sri Lankan phone number
+    return "07" + Math.floor(10000000 + Math.random() * 90000000); // Generates a random 10-digit Sri Lankan phone number
 }
 
 function generateStudents(count = 50) {
-  for (let i = 0; i < count; i++) {
-    let name = getRandomElement(names);
-    stu.value.push({
-      student_name: name,
-      email: `${name.toLowerCase()}@gmail.com`,
-      exam_year: Math.floor(Math.random() * 3) + 2025, // Random year from 2025 to 2027
-      class_name: getRandomElement(classNames),
-      payment_status: getRandomElement(paymentStatuses),
-      w_number: generateRandomNumber()
-    });
-  }
+    for (let i = 0; i < count; i++) {
+        let name = getRandomElement(names);
+        stu.value.push({
+            student_name: name,
+            email: `${name.toLowerCase()}@gmail.com`,
+            exam_year: Math.floor(Math.random() * 3) + 2025, // Random year from 2025 to 2027
+            class_name: getRandomElement(classNames),
+            payment_status: getRandomElement(paymentStatuses),
+            w_number: generateRandomNumber()
+        });
+    }
 }
 
 const stu = ref([]);
@@ -94,6 +95,9 @@ function getkey() {
     }
 }
 
+// Replace the single check ref with an array of checks
+const selectedClasses = ref(new Array(classes.length).fill(false))
+const checkall = ref(false)
 </script>
 <template>
 
@@ -116,6 +120,10 @@ function getkey() {
                             <template #suffix>
                             </template>
                         </fwb-input>
+                        <template v-for="(cl, index) in classes" :key="index">
+                            <fwb-checkbox v-model="selectedClasses[index]" :label="cl"/>
+                        </template>
+                        <fwb-checkbox v-model="checkall" label="cl"/>
                         <fwb-table striped>
                             <fwb-table-head>
                                 <fwb-table-head-cell>Name</fwb-table-head-cell>
