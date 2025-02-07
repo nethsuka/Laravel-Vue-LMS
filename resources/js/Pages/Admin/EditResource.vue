@@ -43,6 +43,11 @@ const form2 = useForm({
     index: '',
 });
 
+const form3 = useForm({
+    resourceId: Arrays.resource.id,
+    updatedArray: []
+})
+
 function saveResourceChanges() {
     form1.id = Arrays.resource.id;
     form1.name = name.value;
@@ -131,6 +136,13 @@ onMounted(() => {
 function isurlempty() {
     return links.value.some(link => !link.link || link.link.trim() === '')
 }
+
+function saveVideoChanges(){
+    form3.updatedArray = links;
+    form3.patch('/resource-controls/edit/save-video-changes', {
+        preserveScroll: false,
+    });
+}
 </script>
 <template>
     <Sidebar>
@@ -142,7 +154,7 @@ function isurlempty() {
                     <div class="p-14">
                         <div>
                             <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success"
-                                class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
+                                class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-green-100">
                                 <p>{{ $page.props.flash.successMsg }}</p>
                             </fwb-alert>
                             <fwb-alert v-if="$page.props.flash.errorMsg" closable icon type="danger"
@@ -189,7 +201,7 @@ function isurlempty() {
                                             Enter Video name" size="sm" />
                                             <div>
 
-                                                <fwb-textarea v-model="item.link" label="Video embed code" style="width: 100%;" />
+                                                <fwb-textarea v-model="item.link" label="Video embed code" cols="50" style="width: 100%;" />
                                                 <fwb-p v-if="!item.link || item.link.trim() === ''" style="color: red;">
                                                     Please enter a video URL
                                                 </fwb-p>
@@ -204,7 +216,7 @@ function isurlempty() {
                                 </div>
                                 <div v-if="links.length <= 0" class="flex justify-start bg-gray-500/5 p-5">No Videos added.</div>
                                 <div class="flex justify-end mt-4">
-                                    <fwb-button gradient="green" :disabled="isurlempty()">Save changes</fwb-button>
+                                    <fwb-button gradient="green" @click="saveVideoChanges" :disabled="isurlempty()">Save changes</fwb-button>
                                 </div>
                             </div>
                             <fwb-modal v-if="isShowModal" @close="closeModal">

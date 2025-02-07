@@ -70,7 +70,7 @@ Route::patch('/resource-controls/edit/save-changes', [EditResourceController::cl
 Route::post('/resource-controls/add-resource', [ResourceControlsController::class, 'addResource'])->middleware(['auth', 'verified'])->name('resourceControls.addResource');
 Route::delete('/resource-controls/delete-resource', [ResourceControlsController::class, 'deleteResource'])->middleware(['auth', 'verified'])->name('resourceControls.deleteResource');
 Route::post('/resource-controls/resource/add-video', [EditResourceController::class, 'addVideo'])->middleware(['auth', 'verified'])->name('resourceControls.addVideo');
-
+Route::patch('/resource-controls/edit/save-video-changes', [EditResourceController::class, 'updateResourceVideoList'])->middleware(['auth', 'verified'])->name('resourceControls.updateVideoChanges');
 
 // Student control page
 Route::get('/studentCPanel', function () {
