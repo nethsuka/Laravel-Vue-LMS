@@ -25,6 +25,11 @@ import {
     FwbTextarea
 } from 'flowbite-vue'
 
+const Arrays = defineProps({
+    studentDetails: Array,
+    extendDetails: Array
+});
+
 const currentPage = ref(1)
 const itemsPerPage = ref(15) // Number of items per page
 

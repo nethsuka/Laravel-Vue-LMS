@@ -90,6 +90,14 @@ function getTutesAccordingToClass(tuteClassId) {
     return Arrays.classTutes.filter((tute) => tute.tuition_class_id === tuteClassId)
 }
 
+const downloadFile = (tute_name, tute_path) => {
+  // Create a temporary <a> element to trigger the download
+  const link = document.createElement('a');
+  link.href = 'storage/' + tute_path;
+  link.download = tute_name + '.' + tute_path.split('.').pop();
+  link.click();
+};
+
 </script>
 
 <template>
@@ -164,11 +172,11 @@ function getTutesAccordingToClass(tuteClassId) {
                                         <div v-if="checkPaidOrNot(record.id) || checkDateRange()">
                                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{
                                                 record.class_name }} Class</h3>
-    <fwb-alert  style="background-color: #FF303E;color: wheat;font-size: 18px;font-weight: 800;" closable icon type="warning">
-      Setle the this month payment {{ record.class_name }} Class before {{ Arrays.extendDetails.extend_date }} th of  month.
-    </fwb-alert>
                                             <!-- <p class="mb-2">This is some placeholder content for the Profile tab's associated content. Clicking another tab will toggle the visibility of this one.</p>
                                             <p>The tab JavaScript swaps classes to control the content visibility and styling.</p> -->
+                                            <fwb-alert v-if="!checkPaidOrNot(record.id)" border type="warning" icon closable class="flex justify-between items-center max-w-xl mt-7">
+                                                <p>This class is available only until the <b>{{ Arrays.extendDetails.extend_date }}th</b> of this month. If payment is not settled by this date, you will no longer have access to the class.</p>
+                                            </fwb-alert>
                                             <div class="mt-5 mb-10 flex">
                                                 <a href="#" @click="joinOnline(record.id)"
                                                     class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-xl text-sm px-6 py-3 text-center flex items-center justify-center me-2 mb-2 space-x-2">
@@ -188,7 +196,7 @@ function getTutesAccordingToClass(tuteClassId) {
                                                 <template v-if="getTutesAccordingToClass(record.id).length !== 0">
                                                     <template v-for="tute in getTutesAccordingToClass(record.id)"
                                                         :key="tute.id">
-                                                        <a :href="'storage/' + tute.tute_path"
+                                                        <!-- <a :href="'storage/' + tute.tute_path"
                                                             :download="tute.tute_name"
                                                             class="mb-3 flex justify-between items-center max-w-xs p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-cyan-50   dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                                                             <p
@@ -215,7 +223,19 @@ function getTutesAccordingToClass(tuteClassId) {
                                                                     d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z"
                                                                     clip-rule="evenodd" />
                                                             </svg>
-                                                        </a>
+                                                        </a> -->
+                                                        <button @click="downloadFile(tute.tute_name, tute.tute_path)" class="mb-3 flex justify-between items-center w-1/3 p-3 bg-white border border-gray-200 rounded-lg shadow hover:bg-cyan-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                                                            <p class="flex font-normal text-gray-700 dark:text-gray-400 truncate">
+                                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7ZM8 16a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1-5a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd" />
+                                                            </svg>
+                                                            &nbsp;&nbsp;{{ tute.tute_name + '.' + tute.tute_path.split('.').pop() }}
+                                                            </p>
+                                                            <svg class="mr-3 ml-2 w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd" />
+                                                            <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </button>
                                                     </template>
                                                 </template>
                                                 <template v-else>

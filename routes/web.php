@@ -10,6 +10,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResourceControlsController;
 use App\Http\Controllers\ResourcesController;
+use App\Http\Controllers\StudentControlsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -73,9 +74,10 @@ Route::post('/resource-controls/resource/add-video', [EditResourceController::cl
 Route::patch('/resource-controls/edit/save-video-changes', [EditResourceController::class, 'updateResourceVideoList'])->middleware(['auth', 'verified'])->name('resourceControls.updateVideoChanges');
 
 // Student control page
-Route::get('/studentCPanel', function () {
-    return Inertia::render('Admin/StudentControl');
-})->middleware(['auth', 'verified'])->name('studentCPanel');
+// Route::get('/studentCPanel', function () {
+//     return Inertia::render('Admin/StudentControls');
+// })->middleware(['auth', 'verified'])->name('studentCPanel');
+Route::get('/student-controls', [StudentControlsController::class, 'index'])->middleware(['auth', 'verified'])->name('studentCPanel');
 
 //student' classes page
 Route::get('/studentsClasses', function () {
