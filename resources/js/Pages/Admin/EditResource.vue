@@ -90,31 +90,38 @@ function validatenumber(event) {
 
 const isShowModal = ref(false)
 
-function SavecloseModal() {
-    let lastindex = 1
+const SavecloseModal = async() => {
+    try{
 
-    if(links.value.length == 0){
-        console.log("thinula")
-        lastindex = 1
-    } else{
-        lastindex = Math.max(...links.value.map(link => link.index)) + 1;
+        let lastindex = 1
+        if(links.value.length == 0){
+            lastindex = 1
+        } else{
+            lastindex = Math.max(...links.value.map(link => link.index)) + 1;
+        }
+        links.value.push({
+            name: new_title.value,
+            link: new_url.value,
+            index: lastindex ,
+        })
+        form2.resource_id = Arrays.resource.id;
+        form2.name = new_title.value;
+        form2.link = new_url.value;
+        form2.index = lastindex;
+        await form2.post('/resource-controls/resource/add-video', {
+            preserveScroll: false,
+            onSuccess:(page)=>{
+                new_title.value = '';
+                new_url.value = '';
+                if(page.props.videos){
+                    links.value = page.props.videos;
+                }
+                closeModal()
+            }
+        });
+    }catch(error){
+        console.log("add video error",error)
     }
-    console.log('hi')
-    links.value.push({
-        name: new_title.value,
-        link: new_url.value,
-        index: lastindex ,
-    })
-    form2.resource_id = Arrays.resource.id;
-    form2.name = new_title.value;
-    form2.link = new_url.value;
-    form2.index = lastindex;
-    form2.post('/resource-controls/resource/add-video', {
-        preserveScroll: false,
-    });
-    new_title.value = ''
-    new_url.value = ''
-    closeModal()
 }
 
 function closeModal() {

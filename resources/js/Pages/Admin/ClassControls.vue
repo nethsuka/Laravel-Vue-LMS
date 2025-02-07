@@ -209,9 +209,6 @@ function onup(classid) {
     console.log(listobj.value)
 }
 
-// function created_class_video_list(classid) {
-//     classvideoobj.value = listobj.value.filter(i => i.tuition_class_id === classid)
-// }
 
 const handleAdd= async(classid) => {
     try{
@@ -219,15 +216,7 @@ const handleAdd= async(classid) => {
             .filter(item => item.tuition_class_id === classid)
             .reduce((max, item) => Math.max(max, item.index), 0);
         console.log(lastindex)
-        const videobj = {
-            video_name: video_name.value,
-            video_link: video_link.value,
-            id: classvideoobj.length + 1,
-            index: lastindex + 1,
-            created_at: null,
-            updated_at: null,
-            tuition_class_id: classid
-        }
+
         form4.tuition_class_id = classid;
         form4.video_link = video_link.value;
         form4.video_name = video_name.value;
@@ -235,10 +224,6 @@ const handleAdd= async(classid) => {
         form4.index = lastindex + 1;
 
         
-        // listobj.value.push(videobj);
-        // console.log(classvideoobj.value);
-        
-        //sending data to backend
         await form4.post('/class-controls/addnewvideo', {
             preserveScroll: true,
             onSuccess: (page) => {
