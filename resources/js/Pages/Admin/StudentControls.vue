@@ -67,15 +67,19 @@ function generatedata() {
 // Generate 20 unique records for extendDate and studata
 
 onMounted(() => {
-    generatedata();
+    console.log(Arrays.studentDetails)
+    console.log(Arrays.extendDetails)
+    studata.value = Arrays.studentDetails
+    extendDate.value = Arrays.extendDetails
     createarray()
     console.log(showarray.value)
+
 })
 const showarray = ref([])
 const seacrharray = ref([])
 function createarray() {
     showarray.value = studata.value.filter(student =>
-        extendDate.value.some(extendItem => extendItem.email === student.email)
+        extendDate.value.some(extendItem => extendItem.user_email === student.email)
     ).map(student => {
         const matchedExtendData = extendDate.value.find(extendItem =>
             extendItem.email === student.email
@@ -220,8 +224,8 @@ function showModal(item) {
                                             </fwb-badge>
                                         </fwb-table-cell>
                                         <fwb-table-cell>{{ stu.email }}</fwb-table-cell>
-                                        <fwb-table-cell>{{ stu.phoneNumber }}</fwb-table-cell>
-                                        <fwb-table-cell>{{ stu.examYear }}</fwb-table-cell>
+                                        <fwb-table-cell>{{ stu.w_number }}</fwb-table-cell>
+                                        <fwb-table-cell>{{ stu.exam_year }}</fwb-table-cell>
                                         <fwb-table-cell>
                                             <fwb-button @click="moredetails(index)" gradient="teal"
                                                 style="margin-right: 50%; ">View</fwb-button>
@@ -247,7 +251,7 @@ function showModal(item) {
                                                                     clip-rule="evenodd" />
                                                             </svg>
                                                             <span class="font-semibold text-gray-700">NIC:</span>
-                                                            <span class="ml-2 text-gray-600">{{ stu.nic }}</span>
+                                                            <span class="ml-2 text-gray-600">{{ stu.NIC }}</span>
                                                         </div>
 
                                                         <div class="flex items-center">
@@ -289,7 +293,7 @@ function showModal(item) {
                                                             </svg>
                                                             <span class="font-semibold text-gray-700">Father's
                                                                 Number:</span>
-                                                            <span class="ml-2 text-gray-600">{{ stu.fatherNumber
+                                                            <span class="ml-2 text-gray-600">{{ stu.f_number
                                                                 }}</span>
                                                         </div>
 
@@ -303,7 +307,7 @@ function showModal(item) {
                                                             </svg>
                                                             <span class="font-semibold text-gray-700">Mother's
                                                                 Number:</span>
-                                                            <span class="ml-2 text-gray-600">{{ stu.momNumber }}</span>
+                                                            <span class="ml-2 text-gray-600">{{ stu.m_number }}</span>
                                                         </div>
                                                         <div class="flex items-center">
                                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -315,7 +319,7 @@ function showModal(item) {
                                                             </svg>
                                                             <span class="font-semibold text-gray-700">Extend till:
                                                                 &nbsp;&nbsp;</span>
-                                                            <fwb-input style="width: 40px;" v-model="stu.count"
+                                                            <fwb-input style="width: 40px;" 
                                                                 @input="validatenumber" placeholder="Enter count"
                                                                 size="sm" />
                                                             <fwb-button style="margin-left: 10px;" gradient="green"

@@ -15,7 +15,7 @@ class StudentControlsController extends Controller
     public function __construct()
     {
         $this->studentDetails = User::all();
-        $extendDetails = StExtendDate::all();
+        $this->extendDetails = StExtendDate::all();
     }
 
     public function index() {
