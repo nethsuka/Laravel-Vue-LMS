@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('st_email');
             $table->string('name')->nullable();
             $table->string('video_link', 800);
-            $table->datet('expiry_date');
+            $table->date('expiry_date');
             $table->timestamps();
         });
     }

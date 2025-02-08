@@ -161,9 +161,7 @@ function validatenumber(event) {
     // Allow only numbers
     event.target.value = value.replace(/[^\d]/g, '');
 }
-function iscountempty(item) {
-    return seacrharray.value.filter(student => student.count == 0).length > 0;
-}
+
 
 const isShowModal = ref(false)
 const st_id = ref('');
@@ -175,7 +173,7 @@ const videoexDate = ref('')
 
 
 function closeModal() {
-    st_id = '';
+    st_id.value = '';
     stuName.value = ''
     stuemail.value = ''
     videoName.value = ''
@@ -200,7 +198,6 @@ function saveAndCloseModal(item){
     form1.post('/student-controls/add/extra-video', {
         preserveScroll: false,
     });
-    console.log(item)
     closeModal()
 }
 
@@ -210,6 +207,11 @@ function deleteUser(userId) {
     if (choice) {
         form2.delete('/student-controls/delete/user', {
             preserveScroll: false,
+            onSuccess:(page)=>{
+                studata.value = page.props.studentDetails;
+                extendDate.value = page.props.extendDetails;
+                createarray()
+            }
         });
     }
 }
