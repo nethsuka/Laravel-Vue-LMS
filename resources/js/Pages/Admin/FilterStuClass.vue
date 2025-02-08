@@ -213,10 +213,7 @@ const totalPages = computed(() => {
 })
 </script>
 
-
-
 <template>
-
     <Head title="Student's Classes"></Head>
     <div>
         <Sidebar>
@@ -242,9 +239,7 @@ const totalPages = computed(() => {
                                     <fwb-checkbox :modelValue="selectedClasses[index]" @change="handleClassFilter(index)"
                                         :label="cl" />
                                 </template>
-                                
                                     <fwb-checkbox v-model="checkall" @change.prevent="handleCheckAll" label="All class" />
-                                
                             </div>
                         </div>
 
