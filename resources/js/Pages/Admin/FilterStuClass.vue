@@ -92,7 +92,7 @@ const selectedItems = computed(() =>
 // Step 1: Filter by search query
 const searchFiltered = computed(() => {
     if (!query.value || typeof query.value !== 'string') return showarray.value;
-    
+
     const searchTerm = query.value.toLowerCase();
     return showarray.value.filter(student =>
         student.student_name.toLowerCase().includes(searchTerm)
@@ -144,36 +144,41 @@ function handleClassFilter(index) {
     // Create a new array with the updated value
     const newSelectedClasses = [...selectedClasses.value];
     newSelectedClasses[index] = !newSelectedClasses[index];
-    
+
     // If any class is being checked, uncheck "All class"
     if (newSelectedClasses[index]) {
         checkall.value = false;
     } else {
         // If no classes are selected, check "All class"
-        checkall.value = newSelectedClasses.every(value => !value);
+        const noClassesSelected = newSelectedClasses.every(value => !value);
+        if (noClassesSelected) {
+            checkall.value = true;
+        }
     }
-    
+
     selectedClasses.value = newSelectedClasses;
 }
-
 function handleCheckAll() {
     if (!checkall.value) {
         // If All class is being checked, uncheck all other classes
         selectedClasses.value = new Array(classes.length).fill(false);
-        checkall.value = true;
     }
+    checkall.value = true;
 }
-
 function handlePaymentFilter(value) {
-    if (value === paymentFilter.value) {
-        // If clicking the same checkbox, switch to 'all'
+    if (value === 'all') {
         paymentFilter.value = 'all';
     } else {
-        // If clicking a different checkbox, switch to that value
-        paymentFilter.value = value;
+        // If clicking paid or nonpaid, uncheck 'all'
+        if (value === paymentFilter.value) {
+            // If clicking the same checkbox, switch to 'all'
+            paymentFilter.value = 'all';
+        } else {
+            // If clicking a different checkbox, switch to that value
+            paymentFilter.value = value;
+        }
     }
 }
-
 // Initialize with all classes unchecked and "All class" checked
 onMounted(() => {
     stu.value = generateStudents();
@@ -183,9 +188,24 @@ onMounted(() => {
     checkall.value = true;
     paymentFilter.value = 'all';
 });
+
+function forpamentfilter(item){
+    console.log("item",item,"payementfilter.value",paymentFilter.value)
+    if(item === paymentFilter.value){
+        console.log("inside if")
+        return true;
+    }
+    return false;
+
+
+}
+
 </script>
 
+
+
 <template>
+
     <Head title="Student's Classes"></Head>
     <div>
         <Sidebar>
@@ -193,12 +213,8 @@ onMounted(() => {
                 <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                         <fwb-heading tag="h2" style="margin-bottom: 20px;">Students' Classes</fwb-heading>
-                        <fwb-input 
-                            v-model="query"
-                            @input="updateSearch"
-                            class="max-w-sm mx-auto"
-                            placeholder="Find student by name"
-                        >
+                        <fwb-input v-model="query" @input="updateSearch" class="max-w-sm mx-auto"
+                            placeholder="Find student by name">
                             <template #prefix>
                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -210,38 +226,22 @@ onMounted(() => {
 
                         <div class="mt-4 space-x-4">
                             <template v-for="(cl, index) in classes" :key="index">
-                                <fwb-checkbox 
-                                    :checked="selectedClasses[index]"
-                                    @change="handleClassFilter(index)"
-                                    :label="cl"
-                                />
+                                <fwb-checkbox :modelValue="selectedClasses[index]" @change="handleClassFilter(index)"
+                                    :label="cl" />
                             </template>
                         </div>
 
                         <div class="mt-4">
-                            <fwb-checkbox 
-                                v-model="checkall"
-                                label="All class"
-                                @change="handleCheckAll"
-                            />
+                            <fwb-checkbox v-model="checkall" @change.prevent="handleCheckAll" label="All class" />
                         </div>
 
                         <div class="flex gap-4 mt-4">
-                            <fwb-checkbox
-                                :checked="paymentFilter === 'paid'"
-                                @change="handlePaymentFilter('paid')"
-                                label="Paid students"
-                            />
-                            <fwb-checkbox
-                                :checked="paymentFilter === 'nonpaid'"
-                                @change="handlePaymentFilter('nonpaid')"
-                                label="Non paid students"
-                            />
-                            <fwb-checkbox
-                                :checked="paymentFilter === 'all'"
-                                @change="handlePaymentFilter('all')"
-                                label="Paid or Non paid students"
-                            />
+                            <fwb-checkbox :modelValue="forpamentfilter('paid')" @change="handlePaymentFilter('paid')"
+                                label="Paid students" />
+                            <fwb-checkbox :modelValue="forpamentfilter('nonpaid')"
+                                @change="handlePaymentFilter('nonpaid')" label="Non paid students" />
+                            <fwb-checkbox :modelValue="forpamentfilter('all')" @change="handlePaymentFilter('all')"
+                                label="Paid or Non paid students" />
                         </div>
 
                         <fwb-table striped class="mt-4">
