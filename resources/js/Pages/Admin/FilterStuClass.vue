@@ -1,7 +1,7 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue';
 import { Head } from '@inertiajs/vue3';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, nextTick } from 'vue';
 import {
     FwbA,
     FwbTable,
@@ -17,8 +17,9 @@ import {
     FwbInput,
     FwbCheckbox
 } from 'flowbite-vue'
+
 //assign class names from backend 
-const classes = ["2025 Paper", "2025 Theory", "2026 Paper", "2026 Paper"]
+const classes = ["2025 Paper", "2025 Theory", "2026 Paper", "2026 Theory", "2027 Paper"]
 
 // these arrays for generate demo data
 const names = [
@@ -84,7 +85,47 @@ function creatArray() {
 }
 const seacrharray = ref([])
 const query = ref("")
+
+//filter the searcharray , called only in serchbar 
 function getkey() {
+    // currentPage.value = 1 
+    if (query.value.length > 0) {
+        seacrharray.value = showarray.value.filter(stu =>
+            stu.student_name.toLowerCase().includes(query.value.toLowerCase())
+        );
+    } else {
+        seacrharray.value = showarray.value
+    }
+    classfilterSearch();
+}
+//filter the search array , called only in getkey function
+function classfilterSearch() {
+    checkall.value = false
+    selectedItems.value = classes.filter((_, index) => selectedClasses.value[index])
+    if (selectedItems.value.length > 0) {
+        seacrharray.value = seacrharray.value.filter((st) =>
+            st.class.some(cls => selectedItems.value.includes(cls.name))
+        )
+
+    } else {
+        checkall.value = true
+    }
+
+}
+
+//ref array for checkboxes
+const selectedClasses = ref(new Array(classes.length).fill(false))
+
+const checkall = ref(true)
+
+function checkAll() {
+    selectedClasses.value = new Array(classes.length).fill(false)
+    getkeyforclassfilter()
+}
+
+
+//filter the searcharray , called only in classfilter function 
+function getkeyforclassfilter() {
     // currentPage.value = 1 
     if (query.value.length > 0) {
         seacrharray.value = showarray.value.filter(stu =>
@@ -95,9 +136,66 @@ function getkey() {
     }
 }
 
-// Replace the single check ref with an array of checks
-const selectedClasses = ref(new Array(classes.length).fill(false))
-const checkall = ref(false)
+const selectedItems = ref([])
+//filter the class based on checkboxes and called only in chechboxes
+function classfilter() {
+    checkall.value = false
+    selectedItems.value = classes.filter((_, index) => selectedClasses.value[index])
+    getkeyforclassfilter();
+    if (selectedItems.value.length > 0) {
+        seacrharray.value = seacrharray.value.filter((st) =>
+            st.class.some(cls => selectedItems.value.includes(cls.name))
+        )
+
+    } else {
+        checkall.value = true
+    }
+
+}
+
+// In the script setup section:
+const paymentFilter = ref('all') // Default value is 'all'
+
+function handlePaymentFilter(value) {
+    // Only update if the checkbox is being checked
+    if (value === paymentFilter.value) {
+        paymentFilter.value = 'all'
+        classfilter()
+    } else {
+        paymentFilter.value = value
+    }
+
+
+    // Apply payment filter
+    if (paymentFilter.value === 'paid') {
+        if (selectedItems.value == 0) {
+            seacrharray.value = seacrharray.value.filter(student =>
+                student.class.every(cl => cl.paid === 'yes')
+            )
+        } else {
+            // seacrharray.value = seacrharray.value.filter((student, index) => selectedItems.value.includes(student.class[0].name) && student.class.some(cl => cl.paid === 'yes'))
+            seacrharray.value = seacrharray.value.filter((student, index) =>
+                student.class.some(cls => selectedItems.value.includes(cls.name)) &&
+                student.class.some(cl => cl.paid === 'yes')
+            )
+
+        }
+
+    } else if (paymentFilter.value === 'nonpaid') {
+        if (selectedItems.value.length == 0) {
+            seacrharray.value = seacrharray.value.filter(student =>
+                student.class.every(cl => cl.paid === 'no')
+            )
+        } else {
+            // seacrharray.value = seacrharray.value.filter((student, index) => selectedItems.value.includes(student.class[0].name) && student.class.some(cl => cl.paid === 'no'))
+            seacrharray.value = seacrharray.value.filter((student, index) =>
+                student.class.some(cls => selectedItems.value.includes(cls.name)) &&
+                student.class.some(cl => cl.paid === 'no')
+            )
+        }
+    }
+}
+
 </script>
 <template>
 
@@ -121,9 +219,17 @@ const checkall = ref(false)
                             </template>
                         </fwb-input>
                         <template v-for="(cl, index) in classes" :key="index">
-                            <fwb-checkbox v-model="selectedClasses[index]" :label="cl"/>
+                            <fwb-checkbox v-model="selectedClasses[index]" @change="classfilter" :label="cl" />
                         </template>
-                        <fwb-checkbox v-model="checkall" label="cl"/>
+                        <fwb-checkbox v-model="checkall" label="All class" @change="checkAll" />
+                        <div class="flex gap-4">
+                            <fwb-checkbox :model-value="paymentFilter === 'paid'"
+                                @update:model-value="handlePaymentFilter('paid')" label="Paid students" />
+                            <fwb-checkbox :model-value="paymentFilter === 'nonpaid'"
+                                @update:model-value="handlePaymentFilter('nonpaid')" label="Non paid students" />
+                            <fwb-checkbox :model-value="paymentFilter === 'all'"
+                                @update:model-value="handlePaymentFilter('all')" label="Paid or Non paid students" />
+                        </div>
                         <fwb-table striped>
                             <fwb-table-head>
                                 <fwb-table-head-cell>Name</fwb-table-head-cell>
@@ -132,7 +238,7 @@ const checkall = ref(false)
                                 <fwb-table-head-cell>Exam Year</fwb-table-head-cell>
                                 <fwb-table-head-cell>Classes</fwb-table-head-cell>
                             </fwb-table-head>
-                            <fwb-table-body>
+                            <fwb-table-body v-if="seacrharray.length != 0">
                                 <fwb-table-row v-for="(st, index) in seacrharray" :key="index" style="width: 100%;">
                                     <fwb-table-cell>{{ st.student_name }}</fwb-table-cell>
                                     <fwb-table-cell>{{ st.email }}</fwb-table-cell>
@@ -141,9 +247,9 @@ const checkall = ref(false)
 
                                     <fwb-table-cell style="margin-right: 50%;">
                                         <template v-for="(cl, index) in st.class" :key="index">
-                                            <fwb-p class="flex items-center gap-2">
+                                            <fwb-p class="flex items-center gap-2 text-xs">
                                                 {{ cl.name }}:
-                                                <fwb-badge type="red" v-if="cl.paid == 'no'">Non paid</fwb-badge>
+                                                <fwb-badge type="red" v-if="cl.paid == 'no'">Not paid</fwb-badge>
                                                 <fwb-badge v-else>Paid</fwb-badge>
                                             </fwb-p>
                                         </template>
@@ -151,6 +257,11 @@ const checkall = ref(false)
                                     </fwb-table-cell>
                                 </fwb-table-row>
 
+                            </fwb-table-body>
+                            <fwb-table-body v-else>
+                                <fwb-table-row>
+                                    <fwb-table-cell colspan="5">No data found</fwb-table-cell>
+                                </fwb-table-row>
                             </fwb-table-body>
                         </fwb-table>
                     </div>
