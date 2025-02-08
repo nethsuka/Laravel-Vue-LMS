@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('resource_id')
                   ->constrained('resources')
                   ->onDelete('cascade');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('link', 800);
             $table->string('index');
             $table->timestamps();

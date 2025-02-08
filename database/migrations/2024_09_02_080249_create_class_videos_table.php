@@ -17,7 +17,7 @@ return new class extends Migration
                   ->constrained('tuition_classes') // This references the 'id' column on the 'users' table
                   ->onDelete('cascade');
             $table->string('video_link', 800);
-            $table->string('video_name');
+            $table->string('video_name')->nullable();
             $table->date('expiry_date');
             $table->integer('index');
             $table->timestamps();

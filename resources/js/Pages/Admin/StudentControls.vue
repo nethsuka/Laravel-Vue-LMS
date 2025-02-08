@@ -1,6 +1,6 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, useForm, Link } from '@inertiajs/vue3';
 import { onMounted, ref, computed } from 'vue';
 import {
     FwbA,
@@ -22,7 +22,8 @@ import {
     FwbBadge,
     FwbPagination,
     FwbModal,
-    FwbTextarea
+    FwbTextarea,
+    FwbAlert
 } from 'flowbite-vue'
 
 const Arrays = defineProps({
@@ -32,6 +33,19 @@ const Arrays = defineProps({
 
 const currentPage = ref(1)
 const itemsPerPage = ref(15) // Number of items per page
+
+const form1 = useForm({
+    st_id: '',
+    st_name: '',
+    st_email: '',
+    name: '',
+    video_link: '',
+    expiry_date: ''
+});
+
+const form2 = useForm({
+    stu_id: ''
+});
 
 // Function to generate a unique email
 const generateUniqueEmail = (index) => {
@@ -152,30 +166,54 @@ function iscountempty(item) {
 }
 
 const isShowModal = ref(false)
-const stuName = ref(null)
-const stuemail = ref(null)
-const videoName = ref(null)
-const videoLink = ref(null)
-const videoexDate = ref(null)
+const st_id = ref('');
+const stuName = ref('')
+const stuemail = ref('')
+const videoName = ref('')
+const videoLink = ref('')
+const videoexDate = ref('')
 
 
 function closeModal() {
-    stuName.value = null
-    stuemail.value = null
-    videoName.value = null
-    videoLink.value = null
-    videoexDate.value = null
+    st_id = '';
+    stuName.value = ''
+    stuemail.value = ''
+    videoName.value = ''
+    videoLink.value = ''
+    videoexDate.value = ''
     isShowModal.value = false
 }
 function showModal(item) {
+    st_id.value = item.id;
     stuName.value = item.name
     stuemail.value = item.email
     isShowModal.value = true
 }
 
-function savechange(item){
+function saveAndCloseModal(item){
+    form1.st_id = st_id.value;
+    form1.st_name = stuName.value;
+    form1.st_email = stuemail.value;
+    form1.name = videoName.value;
+    form1.video_link = videoLink.value;
+    form1.expiry_date = videoexDate.value;
+    form1.post('/student-controls/add/extra-video', {
+        preserveScroll: false,
+    });
     console.log(item)
+    closeModal()
 }
+
+function deleteUser(userId) {
+    form2.stu_id = userId;
+    const choice = confirm('Are you sure you want to permanently delete this user ?');
+    if (choice) {
+        form2.delete('/student-controls/delete/user', {
+            preserveScroll: false,
+        });
+    }
+}
+
 </script>
 <template>
 
@@ -185,6 +223,14 @@ function savechange(item){
             <div class="py-12">
                 <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
+                        <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success"
+                            class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-green-100">
+                            <p>{{ $page.props.flash.successMsg }}</p>
+                        </fwb-alert>
+                        <fwb-alert v-if="$page.props.flash.errorMsg" closable icon type="danger"
+                            class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
+                            <p>{{ $page.props.flash.errorMsg }}</p>
+                        </fwb-alert>
                         <fwb-heading tag="h2" style="margin-bottom: 20px;">Students</fwb-heading>
                         <fwb-input v-on:input="getkey" class="max-w-sm mx-auto" v-model="query"
                             placeholder="Find student by name">
@@ -232,12 +278,13 @@ function savechange(item){
                                         <fwb-table-cell>{{ stu.exam_year }}</fwb-table-cell>
                                         <fwb-table-cell>
                                             <fwb-button @click="moredetails(index)" gradient="teal"
-                                                style="margin-right: 50%; ">View</fwb-button>
+                                                >View</fwb-button>
                                         </fwb-table-cell>
                                         <fwb-table-cell>
-                                            <fwb-button @click="remove(index)" gradient="red"
-                                                style="margin-right : 50%; ">
-                                                Delete
+                                            <fwb-button @click="deleteUser(stu.id)" gradient="red" style="margin-right: 50%;">
+                                                <!-- <Link href="/student-controls/delete/user" method="delete" :data="{ stu_id: stu.id }" as="button" type="button" > -->
+                                                    Delete
+                                                <!-- </Link> -->
                                             </fwb-button>
                                         </fwb-table-cell>
                                     </fwb-table-row>
@@ -326,9 +373,12 @@ function savechange(item){
                                                             <fwb-input style="width: 40px;" 
                                                                 @input="validatenumber" placeholder="Enter count" v-model="stu.extend_date"
                                                                 size="sm" />
-                                                            <fwb-button style="margin-left: 10px;" gradient="green"
-                                                                :disabled="!stu.extend_date > 0" @click="savechange(stu)" pill>Save
-                                                                Changes</fwb-button>
+                                                            <fwb-button gradient="green" class="py-1 ml-2"
+                                                                :disabled="!stu.extend_date > 0" pill>
+                                                                <Link href="/student-controls/update/extend-date" method="patch" :data="{ email: stu.email, newDate: stu.extend_date }" as="button" type="button" >
+                                                                    Save
+                                                                </Link>
+                                                            </fwb-button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -371,7 +421,7 @@ function savechange(item){
                         <fwb-button @click="closeModal" color="alternative">
                             Close
                         </fwb-button>
-                        <fwb-button @click="closeModal" color="green" :disabled="!videoLink || !videoexDate">
+                        <fwb-button @click="saveAndCloseModal" color="green" :disabled="!videoLink || !videoexDate">
                             Save
                         </fwb-button>
                     </div>

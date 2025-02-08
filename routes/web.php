@@ -78,6 +78,9 @@ Route::patch('/resource-controls/edit/save-video-changes', [EditResourceControll
 //     return Inertia::render('Admin/StudentControls');
 // })->middleware(['auth', 'verified'])->name('studentCPanel');
 Route::get('/student-controls', [StudentControlsController::class, 'index'])->middleware(['auth', 'verified'])->name('studentCPanel');
+Route::patch('/student-controls/update/extend-date', [StudentControlsController::class, 'updateExtendDate'])->middleware(['auth', 'verified'])->name('studentCPanel.updateDate');
+Route::post('/student-controls/add/extra-video', [StudentControlsController::class, 'addExtraVideo'])->middleware(['auth', 'verified'])->name('studentCPanel.assignVideo');
+Route::delete('/student-controls/delete/user', [StudentControlsController::class, 'deleteUser'])->middleware(['auth', 'verified'])->name('studentCPanel.deleteUser');
 
 //student' classes page
 Route::get('/studentsClasses', function () {

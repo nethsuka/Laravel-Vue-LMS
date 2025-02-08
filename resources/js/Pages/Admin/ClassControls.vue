@@ -339,8 +339,13 @@ function isExpired(expiryDate) {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                     <!-- content -->
                     <div class="p-14">
-                        <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success">
+                        <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success"
+                            class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-green-100">
                             <p>{{ $page.props.flash.successMsg }}</p>
+                        </fwb-alert>
+                        <fwb-alert v-if="$page.props.flash.errorMsg" closable icon type="danger"
+                            class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
+                            <p>{{ $page.props.flash.errorMsg }}</p>
                         </fwb-alert>
                         <fwb-heading tag="h4" size="lg" class="mb-10">
                             Class Controls
