@@ -155,7 +155,7 @@ function classfilter() {
 
 // In the script setup section:
 const paymentFilter = ref('all') // Default value is 'all'
-
+//filter the class base on paid statment and called in checkboxes
 function handlePaymentFilter(value) {
     // Only update if the checkbox is being checked
     if (value === paymentFilter.value) {
@@ -164,8 +164,6 @@ function handlePaymentFilter(value) {
     } else {
         paymentFilter.value = value
     }
-
-
     // Apply payment filter
     if (paymentFilter.value === 'paid') {
         if (selectedItems.value == 0) {
@@ -174,13 +172,15 @@ function handlePaymentFilter(value) {
             )
         } else {
             // seacrharray.value = seacrharray.value.filter((student, index) => selectedItems.value.includes(student.class[0].name) && student.class.some(cl => cl.paid === 'yes'))
-            seacrharray.value = seacrharray.value.filter((student, index) =>
-                student.class.some(cls => selectedItems.value.includes(cls.name)) &&
-                student.class.some(cl => cl.paid === 'yes')
-            )
+            seacrharray.value = seacrharray.value.filter((student) =>
+                selectedItems.value.every(selectedClass =>
+                    student.class.some(cls =>
+                        cls.name === selectedClass && cls.paid === 'yes'
+                    )
+                )
+            );
 
         }
-
     } else if (paymentFilter.value === 'nonpaid') {
         if (selectedItems.value.length == 0) {
             seacrharray.value = seacrharray.value.filter(student =>
@@ -188,13 +188,18 @@ function handlePaymentFilter(value) {
             )
         } else {
             // seacrharray.value = seacrharray.value.filter((student, index) => selectedItems.value.includes(student.class[0].name) && student.class.some(cl => cl.paid === 'no'))
-            seacrharray.value = seacrharray.value.filter((student, index) =>
-                student.class.some(cls => selectedItems.value.includes(cls.name)) &&
-                student.class.some(cl => cl.paid === 'no')
-            )
+            seacrharray.value = seacrharray.value.filter((student) =>
+                selectedItems.value.every(selectedClass =>
+                    student.class.some(cls =>
+                        cls.name === selectedClass && cls.paid === 'no'
+                    )
+                )
+            );
         }
     }
 }
+
+
 
 </script>
 <template>
