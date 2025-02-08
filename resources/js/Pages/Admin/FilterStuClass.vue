@@ -15,7 +15,8 @@ import {
     FwbBadge,
     FwbButton,
     FwbInput,
-    FwbCheckbox
+    FwbCheckbox,
+    FwbPagination
 } from 'flowbite-vue'
 
 const classes = ["2025 Paper", "2025 Theory", "2026 Paper", "2026 Theory", "2027 Paper"]
@@ -137,10 +138,12 @@ watch(finalFiltered, (newValue) => {
 
 // Handler functions
 function updateSearch(event) {
+    currentPage.value = 1 
     query.value = typeof event === 'object' ? event.target.value : event;
 }
 
 function handleClassFilter(index) {
+    currentPage.value = 1 
     // Create a new array with the updated value
     const newSelectedClasses = [...selectedClasses.value];
     newSelectedClasses[index] = !newSelectedClasses[index];
@@ -155,17 +158,17 @@ function handleClassFilter(index) {
             checkall.value = true;
         }
     }
+    console.log("class filter",checkall.value)
 
     selectedClasses.value = newSelectedClasses;
 }
 function handleCheckAll() {
-    if (!checkall.value) {
-        // If All class is being checked, uncheck all other classes
-        selectedClasses.value = new Array(classes.length).fill(false);
-    }
+    currentPage.value = 1 
+    selectedClasses.value = new Array(classes.length).fill(false);
     checkall.value = true;
 }
 function handlePaymentFilter(value) {
+    currentPage.value = 1 
     if (value === 'all') {
         paymentFilter.value = 'all';
     } else {
@@ -190,16 +193,24 @@ onMounted(() => {
 });
 
 function forpamentfilter(item){
-    console.log("item",item,"payementfilter.value",paymentFilter.value)
     if(item === paymentFilter.value){
-        console.log("inside if")
         return true;
     }
     return false;
-
-
 }
+const currentPage = ref(1)
+const itemsPerPage = ref(15)
+// Computed property for paginated results
+const paginatedArray = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage.value
+    const end = start + itemsPerPage.value
+    return seacrharray.value.slice(start, end)
+})
 
+// Computed property for total pages
+const totalPages = computed(() => {
+    return Math.ceil(seacrharray.value.length / itemsPerPage.value)
+})
 </script>
 
 
@@ -225,23 +236,29 @@ function forpamentfilter(item){
                         </fwb-input>
 
                         <div class="mt-4 space-x-4">
-                            <template v-for="(cl, index) in classes" :key="index">
-                                <fwb-checkbox :modelValue="selectedClasses[index]" @change="handleClassFilter(index)"
-                                    :label="cl" />
-                            </template>
+                            <fwb-heading tag="h6">According to classes</fwb-heading>
+                            <div class="flex flex-wrap gap-4 mt-2">
+                                <template v-for="(cl, index) in classes" :key="index">
+                                    <fwb-checkbox :modelValue="selectedClasses[index]" @change="handleClassFilter(index)"
+                                        :label="cl" />
+                                </template>
+                                
+                                    <fwb-checkbox v-model="checkall" @change.prevent="handleCheckAll" label="All class" />
+                                
+                            </div>
                         </div>
 
-                        <div class="mt-4">
-                            <fwb-checkbox v-model="checkall" @change.prevent="handleCheckAll" label="All class" />
-                        </div>
+                        <div class="mt-4 space-x-4">
+                            <fwb-heading tag="h6">According to payment status</fwb-heading>
+                            <div class="flex flex-wrap gap-4 mt-2">
+                                <fwb-checkbox :modelValue="forpamentfilter('paid')" @change="handlePaymentFilter('paid')"
+                                    label="Paid students" />
+                                <fwb-checkbox :modelValue="forpamentfilter('nonpaid')"
+                                    @change="handlePaymentFilter('nonpaid')" label="Non paid students" />
+                                <fwb-checkbox :modelValue="forpamentfilter('all')" @change="handlePaymentFilter('all')"
+                                    label="Paid or Non paid students" />
 
-                        <div class="flex gap-4 mt-4">
-                            <fwb-checkbox :modelValue="forpamentfilter('paid')" @change="handlePaymentFilter('paid')"
-                                label="Paid students" />
-                            <fwb-checkbox :modelValue="forpamentfilter('nonpaid')"
-                                @change="handlePaymentFilter('nonpaid')" label="Non paid students" />
-                            <fwb-checkbox :modelValue="forpamentfilter('all')" @change="handlePaymentFilter('all')"
-                                label="Paid or Non paid students" />
+                            </div>
                         </div>
 
                         <fwb-table striped class="mt-4">
@@ -252,8 +269,8 @@ function forpamentfilter(item){
                                 <fwb-table-head-cell>Exam Year</fwb-table-head-cell>
                                 <fwb-table-head-cell>Classes</fwb-table-head-cell>
                             </fwb-table-head>
-                            <fwb-table-body v-if="seacrharray.length > 0">
-                                <fwb-table-row v-for="(st, index) in seacrharray" :key="index">
+                            <fwb-table-body v-if="paginatedArray.length > 0">
+                                <fwb-table-row v-for="(st, index) in paginatedArray" :key="index">
                                     <fwb-table-cell>{{ st.student_name }}</fwb-table-cell>
                                     <fwb-table-cell>{{ st.email }}</fwb-table-cell>
                                     <fwb-table-cell>{{ st.w_number }}</fwb-table-cell>
@@ -275,6 +292,9 @@ function forpamentfilter(item){
                                 </fwb-table-row>
                             </fwb-table-body>
                         </fwb-table>
+                        <div class="flex justify-center mt-4">
+                            <fwb-pagination v-model="currentPage" :total-pages="totalPages" show-icons></fwb-pagination>
+                        </div>
                     </div>
                 </div>
             </div>
