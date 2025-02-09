@@ -57,9 +57,9 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
-                    <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                    <AdminNavLink :href="route('resourcespayments')" :active="route().current('resourcespayments')">
                     <i class="fas fa-tasks mr-2"></i>
-                    Sign In
+                    Resource Payments
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
