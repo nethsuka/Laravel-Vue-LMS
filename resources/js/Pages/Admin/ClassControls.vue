@@ -128,6 +128,7 @@ function addclasses() {
         preserveScroll: false,
         onSuccess: () => {
             form2.reset();
+            this.activeTab = this.Arrays.classDetails.length > 0 ? this.Arrays.classDetails[0].class_name : 'no data';
         },
     });
 }

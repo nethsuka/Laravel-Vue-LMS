@@ -216,6 +216,14 @@ function deleteUser(userId) {
     }
 }
 
+const confirmAction = (event) => {
+    const confirmed = window.confirm('Are you sure you want to reset the extend dates?');
+
+    if (!confirmed) {
+        event.preventDefault();
+    }
+};
+
 </script>
 <template>
 
@@ -224,6 +232,21 @@ function deleteUser(userId) {
         <Sidebar>
             <div class="py-12">
                 <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="text-sm py-2 px-7 col-span-2">
+                                Please proceed with caution as this will permanently remove all slip data from the database
+                                from which there is no way to retrieve it.
+                            </div>
+                            <div class="py-2 px-7">
+                                <Link href="/student-controls/reset/extend-date" method="patch" as="button" type="button" @click="confirmAction()">
+                                    <fwb-button color="default" class="ml-12">
+                                        Reset Extend Dates
+                                    </fwb-button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                         <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success"
                             class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-green-100">
@@ -399,7 +422,7 @@ function deleteUser(userId) {
             <fwb-modal v-if="isShowModal" @close="closeModal">
                 <template #header>
                     <div class="flex items-center text-lg">
-                        Add Extra Lessons
+                        Add Extra Lesson
                     </div>
                 </template>
                 <template #body>

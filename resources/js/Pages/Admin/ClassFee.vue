@@ -199,7 +199,7 @@ function confirmDelete(id) {
                             <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 bg-slate-200 pt-8">
                                 <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
                                     <div>
-                                        <h2 class="text-xl font-bold pb-4">Payments to be Accepted</h2>
+                                        <h2 class="text-xl font-bold pb-4">Accepted Payments</h2>
                                     </div>
                                     <label for="table-search" class="sr-only">Search</label>
                                     <div class="relative">

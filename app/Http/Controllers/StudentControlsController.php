@@ -6,6 +6,7 @@ use App\Models\ExtraVideo;
 use App\Models\StExtendDate;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class StudentControlsController extends Controller
@@ -15,7 +16,7 @@ class StudentControlsController extends Controller
 
     public function __construct()
     {
-        $this->studentDetails = User::all();
+        $this->studentDetails = User::where('role', 'member')->get();
         $this->extendDetails = StExtendDate::all();
     }
 
@@ -74,4 +75,20 @@ class StudentControlsController extends Controller
             ]);
         }
     }
+
+    public function resetExtendDate() {
+        $result = DB::table('st_extend_dates')
+            ->update(['extend_date' => 7]);
+
+        if($result){
+            return back()->with([
+                'successMsg' => 'All values have been reset successfully.',
+            ]);
+        }else{
+            return back()->with([
+                'errorMsg' => 'Error occured !',
+            ]);
+        }
+    }
+
 }

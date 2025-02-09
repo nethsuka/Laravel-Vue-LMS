@@ -45,13 +45,13 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
-                    <AdminNavLink :href="route('studentsClasses')" :active="route().current('studentsClasses')">
+                    <AdminNavLink :href="route('advancedFilters')" :active="route().current('advancedFilters')">
                     <i class="fas fa-tasks mr-2"></i>
-                    Student's Classes
+                    Advanced Filters
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
-                    <AdminNavLink :href="route('extraclass')" :active="route().current('extraclass')">
+                    <AdminNavLink :href="route('extraLessons')" :active="route().current('extraLessons')">
                     <i class="fas fa-tasks mr-2"></i>
                     Extra lessons
                     </AdminNavLink>

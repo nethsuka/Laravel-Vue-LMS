@@ -19,6 +19,11 @@ import {
     FwbPagination
 } from 'flowbite-vue'
 
+const Arrays = defineProps({
+    studentAndPaymentDetails: Array,
+    classDetails: Array,
+});
+
 const classes = ["2025 Paper", "2025 Theory", "2026 Paper", "2026 Theory", "2027 Paper"]
 
 const names = [

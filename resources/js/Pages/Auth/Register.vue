@@ -89,7 +89,7 @@ function validatenumber(event) {
                     v-model="form.exam_year"
                     required
                     autocomplete="year"
-                    placeholder="202X"
+                    placeholder="20XX"
                 />
 
                 <InputError class="mt-2" :message="form.errors.exam_year" />
@@ -246,10 +246,12 @@ function validatenumber(event) {
     <div class="bg-gradient-to-r from-[#066C92] to-[#25BECF] text-white py-8 px-6">
         <div class="max-w-2xl mx-auto space-y-2">
             <p><b>*Conditions applied when registering for classes</b></p>
-            <p>1. Only English medium students who follow the G.C.E Advanced Level Chemistry syllabus may register.</p>
-            <p>2. Access to classes will be denied if the registration is suspicious</p>
-            <p>3. Privacy of all the details provided at the registration will be protected.</p>
-            <p>4. To continue the classes for one month period, the class fee should be settled on or before 7th of the respective month.</p>
+            <div class="ml-12">
+                <p>1. Only English medium students who follow the G.C.E Advanced Level Chemistry syllabus may register.</p>
+                <p>2. Access to classes will be denied if the registration is suspicious</p>
+                <p>3. Privacy of all the details provided at the registration will be protected.</p>
+                <p>4. To continue the classes for one month period, the class fee should be settled on or before 7th of the respective month.</p>
+            </div>
         </div>
     </div>
 </template>
@@ -267,10 +269,8 @@ function validatenumber(event) {
     -moz-appearance: textfield;
 }
 
-</style>
-
-<style scoped>
 input, textarea, select {
     @apply border-gray-300 focus:border-[#076F94] focus:ring-[#076F94] rounded-md;
 }
+
 </style>

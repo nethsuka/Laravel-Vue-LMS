@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdditionalLessonController;
+use App\Http\Controllers\AdvancedFiltersController;
 use App\Http\Controllers\ClassControlsController;
 use App\Http\Controllers\ClassFeeController;
 use App\Http\Controllers\DashboardController;
@@ -63,9 +65,6 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
 
 // have to add admin middleware to these routs
 Route::get('/resource-controls', [ResourceControlsController::class, 'index'])->middleware(['auth', 'verified'])->name('resourceControls');
-// Route::get('resourceCPanel/edit', function () {
-//     return Inertia::render('Admin/EditResource');
-// })->middleware(['auth', 'verified'])->name('resourceCPanel/edit');
 Route::get('/resource-controls/edit/{resourceId}', [EditResourceController::class, 'show'])->middleware(['auth', 'verified'])->name('resourceControls.edit');
 Route::patch('/resource-controls/edit/save-changes', [EditResourceController::class, 'saveResourceChanges'])->middleware(['auth', 'verified'])->name('resourceControls.saveChanges');
 Route::post('/resource-controls/add-resource', [ResourceControlsController::class, 'addResource'])->middleware(['auth', 'verified'])->name('resourceControls.addResource');
@@ -74,23 +73,17 @@ Route::post('/resource-controls/resource/add-video', [EditResourceController::cl
 Route::patch('/resource-controls/edit/save-video-changes', [EditResourceController::class, 'updateResourceVideoList'])->middleware(['auth', 'verified'])->name('resourceControls.updateVideoChanges');
 
 // Student control page
-// Route::get('/studentCPanel', function () {
-//     return Inertia::render('Admin/StudentControls');
-// })->middleware(['auth', 'verified'])->name('studentCPanel');
 Route::get('/student-controls', [StudentControlsController::class, 'index'])->middleware(['auth', 'verified'])->name('studentCPanel');
 Route::patch('/student-controls/update/extend-date', [StudentControlsController::class, 'updateExtendDate'])->middleware(['auth', 'verified'])->name('studentCPanel.updateDate');
 Route::post('/student-controls/add/extra-video', [StudentControlsController::class, 'addExtraVideo'])->middleware(['auth', 'verified'])->name('studentCPanel.assignVideo');
 Route::delete('/student-controls/delete/user', [StudentControlsController::class, 'deleteUser'])->middleware(['auth', 'verified'])->name('studentCPanel.deleteUser');
+Route::patch('/student-controls/reset/extend-date', [StudentControlsController::class, 'resetExtendDate'])->middleware(['auth', 'verified'])->name('studentCPanel.resetDate');
 
-//student' classes page
-Route::get('/studentsClasses', function () {
-    return Inertia::render('Admin/FilterStuClass');
-})->middleware(['auth', 'verified'])->name('studentsClasses');
+//advanced filters page
+Route::get('/advanced-filters', [AdvancedFiltersController::class, 'index'])->middleware(['auth', 'verified'])->name('advancedFilters');
 
 //Extra class page
-Route::get('/extraclass', function () {
-    return Inertia::render('Admin/Extraclass');
-})->middleware(['auth', 'verified'])->name('extraclass');
+Route::get('/aditional-lessons-controle', [AdditionalLessonController::class, 'index'])->middleware(['auth', 'verified'])->name('extraLessons');
 
 //Resources payment slipe page
 Route::get('/resourcespayments', function () {
