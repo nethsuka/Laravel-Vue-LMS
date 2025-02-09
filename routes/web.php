@@ -92,6 +92,11 @@ Route::get('/extraclass', function () {
     return Inertia::render('Admin/Extraclass');
 })->middleware(['auth', 'verified'])->name('extraclass');
 
+//Resources payment slipe page
+Route::get('/resourcespayments', function () {
+    return Inertia::render('Admin/ResourcesSlip');
+})->middleware(['auth', 'verified'])->name('resourcespayments');
+
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');
     Route::patch('/classfees', [ClassFeeController::class, 'acceptPayment'])->name('classfees.accept');
