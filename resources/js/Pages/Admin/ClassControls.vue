@@ -339,7 +339,7 @@ function isExpired(expiryDate) {
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                     <!-- content -->
-                    <div class="p-14">
+                    <div class="p-12">
                         <fwb-alert v-if="$page.props.flash.successMsg" closable icon type="success"
                             class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-green-100">
                             <p>{{ $page.props.flash.successMsg }}</p>

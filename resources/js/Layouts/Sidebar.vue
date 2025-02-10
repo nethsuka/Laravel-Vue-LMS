@@ -62,12 +62,12 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                     Resource Payments
                     </AdminNavLink>
                 </li>
-                <li class="hover:bg-gray-200">
+                <!-- <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                     <i class="fas fa-tasks mr-2"></i>
                     Sign Out
                     </AdminNavLink>
-                </li>
+                </li> -->
             </ul>
             </nav>
         </aside>

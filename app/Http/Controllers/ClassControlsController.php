@@ -8,6 +8,7 @@ use App\Models\ClassVideo;
 use App\Models\TuitionClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ClassControlsController extends Controller
 {
@@ -148,12 +149,10 @@ class ClassControlsController extends Controller
         }
 
         $fileToDelete = $record->tute_path; // e.g., 'class_tutes/1735555922_azurepic.PNG'
-        $fullPath = storage_path('app/public/' . $fileToDelete);
 
         // Check if the file exists and delete it
-        if (File::exists($fullPath)) {
-            File::delete($fullPath);
-            // return response()->json(['success' => 'File deleted successfully']);
+        if (Storage::disk('public')->exists($fileToDelete)) {
+            Storage::disk('public')->delete($fileToDelete);
         } else {
             return response()->json(['error' => 'File not found'], 404);
         }

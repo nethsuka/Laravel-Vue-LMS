@@ -310,19 +310,19 @@ const totalResourcePrice = computed(() => {
                         class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
                         <li class="me-2">
                             <a href="#" @click.prevent="setActiveTab('Monthly Payment')"
-                                :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'Monthly Payment' }"
+                                :class="{ 'text-blue-600 bg-sky-50 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'Monthly Payment' }"
                                 class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Monthly
                                 Payment</a>
                         </li>
                         <li class="me-2">
                             <a href="#" @click.prevent="setActiveTab('Resources Payment')"
-                                :class="{ 'text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'Resources Payment' }"
+                                :class="{ 'text-blue-600 bg-sky-50 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'Resources Payment' }"
                                 class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Resources Payment</a>
                         </li>
                     </ul>
 
                     <div
-                        class="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
+                        class="p-6 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
                         <template v-if="activeTab === 'Monthly Payment'">
                             <h3 class="mb-5 text-lg font-bold text-gray-900 dark:text-white pb-2">Monthly Payment</h3>
                             <!-- <p class="mb-4">This is some placeholder content for the Profile tab's associated content.</p> -->

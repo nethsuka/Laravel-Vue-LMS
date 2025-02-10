@@ -40,11 +40,6 @@ function getGravatarURL( email ) {
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('extra_lessons')" :active="route().current('extra_lessons')">
-                                    Additional Lessons
-                                </NavLink>
-                            </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('payments')" :active="route().current('payments')">
                                     Payments
                                 </NavLink>
@@ -52,6 +47,11 @@ function getGravatarURL( email ) {
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('resources')" :active="route().current('resources')">
                                     Resources
+                                </NavLink>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink :href="route('extra_lessons')" :active="route().current('extra_lessons')">
+                                    Additional Lessons
                                 </NavLink>
                             </div>
                         </div>
@@ -138,14 +138,14 @@ function getGravatarURL( email ) {
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('extra_lessons')" :active="route().current('extra_lessons')">
-                            Extra Lessons
-                        </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('payments')" :active="route().current('payments')">
                             Payments
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('resources')" :active="route().current('resources')">
                             Resources
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('extra_lessons')" :active="route().current('extra_lessons')">
+                            Additional Lessons
                         </ResponsiveNavLink>
                     </div>
 

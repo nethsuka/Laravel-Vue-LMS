@@ -63,14 +63,16 @@ class ResourcesSlipController extends Controller
     public function deletePayment(Request $request) {
 
         $data = ResourceSlip::find($request->slipID);
-        $filePath = storage_path('app/public/'.$data->slip_url);
-
-        if (File::exists($filePath)) {
-            File::delete($filePath);
+        if ($data) {
+            $filePath = $data->slip_url;
+    
+            // Check if the file exists in the storage
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+    
             ResourceSlip::destroy($request->slipID);
-        }
-        ResourceSlip::where('id', $request->slipID)->delete();  
-
+        }  
     }
 
     public function deleteExpiredRecords() {
@@ -79,9 +81,7 @@ class ResourcesSlipController extends Controller
             ->pluck('slip_id') // Get only the slip_id column
             ->unique(); // Ensure unique slip_ids
 
-        // Step 2: Retrieve the associated slip_url for each unique slip_id from the slip table
         foreach ($expiredSlipIds as $slipId) {
-            // Get the slip record associated with the slip_id
             $slip = ResourceSlip::where('id', $slipId)->first(); // Assuming the table is called 'slip'
 
             if ($slip && $slip->slip_url) {
@@ -93,8 +93,7 @@ class ResourcesSlipController extends Controller
                     Storage::disk('public')->delete($filePath);
                 }
 
-                // Step 4: Delete the slip record from the slip table
-                $slip->delete(); // Delete the slip record
+                $slip->delete();
 
             }
         }

@@ -11,7 +11,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-
+use Illuminate\Support\Facades\Storage;
 
 class ClassFeeController extends Controller
 {
@@ -134,16 +134,16 @@ class ClassFeeController extends Controller
         Slip::query()->delete();
         // StuClaSlip::query()->delete();
 
-        $directory = storage_path('app/public/monthly_slips');
+        $directory = 'monthly_slips'; // Directory inside 'public' disk
 
         // Ensure the directory exists
-        if (File::exists($directory)) {
+        if (Storage::disk('public')->exists($directory)) {
             // Get all files from the directory
-            $files = File::files($directory);
-            
+            $files = Storage::disk('public')->files($directory);
+
             // Delete each file
             foreach ($files as $file) {
-                File::delete($file);
+                Storage::disk('public')->delete($file);
             }
         }
 
@@ -151,11 +151,16 @@ class ClassFeeController extends Controller
 
     public function deleteStudentSlip(Request $request) {
         $data = Slip::find($request->slipID);
-        $filePath = storage_path('app/public/'.$data->slip_url);
-
-        if (File::exists($filePath)) {
-            File::delete($filePath);
+        if ($data) {
+            $filePath = $data->slip_url; // Get the file path (relative to the 'public' disk)
+    
+            // Check if the file exists in the storage
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+    
             Slip::destroy($request->slipID);
+    
         }
     }
 }

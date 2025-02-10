@@ -254,7 +254,7 @@ const confirmAction = () => {
                             class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
                             <p>{{ $page.props.flash.errorMsg }}</p>
                         </fwb-alert>
-                        <fwb-heading tag="h2" style="margin-bottom: 20px;">Students</fwb-heading>
+                        <fwb-heading tag="h2" class="p-7">Students</fwb-heading>
                         <fwb-input v-on:input="getkey" class="max-w-sm mx-auto" v-model="query"
                             placeholder="Find student by name">
                             <template #prefix>
