@@ -12,6 +12,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResourceControlsController;
 use App\Http\Controllers\ResourcesController;
+use App\Http\Controllers\ResourcesSlipController;
 use App\Http\Controllers\StudentControlsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -84,11 +85,14 @@ Route::get('/advanced-filters', [AdvancedFiltersController::class, 'index'])->mi
 
 //Extra class page
 Route::get('/aditional-lessons-controle', [AdditionalLessonController::class, 'index'])->middleware(['auth', 'verified'])->name('extraLessons');
+Route::delete('/aditional-lessons-controle/delete/lesson', [AdditionalLessonController::class, 'deleteExtraVideo'])->middleware(['auth', 'verified'])->name('extraLessons.delete');
 
 //Resources payment slipe page
-Route::get('/resourcespayments', function () {
-    return Inertia::render('Admin/ResourcesSlip');
-})->middleware(['auth', 'verified'])->name('resourcespayments');
+Route::get('/resources-payments', [ResourcesSlipController::class, 'index'])->middleware(['auth', 'verified'])->name('resourcespayments');
+Route::patch('/resources-payments', [ResourcesSlipController::class, 'acceptPayment'])->middleware(['auth', 'verified'])->name('resourcespayments.acceptPayment');
+Route::delete('/resources-payments', [ResourcesSlipController::class, 'deletePayment'])->middleware(['auth', 'verified'])->name('resourcespayments.deletePayment');
+Route::delete('/resources-payments/delete/unaccepted-payment', [ResourcesSlipController::class, 'deletePayment'])->middleware(['auth', 'verified'])->name('resourcespayments.deleteUnacceptedPayment');
+Route::delete('/resources-payments/delete/expired', [ResourcesSlipController::class, 'deleteExpiredRecords'])->middleware(['auth', 'verified'])->name('resourcespayments.deleteExpiredPayments');
 
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');

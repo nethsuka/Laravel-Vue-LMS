@@ -1,6 +1,6 @@
 <script setup>
 import Sidebar from '@/Layouts/Sidebar.vue';
-import { Head, useForm, Link } from '@inertiajs/vue3';
+import { Head, useForm, Link, router } from '@inertiajs/vue3';
 import { onMounted, ref, computed } from 'vue';
 import {
     FwbA,
@@ -216,11 +216,11 @@ function deleteUser(userId) {
     }
 }
 
-const confirmAction = (event) => {
-    const confirmed = window.confirm('Are you sure you want to reset the extend dates?');
-
-    if (!confirmed) {
-        event.preventDefault();
+const confirmAction = () => {
+    if (confirm('Are you sure you want to reset the extend dates?')) {
+        router.patch('/student-controls/reset/extend-date', {
+            preserveScroll: true,
+        });
     }
 };
 
@@ -235,15 +235,13 @@ const confirmAction = (event) => {
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                         <div class="grid grid-cols-3 gap-2">
                             <div class="text-sm py-2 px-7 col-span-2">
-                                Please proceed with caution as this will permanently remove all slip data from the database
-                                from which there is no way to retrieve it.
+                                Please proceed with caution as this will reset the extension date for all students to the default value (7th). 
+                                This action cannot be undone.
                             </div>
                             <div class="py-2 px-7">
-                                <Link href="/student-controls/reset/extend-date" method="patch" as="button" type="button" @click="confirmAction()">
-                                    <fwb-button color="default" class="ml-12">
-                                        Reset Extend Dates
-                                    </fwb-button>
-                                </Link>
+                                <fwb-button color="default" class="ml-12" @click="confirmAction">
+                                    Reset Extend Dates
+                                </fwb-button>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClassVideo;
+use App\Models\ExtraVideo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ExtraLessonsController extends Controller
@@ -12,7 +15,9 @@ class ExtraLessonsController extends Controller
 
     public function __construct() {
 
-        $this->extraLessons = ClassVideo::all();
+        $this->extraLessons = ExtraVideo::where('st_id', Auth::id())
+                                ->where('expiry_date', '>', Carbon::now('Asia/Colombo'))
+                                ->get();
     }
 
     public function index() {

@@ -14,7 +14,9 @@ import {
     FwbModal,
     FwbInput,
     FwbAlert,
-    FwbTab, FwbTabs
+    FwbTab, 
+    FwbTabs,
+    FwbHeading
 } from 'flowbite-vue';
 
 const activeTab = ref('first');
@@ -118,8 +120,11 @@ function confirmDelete(id) {
 
                 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
+                    <fwb-heading tag="h4" size="lg" class="pl-4 pt-4 pb-6">
+                        Monthly Payments
+                    </fwb-heading>
                     <!--main  content -->
-                    <fwb-tabs v-model="activeTab" class="p-5" variant="underline">
+                    <fwb-tabs v-model="activeTab" class="p-4" variant="underline">
                         <fwb-tab name="first" title="Accept Payments">
                             <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4 bg-slate-200 pt-8">
                                 <div class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
@@ -163,7 +168,7 @@ function confirmDelete(id) {
                                                             <Link href="/classfees" method="patch" :data="{ slipID: element.slip_id, paidClasses: element.paid_classes, stID: element.stID }" as="button" type="button" class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center">
                                                                 Accept
                                                             </Link>
-                                                            <Link href="" @click="confirmDelete(element.slip_id)" as="button" type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3.5 text-center ml-1.5">
+                                                            <Link href="" @click="confirmDelete(element.slip_id)" as="button" type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-2.5 text-center ml-1.5">
                                                                 <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24">
                                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                                                                 </svg>

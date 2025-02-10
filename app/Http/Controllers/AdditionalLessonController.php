@@ -20,4 +20,18 @@ class AdditionalLessonController extends Controller
             'extendDetails' => $this->extendDetails
         ]);
     }
+
+    public function deleteExtraVideo(Request $request) {
+        $process = ExtraVideo::where('id', $request->id)->delete();
+    
+        if($process){
+            return back()->with([
+                'successMsg' => 'Extra lesson deleted successfully.',
+            ]);
+        }else{
+            return back()->with([
+                'errorMsg' => 'Error occured !',
+            ]);
+        }
+    }
 }
