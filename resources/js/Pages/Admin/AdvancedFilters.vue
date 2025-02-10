@@ -24,43 +24,9 @@ const Arrays = defineProps({
     classDetails: Array,
 });
 
-const classes = ["2025 Paper", "2025 Theory", "2026 Paper", "2026 Theory", "2027 Paper"]
+const classes = Arrays.classDetails
 
-const names = [
-    "Thinula", "Kasun", "Nimal", "Saman", "Amal", "Ruwan", "Dilan", "Kavindu", "Isuru", "Chathura",
-    "Lakshan", "Vimukthi", "Sandeepa", "Roshan", "Gayan", "Mahesh", "Nuwan", "Tharindu", "Ashen",
-    "Janith", "Chaminda", "Sameera", "Heshan", "Sandun", "Pradeep", "Dinuka", "Charitha", "Ravindu",
-    "Thushara", "Pubudu"
-];
-
-const classNames = ["2025 Paper", "2025 Theory", "2026 Paper", "2026 Theory", "2027 Paper"];
-const paymentStatuses = ["yes", "no"];
-
-function getRandomElement(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function generateRandomNumber() {
-    return "07" + Math.floor(10000000 + Math.random() * 90000000);
-}
-
-function generateStudents(count = 50) {
-    const students = [];
-    for (let i = 0; i < count; i++) {
-        let name = getRandomElement(names);
-        students.push({
-            student_name: name,
-            email: `${name.toLowerCase()}@gmail.com`,
-            exam_year: Math.floor(Math.random() * 3) + 2025,
-            class_name: getRandomElement(classNames),
-            payment_status: getRandomElement(paymentStatuses),
-            w_number: generateRandomNumber()
-        });
-    }
-    return students;
-}
-
-const stu = ref([]);
+const stu = ref(Arrays.studentAndPaymentDetails);
 const showarray = ref([]);
 const seacrharray = ref([]);
 const query = ref("");
@@ -163,8 +129,6 @@ function handleClassFilter(index) {
             checkall.value = true;
         }
     }
-    console.log("class filter",checkall.value)
-
     selectedClasses.value = newSelectedClasses;
 }
 function handleCheckAll() {
@@ -189,13 +153,239 @@ function handlePaymentFilter(value) {
 }
 // Initialize with all classes unchecked and "All class" checked
 onMounted(() => {
-    stu.value = generateStudents();
     creatArray();
     // Initialize with default states
     selectedClasses.value = new Array(classes.length).fill(false);
     checkall.value = true;
     paymentFilter.value = 'all';
 });
+
+function asiningn(){
+    showarray.value = [
+    {
+        student_name: "Kasun",
+        email: "kasun@gmail.com",
+        w_number: "0712345678",
+        exam_year: 2025,
+        class: [
+            { name: "2025 Paper", paid: "yes" },
+            { name: "2025 Theory", paid: "yes" }
+        ]
+    },
+    {
+        student_name: "Vimukthi",
+        email: "vimukthi@gmail.com",
+        w_number: "0779876543",
+        exam_year: 2026,
+        class: [
+            { name: "2026 Paper", paid: "no" },
+            { name: "2026 Theory", paid: "yes" },
+            { name: "2025 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Tharindu",
+        email: "tharindu@gmail.com",
+        w_number: "0761234567",
+        exam_year: 2027,
+        class: [
+            { name: "2027 Paper", paid: "yes" },
+            { name: "2026 Paper", paid: "no" },
+            { name: "2025 Theory", paid: "yes" }
+        ]
+    },
+    {
+        student_name: "Nimal",
+        email: "nimal@gmail.com",
+        w_number: "0719876543",
+        exam_year: 2026,
+        class: [
+            { name: "2026 Theory", paid: "yes" },
+            { name: "2026 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Saman",
+        email: "saman@gmail.com",
+        w_number: "0724567890",
+        exam_year: 2025,
+        class: [
+            { name: "2025 Paper", paid: "no" },
+            { name: "2025 Theory", paid: "yes" }
+        ]
+    },
+    {
+        student_name: "Amal",
+        email: "amal@gmail.com",
+        w_number: "0776543210",
+        exam_year: 2027,
+        class: [
+            { name: "2027 Paper", paid: "yes" },
+            { name: "2026 Theory", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Ruwan",
+        email: "ruwan@gmail.com",
+        w_number: "0715432167",
+        exam_year: 2026,
+        class: [
+            { name: "2026 Paper", paid: "yes" },
+            { name: "2025 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Dilan",
+        email: "dilan@gmail.com",
+        w_number: "0769871234",
+        exam_year: 2025,
+        class: [
+            { name: "2025 Paper", paid: "yes" },
+            { name: "2026 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Kavindu",
+        email: "kavindu@gmail.com",
+        w_number: "0708765432",
+        exam_year: 2027,
+        class: [
+            { name: "2027 Paper", paid: "no" },
+            { name: "2026 Theory", paid: "yes" }
+        ]
+    },
+    {
+        student_name: "Isuru",
+        email: "isuru@gmail.com",
+        w_number: "0713344556",
+        exam_year: 2026,
+        class: [
+            { name: "2026 Theory", paid: "yes" },
+            { name: "2025 Theory", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Chathura",
+        email: "chathura@gmail.com",
+        w_number: "0765544332",
+        exam_year: 2025,
+        class: [
+            { name: "2025 Paper", paid: "no" },
+            { name: "2026 Theory", paid: "yes" }
+        ]
+    },
+    {
+        student_name: "Lakshan",
+        email: "lakshan@gmail.com",
+        w_number: "0776655443",
+        exam_year: 2026,
+        class: [
+            { name: "2026 Paper", paid: "yes" },
+            { name: "2027 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Sandeepa",
+        email: "sandeepa@gmail.com",
+        w_number: "0714433221",
+        exam_year: 2027,
+        class: [
+            { name: "2027 Paper", paid: "no" },
+            { name: "2025 Paper", paid: "yes" }
+        ]
+    },
+    {
+        student_name: "Roshan",
+        email: "roshan@gmail.com",
+        w_number: "0721122334",
+        exam_year: 2025,
+        class: [
+            { name: "2025 Paper", paid: "yes" },
+            { name: "2026 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Gayan",
+        email: "gayan@gmail.com",
+        w_number: "0710099887",
+        exam_year: 2026,
+        class: [
+            { name: "2026 Paper", paid: "yes" },
+            { name: "2027 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Mahesh",
+        email: "mahesh@gmail.com",
+        w_number: "0701122113",
+        exam_year: 2027,
+        class: [
+            { name: "2027 Paper", paid: "no" },
+            { name: "2026 Theory", paid: "yes" }
+        ]
+    },
+    {
+        student_name: "Nuwan",
+        email: "nuwan@gmail.com",
+        w_number: "0763344556",
+        exam_year: 2025,
+        class: [
+            { name: "2025 Theory", paid: "yes" },
+            { name: "2026 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Janith",
+        email: "janith@gmail.com",
+        w_number: "0715566778",
+        exam_year: 2026,
+        class: [
+            { name: "2026 Paper", paid: "yes" },
+            { name: "2027 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Chaminda",
+        email: "chaminda@gmail.com",
+        w_number: "0777766554",
+        exam_year: 2027,
+        class: [
+            { name: "2027 Paper", paid: "no" },
+            { name: "2026 Theory", paid: "yes" }
+        ]
+    },
+    {
+        student_name: "Sameera",
+        email: "sameera@gmail.com",
+        w_number: "0704433221",
+        exam_year: 2025,
+        class: [
+            { name: "2025 Theory", paid: "yes" },
+            { name: "2026 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Heshan",
+        email: "heshan@gmail.com",
+        w_number: "0766677889",
+        exam_year: 2026,
+        class: [
+            { name: "2026 Paper", paid: "yes" },
+            { name: "2027 Paper", paid: "no" }
+        ]
+    },
+    {
+        student_name: "Sandun",
+        email: "sandun@gmail.com",
+        w_number: "0728899001",
+        exam_year: 2027,
+        class: [
+            { name: "2027 Paper", paid: "no" },
+            { name: "2026 Theory", paid: "yes" }
+        ]
+    }
+];
+}
 
 function forpamentfilter(item){
     if(item === paymentFilter.value){
