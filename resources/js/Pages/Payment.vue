@@ -23,7 +23,7 @@ onMounted(() => {
     discount();
     creatingshowarray();
     // addClassNamesToArray();
-    if(sessionStorage.getItem('buy')=='true'){
+    if (sessionStorage.getItem('buy') == 'true') {
         activeTab.value = 'Resources Payment';
         sessionStorage.removeItem('buy');
     }
@@ -36,7 +36,6 @@ onMounted(() => {
 
     // Selected item taken from the session storage , saved by in more classes page
     redirectedFromMoreclass();
-    console.log(cart.value);
 })
 
 const { props } = usePage();
@@ -57,17 +56,17 @@ const form2 = useForm({
 });
 
 
-function redirectedFromMoreclass(){
+function redirectedFromMoreclass() {
     const selectedClass = sessionStorage.getItem('class')
     sessionStorage.removeItem('class');
-    if (selectedClass){
-        if(selectedClass.length > 13){
-            const year = selectedClass.substring(0,4);
-            const class1 = year +' Paper';
-            const class2 = year +' Theory';
+    if (selectedClass) {
+        if (selectedClass.length > 13) {
+            const year = selectedClass.substring(0, 4);
+            const class1 = year + ' Paper';
+            const class2 = year + ' Theory';
             handleCheckboxChange(class1);
             handleCheckboxChange(class2);
-        }else{
+        } else {
             // fromsession.value.push(selectedClass);
             handleCheckboxChange(selectedClass);
         }
@@ -77,10 +76,15 @@ function redirectedFromMoreclass(){
 function submit1() {
     form1.post('/payments', {
         preserveScroll: true,
-        onSuccess: () => {
+        onSuccess: (page) => {
             total.value = 0;
+            st_paid.value = page.props.paidClasses
+            showarray.value = showarray.value.filter(item =>
+                !st_paid.value.includes(item.class_name)
+            );
             form1.reset();
             window.scrollTo(0, 0);
+
         },
     });
     showAlert.value = true;
@@ -105,7 +109,6 @@ function closeAlert() {
 }
 
 function creatingshowarray() {
-    console.log(Arrays.classDetails)
     for (let i of Arrays.classDetails) {
         if (!st_paid.value.includes(i.class_name)) {
             showarray.value.push(i)
@@ -124,12 +127,12 @@ function discount() {
     let paper = '';
     let theory = '';
 
-    const st_paid_value = Array.isArray(st_paid.value) 
+    const st_paid_value = Array.isArray(st_paid.value)
         ? st_paid.value.map(item => item.toLowerCase())
         : st_paid.value.toLowerCase();
 
     let currentYear = new Date().getFullYear() % 100;
-    let years = [currentYear-1, currentYear, currentYear + 1, currentYear + 2];
+    let years = [currentYear - 1, currentYear, currentYear + 1, currentYear + 2];
 
     for (let i of years) {
         paper = '20' + i + ' Paper';
@@ -156,7 +159,7 @@ function class_fees() {
     for (let y of [25, 26, 27, 28, 29, 30]) {
         paper = '20' + y + ' Paper';
         theory = '20' + y + ' Theory';
-        
+
         if (form1.paid_classes.includes(theory) && form1.paid_classes.includes(paper)) {
             if (y >= 26) {
                 total.value = total.value + 7500;  // New combined price for 2026 onwards
@@ -174,7 +177,7 @@ function class_fees() {
 function already_paid() {
     total.value = 0;
     let count = 0;
-    
+
     for (let i of form1.paid_classes) {
         if (discount_class.value.includes(i)) {
             const year = parseInt(i.substring(2, 4));  // Extract year from class name
@@ -187,11 +190,11 @@ function already_paid() {
             if (count === 0) {
                 let paper = '';
                 let theory = '';
-                
+
                 for (let y of [25, 26, 27, 28, 29, 30]) {
                     paper = '20' + y + ' Paper';
                     theory = '20' + y + ' Theory';
-                    
+
                     if (form1.paid_classes.includes(theory) && form1.paid_classes.includes(paper)) {
                         if (y >= 26) {
                             total.value = total.value + 7500;  // New combined price for 2026 onwards
@@ -238,15 +241,17 @@ const handleCheckboxChange = (value) => {
     }
 
 };
-function removeitem(name){
+function removeitem(name) {
     console.log(name);
     cart.value = cart.value.filter(item => item.resource_name !== name);
     sessionStorage.setItem("cart", JSON.stringify(cart.value));
 }
 
 const totalResourcePrice = computed(() => {
-  return cart.value.reduce((total, item) => total + (parseInt(item.price) || 0), 0);
+    return cart.value.reduce((total, item) => total + (parseInt(item.price) || 0), 0);
 });
+
+const agree = ref(false)
 
 </script>
 
@@ -262,10 +267,10 @@ const totalResourcePrice = computed(() => {
                     <Link href="/purchaceclass">
                     <!-- <fwb-button gradient="cyan" shadow>Purchace Class</fwb-button> -->
                     </Link>
-                    <a href="/class-controls"  v-if="props.auth.user.role === 'admin'">
+                    <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
-                        class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg hover:shadow-purple-500/100 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-md px-4 py-1.5 text-center ml-3">
-                        Admin Panel</button>
+                            class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg hover:shadow-purple-500/100 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-md px-4 py-1.5 text-center ml-3">
+                            Admin Panel</button>
                     </a>
                 </div>
             </div>
@@ -317,12 +322,12 @@ const totalResourcePrice = computed(() => {
                         <li class="me-2">
                             <a href="#" @click.prevent="setActiveTab('Resources Payment')"
                                 :class="{ 'text-blue-600 bg-sky-50 active dark:bg-gray-800 dark:text-blue-500': activeTab === 'Resources Payment' }"
-                                class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Resources Payment</a>
+                                class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Resources
+                                Payment</a>
                         </li>
                     </ul>
 
-                    <div
-                        class="p-6 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
+                    <div class="p-6 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
                         <template v-if="activeTab === 'Monthly Payment'">
                             <h3 class="mb-5 text-lg font-bold text-gray-900 dark:text-white pb-2">Monthly Payment</h3>
                             <!-- <p class="mb-4">This is some placeholder content for the Profile tab's associated content.</p> -->
@@ -332,10 +337,10 @@ const totalResourcePrice = computed(() => {
                                     <div class="mb-5">
                                         <fwb-alert icon type="info" class="p-4 w-full bg-blue-100">
                                             <div class="flex flex-col">
-                                                <p>Already paid for - 
+                                                <p>Already paid for -
                                                     <span v-for="(paidClass, index) in st_paid" :key="index">
                                                         {{ paidClass }}{{ index < st_paid.length - 1 ? ', ' : '' }}
-                                                    </span>
+                                                            </span>
                                                 </p>
                                             </div>
                                         </fwb-alert>
@@ -355,7 +360,9 @@ const totalResourcePrice = computed(() => {
                                         class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required />
                                 </div>
-                                <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Classes you can pay</label>
+                                <label for=""
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Classes you can
+                                    pay</label>
                                 <template v-if="showarray.length > 0">
                                     <div v-for="name in showarray" class="flex items-center mb-2" :key="name.name">
 
@@ -395,15 +402,19 @@ const totalResourcePrice = computed(() => {
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">
                                     PNG, JPG or PDF (MAX 2MB).</p>
                                 <InputError class="mt-2" :message="form1.errors.slip" />
-
-                                <button type="submit"
-                                    class="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                                <fwb-checkbox v-model="agree" label="I agree tems of conditons" class="mt-4" />
+                                <button type="submit" :disabled="!agree" :class="[
+                                    'mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-lg text-center',
+                                    agree
+                                        ? 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                                        : 'text-gray-400 bg-gray-200 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
+                                ]">Submit</button>
                             </form>
 
                         </template>
                         <template v-if="activeTab === 'Resources Payment'">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 pb-5">Resources Payment</h3>
-                            
+
                             <form class="max-w-sm mx-auto" @submit.prevent="submit2">
                                 <div class="mb-5">
                                     <label for="name1"
@@ -419,16 +430,27 @@ const totalResourcePrice = computed(() => {
                                         class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required />
                                 </div>
-                                <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selected resources :</label>
+                                <label for=""
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selected
+                                    resources :</label>
 
                                 <div class="mb-6">
                                     <template v-if="cart.length > 0">
-                                        <div v-for="item in cart" :key="item.id" class="badge-container flex flex-wrap gap-1 mb-1.5">
-                                            <span class="inline-flex items-center px-2 py-1 text-sm font-medium text-indigo-800 bg-indigo-100 rounded-full dark:bg-indigo-900 dark:text-indigo-300 max-w-xs truncate relative">
-                                                <span class="truncate pr-5" :title="item.name">{{ item.resource_name }}</span>
-                                                <button @click="removeitem(item.resource_name)" type="button" class="mr-2 inline-flex items-center p-1 ms-2 text-md text-indigo-400 bg-transparent rounded-xs hover:bg-indigo-200 hover:text-indigo-900 dark:hover:bg-indigo-800 dark:hover:text-indigo-300 absolute right-0" aria-label="Remove" >
-                                                    <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        <div v-for="item in cart" :key="item.id"
+                                            class="badge-container flex flex-wrap gap-1 mb-1.5">
+                                            <span
+                                                class="inline-flex items-center px-2 py-1 text-sm font-medium text-indigo-800 bg-indigo-100 rounded-full dark:bg-indigo-900 dark:text-indigo-300 max-w-xs truncate relative">
+                                                <span class="truncate pr-5" :title="item.name">{{ item.resource_name
+                                                    }}</span>
+                                                <button @click="removeitem(item.resource_name)" type="button"
+                                                    class="mr-2 inline-flex items-center p-1 ms-2 text-md text-indigo-400 bg-transparent rounded-xs hover:bg-indigo-200 hover:text-indigo-900 dark:hover:bg-indigo-800 dark:hover:text-indigo-300 absolute right-0"
+                                                    aria-label="Remove">
+                                                    <svg class="w-2 h-2" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                                     </svg>
                                                     <span class="sr-only">Remove badge</span>
                                                 </button>
@@ -436,9 +458,10 @@ const totalResourcePrice = computed(() => {
                                         </div>
                                     </template>
                                     <template v-else>
-                                        <p class="text-sm pl-4 mb-2">You can pick Resources from the<a href="/resources">
-                                            HERE
-                                        </a>
+                                        <p class="text-sm pl-4 mb-2">You can pick Resources from the<a
+                                                href="/resources">
+                                                HERE
+                                            </a>
                                         </p>
                                     </template>
                                 </div>
@@ -466,9 +489,13 @@ const totalResourcePrice = computed(() => {
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">
                                     PNG, JPG or PDF (MAX 2MB).</p>
                                 <InputError class="mt-2" :message="form2.errors.slip" />
-
-                                <button type="submit"
-                                    class="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                                <fwb-checkbox v-model="agree" label="I agree tems of conditons" class="mt-4" />
+                                <button type="submit" :disabled="!agree" :class="[
+                                    'mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-lg text-center',
+                                    agree
+                                        ? 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                                        : 'text-gray-400 bg-gray-200 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
+                                ]">Submit</button>
                             </form>
 
                         </template>
