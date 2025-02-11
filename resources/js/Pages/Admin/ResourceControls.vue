@@ -173,7 +173,14 @@ function deleteResource(resourceId) {
                                                 </span>
                                             </fwb-table-cell>
                                             <fwb-table-cell class="flex justify-center">
-                                                <fwb-button @click="redirectEdite(item.id)" gradient="cyan">Edit</fwb-button>
+                                                <fwb-button
+                                                @click="redirectEdite(item.id)" gradient="cyan">Edit
+                                                <template #suffix>
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path clip-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" fill-rule="evenodd" />
+      </svg>
+    </template>
+                                            </fwb-button>
                                                 <fwb-button gradient="red" @click="deleteResource(item.id)" class="ml-2">Delete</fwb-button>
                                             </fwb-table-cell>
                                         </fwb-table-row>

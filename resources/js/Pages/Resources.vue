@@ -73,7 +73,7 @@ const cartarrya = ref([])
 onMounted(() => {
     console.log(objectarray.value)
     console.log(boughtArray.value)
-    
+
     // Retrieve items from session storage
     const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
     // Assign the retrieved items to cartarrya
@@ -117,7 +117,7 @@ function redirectpayement() {
 
 }
 
-function isExpired(date){
+function isExpired(date) {
     const currentDate = new Date();
     const givenDate = new Date(date);
     if (givenDate < currentDate) {
@@ -127,12 +127,12 @@ function isExpired(date){
     }
 }
 
-function buyState(item){
-    if(item.buy == 1 && item.expiry_date == null) {
+function buyState(item) {
+    if (item.buy == 1 && item.expiry_date == null) {
         return 3;
-    }else if ((item.buy == 0 && item.expiry_date == null) || (item.buy == 1 && isExpired(item.expiry_date)==true)){
+    } else if ((item.buy == 0 && item.expiry_date == null) || (item.buy == 1 && isExpired(item.expiry_date) == true)) {
         return 2;
-    }else if(item.buy == 1 && isExpired(item.expiry_date)==false){
+    } else if (item.buy == 1 && isExpired(item.expiry_date) == false) {
         return 1;
     }
 }
@@ -154,14 +154,14 @@ function getVideosByResourceId(resourceId) {
                 <div>
                     <a href="/more-classes">
                         <button type="button"
-                        class="text-white bg-gradient-to-r bg-sky-700  focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-md px-4 py-1.5 text-center shadow-lg hover:shadow-sky-600/100 dark:shadow-lg dark:shadow-cyan-800/80">
+                            class="text-white bg-gradient-to-r bg-sky-700  focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-md px-4 py-1.5 text-center shadow-lg hover:shadow-sky-600/100 dark:shadow-lg dark:shadow-cyan-800/80">
                             Add More Classes
                         </button>
                     </a>
                     <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
-                        class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg hover:shadow-purple-500/100 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-md px-4 py-1.5 text-center ml-3">
-                        Admin Panel
+                            class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg hover:shadow-purple-500/100 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-md px-4 py-1.5 text-center ml-3">
+                            Admin Panel
                         </button>
                     </a>
                 </div>
@@ -236,7 +236,7 @@ function getVideosByResourceId(resourceId) {
                                                     </fwb-table-cell>
                                                     <fwb-table-cell :title="y.name">Rs. {{ y.price }}</fwb-table-cell>
                                                     <fwb-table-cell>
-                                                        <fwb-button gradient="red" size="xs" 
+                                                        <fwb-button gradient="red" size="xs"
                                                             @click="removecart(y)">Remove Item</fwb-button>
                                                     </fwb-table-cell>
                                                 </fwb-table-row>
@@ -261,6 +261,13 @@ function getVideosByResourceId(resourceId) {
                                         total }}</fwb-heading>
                                 </div>
                                 <fwb-button color="green" :disabled="cartarrya.length === 0" @click="redirectpayement">
+                                    <template #prefix>
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                                        </svg>
+                                    </template>
                                     Buy
                                 </fwb-button>
 
@@ -287,19 +294,20 @@ function getVideosByResourceId(resourceId) {
                                 <template v-if="query.length > 0">
                                     <template v-if="showarray.length > 0">
                                         <template v-for="(y, index) in showarray" :key="index">
-                                            <fwb-table-row v-if="y.category =='theory'">
+                                            <fwb-table-row v-if="y.category == 'theory'">
                                                 <fwb-table-cell>
-                                                    <fwb-heading style="font-size: medium;">{{ y.resource_name }} </fwb-heading>
+                                                    <fwb-heading style="font-size: medium;">{{ y.resource_name }}
+                                                    </fwb-heading>
                                                 </fwb-table-cell>
                                                 <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                                 <fwb-table-cell class="flex justify-center items-center">
                                                     <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
-                                                        v-if="buyState(y)==2" @click="addtocart(y)"
+                                                        v-if="buyState(y) == 2" @click="addtocart(y)"
                                                         :disabled="isitemincart(y)">Add To Cart</fwb-button>
                                                     <fwb-badge size="sm" class="w-15 float-end" type="purple"
-                                                        v-else-if="buyState(y)==1">Purchased</fwb-badge>
+                                                        v-else-if="buyState(y) == 1">Purchased</fwb-badge>
                                                     <fwb-badge size="sm" class="w-15 float-end"
-                                                        v-else-if="buyState(y)==3">Processing...</fwb-badge>
+                                                        v-else-if="buyState(y) == 3">Processing...</fwb-badge>
                                                 </fwb-table-cell>
                                             </fwb-table-row>
                                         </template>
@@ -314,17 +322,18 @@ function getVideosByResourceId(resourceId) {
                                     <template v-for="(y, index) in objectarray" :key="index">
                                         <fwb-table-row v-if="y.category == 'theory'">
                                             <fwb-table-cell>
-                                                <fwb-heading style="font-size: medium;">{{ y.resource_name }} </fwb-heading>
+                                                <fwb-heading style="font-size: medium;">{{ y.resource_name }}
+                                                </fwb-heading>
                                             </fwb-table-cell>
                                             <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                             <fwb-table-cell class="flex justify-center items-center">
-                                                    <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
-                                                        v-if="buyState(y)==2" @click="addtocart(y)"
-                                                        :disabled="isitemincart(y)">Add To Cart</fwb-button>
-                                                    <fwb-badge size="sm" class="w-15 float-end" type="purple"
-                                                        v-else-if="buyState(y)==1">Purchased</fwb-badge>
-                                                    <fwb-badge size="sm" class="w-15 float-end"
-                                                        v-else-if="buyState(y)==3">Processing...</fwb-badge>
+                                                <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
+                                                    v-if="buyState(y) == 2" @click="addtocart(y)"
+                                                    :disabled="isitemincart(y)">Add To Cart</fwb-button>
+                                                <fwb-badge size="sm" class="w-15 float-end" type="purple"
+                                                    v-else-if="buyState(y) == 1">Purchased</fwb-badge>
+                                                <fwb-badge size="sm" class="w-15 float-end"
+                                                    v-else-if="buyState(y) == 3">Processing...</fwb-badge>
                                             </fwb-table-cell>
                                         </fwb-table-row>
                                     </template>
@@ -343,12 +352,12 @@ function getVideosByResourceId(resourceId) {
                                         <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                         <fwb-table-cell class="flex justify-center items-center">
                                             <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
-                                                v-if="buyState(y)==2" @click="addtocart(y)"
+                                                v-if="buyState(y) == 2" @click="addtocart(y)"
                                                 :disabled="isitemincart(y)">Add To Cart</fwb-button>
                                             <fwb-badge size="sm" class="w-15 float-end" type="purple"
-                                                v-else-if="buyState(y)==1">Purchased</fwb-badge>
+                                                v-else-if="buyState(y) == 1">Purchased</fwb-badge>
                                             <fwb-badge size="sm" class="w-15 float-end"
-                                                    v-else-if="buyState(y)==3">Processing...</fwb-badge>
+                                                v-else-if="buyState(y) == 3">Processing...</fwb-badge>
                                         </fwb-table-cell>
                                     </fwb-table-row>
                                 </template>
@@ -374,7 +383,7 @@ function getVideosByResourceId(resourceId) {
                                             <div>
                                                 <div class="p-4">
                                                     <div v-html="video.video_link"></div>
-                                                </div>  
+                                                </div>
                                             </div>
                                         </template>
                                     </div>

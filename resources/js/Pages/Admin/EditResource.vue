@@ -70,7 +70,7 @@ function remove(index) {
     links.value.splice(index, 1)
     onup()
 }
-onMounted(()=>{
+onMounted(() => {
     links.value.sort((a, b) => a.index - b.index);
 })
 function onup() {
@@ -90,19 +90,19 @@ function validatenumber(event) {
 
 const isShowModal = ref(false)
 
-const SavecloseModal = async() => {
-    try{
+const SavecloseModal = async () => {
+    try {
 
         let lastindex = 1
-        if(links.value.length == 0){
+        if (links.value.length == 0) {
             lastindex = 1
-        } else{
+        } else {
             lastindex = Math.max(...links.value.map(link => link.index)) + 1;
         }
         links.value.push({
             name: new_title.value,
             link: new_url.value,
-            index: lastindex ,
+            index: lastindex,
         })
         form2.resource_id = Arrays.resource.id;
         form2.name = new_title.value;
@@ -110,17 +110,17 @@ const SavecloseModal = async() => {
         form2.index = lastindex;
         await form2.post('/resource-controls/resource/add-video', {
             preserveScroll: false,
-            onSuccess:(page)=>{
+            onSuccess: (page) => {
                 new_title.value = '';
                 new_url.value = '';
-                if(page.props.videos){
+                if (page.props.videos) {
                     links.value = page.props.videos;
                 }
                 closeModal()
             }
         });
-    }catch(error){
-        console.log("add video error",error)
+    } catch (error) {
+        console.log("add video error", error)
     }
 }
 
@@ -144,7 +144,7 @@ function isurlempty() {
     return links.value.some(link => !link.link || link.link.trim() === '')
 }
 
-function saveVideoChanges(){
+function saveVideoChanges() {
     form3.updatedArray = links;
     form3.patch('/resource-controls/edit/save-video-changes', {
         preserveScroll: false,
@@ -168,9 +168,22 @@ function saveVideoChanges(){
                                 class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
                                 <p>{{ $page.props.flash.errorMsg }}</p>
                             </fwb-alert>
-                            <fwb-heading tag="h3" size="lg" class="mb-10">
-                                Resource Edit
-                            </fwb-heading>
+                            <div class="flex justify-between  ">
+                                <fwb-heading tag="h3" size="lg">
+                                    Resource Edit
+                                </fwb-heading>
+                                <fwb-button gradient="green-blue" @click="router.visit('/resource-controls')" class="whitespace-nowrap" style="margin-bottom: 40px;">
+                                    <template #prefix>
+                                        <svg class="w-7 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                                                fill-rule="evenodd" />
+                                        </svg>
+                                    </template>
+                                    Resources Control
+                                </fwb-button>
+                            </div>
                             <div class="space-y-4 max-w-4xl p-4"
                                 style="border: 2px solid #dbdae0; border-radius: 10px;">
                                 <fwb-input v-model="name" label="Resource Name" placeholder="Enter Resource name"
@@ -180,7 +193,8 @@ function saveVideoChanges(){
                                 <fwb-select v-model="selected" :options="category" label="Select a country" />
                                 <div class="flex justify-end mt-4">
                                     <fwb-button @click="saveResourceChanges" :disabled="!name || !price || !selected"
-                                        gradient="green">Save changes</fwb-button>
+                                        gradient="green">Save
+                                        changes</fwb-button>
                                 </div>
                             </div>
 
@@ -197,7 +211,8 @@ function saveVideoChanges(){
                                     <VueDraggable v-model="links" :animation="150" handle=".handle" style="width: 100%;"
                                         class="flex flex-col gap-2 p-4 w-300px bg-gray-500/5 rounded"
                                         v-on:update="onup">
-                                        <div v-for="(item, index) in links" :key="item.id" style="margin-top: 10px; padding-top: 10px;"
+                                        <div v-for="(item, index) in links" :key="item.id"
+                                            style="margin-top: 10px; padding-top: 10px;"
                                             class="h-50px bg-gray-500/5 px-2 rounded flex items-center justify-between">
 
                                             <button class="handle cursor-move">
@@ -208,7 +223,8 @@ function saveVideoChanges(){
                                             Enter Video name" size="sm" />
                                             <div>
 
-                                                <fwb-textarea v-model="item.link" label="Video embed code" cols="50" style="width: 100%;" />
+                                                <fwb-textarea v-model="item.link" label="Video embed code" cols="50"
+                                                    style="width: 100%;" />
                                                 <fwb-p v-if="!item.link || item.link.trim() === ''" style="color: red;">
                                                     Please enter a video URL
                                                 </fwb-p>
@@ -221,9 +237,11 @@ function saveVideoChanges(){
                                         </div>
                                     </VueDraggable>
                                 </div>
-                                <div v-if="links.length <= 0" class="flex justify-start bg-gray-500/5 p-5">No Videos added.</div>
+                                <div v-if="links.length <= 0" class="flex justify-start bg-gray-500/5 p-5">No Videos
+                                    added.</div>
                                 <div class="flex justify-end mt-4">
-                                    <fwb-button gradient="green" @click="saveVideoChanges" :disabled="isurlempty()">Save changes</fwb-button>
+                                    <fwb-button gradient="green" @click="saveVideoChanges" :disabled="isurlempty()">Save
+                                        changes</fwb-button>
                                 </div>
                             </div>
                             <fwb-modal v-if="isShowModal" @close="closeModal">
