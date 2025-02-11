@@ -371,8 +371,16 @@ function getVideosByResourceId(resourceId) {
                                     <div style="display: flex; justify-content: space-between; width: 100%">
                                         <span>{{ y.resource_name }}</span>
                                         <span>Days Left: {{ calculateExpireDate(y.expiry_date) }}</span>
-                                        <span class="text-gray-500 dark:text-gray-400">Expire Date {{ y.expiry_date
-                                            }}</span>
+                                        <span class="text-gray-500 dark:text-gray-400">
+                                            Expire Date: <span class="font-bold">{{ new
+                                                Date(y.expiry_date).toLocaleDateString('en-US',
+                                                { year: 'numeric', month: '2-digit', day: '2-digit' }) }} |</span>
+                                            Time: <span class="font-bold">{{ new
+                                                Date(y.expiry_date).toLocaleTimeString('en-US', {
+                                                    hour:
+                                                '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+                                                }}</span>
+                                        </span>
                                     </div>
                                 </fwb-accordion-header>
                                 <fwb-accordion-content>
