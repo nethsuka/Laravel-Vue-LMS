@@ -172,14 +172,14 @@ const downloadFile = (tute_name, tute_path) => {
                                             <fwb-alert v-if="!checkPaidOrNot(record.id)" border type="warning" icon closable class="flex justify-between items-center max-w-xl mt-7">
                                                 <p>This class is available only until the <b>{{ Arrays.extendDetails.extend_date }}th</b> of this month. If payment is not settled by this date, you will no longer have access to the class.</p>
                                             </fwb-alert>
-                                            <div class="mt-5 mb-10 flex">
-                                                <a href="#" @click="joinOnline(record.id)"
+                                            <div class="mt-5 mb-10">
+                                                <!-- <a href="#" @click="joinOnline(record.id)"
                                                     class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-xl text-sm px-6 py-3 text-center flex items-center justify-center me-2 mb-2 space-x-2">
                                                     <span>Join Zoom Class</span>
-                                                </a>
-                                                <a :href="record.tele_group"
-                                                    class="text-white bg-[#0088cc] hover:bg-[#007ab8] focus:ring-4 focus:outline-none focus:ring-[#004d6a] dark:focus:ring-[#003f58] font-medium rounded-xl text-sm px-6 py-3 text-center flex items-center justify-center me-2 mb-2 space-x-2">
-                                                    <span>Telegram Channel</span>
+                                                </a> -->
+                                                <fwb-button gradient="teal" class="mr-2.5 mb-1" @click="joinOnline(record.id)">Join Zoom Class</fwb-button>
+                                                <a :href="record.tele_group">
+                                                    <fwb-button gradient="cyan">Telegram Channel</fwb-button>
                                                 </a>
                                             </div>
 
@@ -220,7 +220,7 @@ const downloadFile = (tute_name, tute_path) => {
                                                             <div
                                                                 class="inline-block bg-sky-100 text-gray-800 text-sm py-1 px-3 rounded-full">
                                                                 Expires on <span class="font-bold">{{ video.expiry_date
-                                                                    }}</span>
+                                                                    }} | Time : 23:59</span>
                                                             </div>
                                                         </div>
                                                         <div class="mt-2 text-sm text-gray-600">
@@ -238,9 +238,7 @@ const downloadFile = (tute_name, tute_path) => {
                                         </div>
                                         <div v-else class="container flex justify-center items-center py-20">
                                             <a href="/payments">
-                                                <button type="button"
-                                                    class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Payment
-                                                    Required</button>
+                                                <fwb-button gradient="green" class="rounded-full">Payment Required</fwb-button>
                                             </a>
                                         </div>
                                     </div>
@@ -267,9 +265,17 @@ const downloadFile = (tute_name, tute_path) => {
 </template>
 
 <style scoped>
-.back-color {
+/* .back-color {
     background-color: #2279e3;
     color: white;
+} */
+.back-color {
+    background: linear-gradient(to right, #3b82f6, #2563eb, #1d4ed8); /* Tailwind: from-blue-500 via-blue-600 to-blue-700 */
+    color: white;
+}
+
+.back-color:hover {
+    background: linear-gradient(to right, #2563eb, #1d4ed8, #1e40af); /* Hover gradient */
 }
 
 @media only screen and (min-width: 300px) {

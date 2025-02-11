@@ -176,8 +176,8 @@ function getVideosByResourceId(resourceId) {
                                 'px-4 py-2 text-sm font-medium',
                                 activebutton === 'unit' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
                                 'border border-gray-200 rounded-s-lg',
-                                'hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700',
-                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white'
+                                'hover:bg-gray-100 hover:text-blue-700',
+                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
                             ]">
                                 Unit Based Lessons
                             </button>
@@ -185,8 +185,8 @@ function getVideosByResourceId(resourceId) {
                                 'px-4 py-2 text-sm font-medium',
                                 activebutton === 'paper' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
                                 'border-t border-b border-gray-200',
-                                'hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700',
-                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white'
+                                'hover:bg-gray-100 hover:text-blue-700',
+                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
                             ]">
                                 Past Papers
                             </button>
@@ -194,8 +194,8 @@ function getVideosByResourceId(resourceId) {
                                 'px-4 py-2 text-sm font-medium',
                                 activebutton === 'myresources' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
                                 'border border-gray-200 rounded-e-lg',
-                                'hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700',
-                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white'
+                                'hover:bg-gray-100 hover:text-blue-700',
+                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
                             ]">
                                 My Resources
                             </button>
@@ -277,23 +277,50 @@ function getVideosByResourceId(resourceId) {
 
                     <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
                     <div v-if="activebutton === 'unit'" class="py-3">
-                        <fwb-input v-on:input="getkey" class="max-w-sm mx-auto" v-model="query"
-                            placeholder="Find unit based lessons">
-                            <template #prefix>
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round"
-                                        stroke-linejoin="round" stroke-width="2" />
-                                </svg>
-                            </template>
-                            <template #suffix>
-                            </template>
-                        </fwb-input>
-                        <fwb-table striped style="margin-top: 20px;">
-                            <fwb-table-body>
-                                <template v-if="query.length > 0">
-                                    <template v-if="showarray.length > 0">
-                                        <template v-for="(y, index) in showarray" :key="index">
+                        <div class="px-12 pb-12">
+                            <fwb-input v-on:input="getkey" class="max-w-sm mx-auto" v-model="query"
+                                placeholder="Find unit based lessons">
+                                <template #prefix>
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round"
+                                            stroke-linejoin="round" stroke-width="2" />
+                                    </svg>
+                                </template>
+                                <template #suffix>
+                                </template>
+                            </fwb-input>
+                            <fwb-table striped style="margin-top: 20px;">
+                                <fwb-table-body>
+                                    <template v-if="query.length > 0">
+                                        <template v-if="showarray.length > 0">
+                                            <template v-for="(y, index) in showarray" :key="index">
+                                                <fwb-table-row v-if="y.category == 'theory'">
+                                                    <fwb-table-cell>
+                                                        <fwb-heading style="font-size: medium;">{{ y.resource_name }}
+                                                        </fwb-heading>
+                                                    </fwb-table-cell>
+                                                    <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
+                                                    <fwb-table-cell class="flex justify-center items-center">
+                                                        <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
+                                                            v-if="buyState(y) == 2" @click="addtocart(y)"
+                                                            :disabled="isitemincart(y)">Add To Cart</fwb-button>
+                                                        <fwb-badge size="sm" class="w-15 float-end" type="purple"
+                                                            v-else-if="buyState(y) == 1">Purchased</fwb-badge>
+                                                        <fwb-badge size="sm" class="w-15 float-end"
+                                                            v-else-if="buyState(y) == 3">Processing...</fwb-badge>
+                                                    </fwb-table-cell>
+                                                </fwb-table-row>
+                                            </template>
+                                        </template>
+                                        <template v-else>
+                                            <fwb-alert class="border-t-4 rounded-none" icon type="warning">
+                                                There is no lesson name '{{ query }}'
+                                            </fwb-alert>
+                                        </template>
+                                    </template>
+                                    <template v-else>
+                                        <template v-for="(y, index) in objectarray" :key="index">
                                             <fwb-table-row v-if="y.category == 'theory'">
                                                 <fwb-table-cell>
                                                     <fwb-heading style="font-size: medium;">{{ y.resource_name }}
@@ -312,18 +339,18 @@ function getVideosByResourceId(resourceId) {
                                             </fwb-table-row>
                                         </template>
                                     </template>
-                                    <template v-else>
-                                        <fwb-alert class="border-t-4 rounded-none" icon type="warning">
-                                            There is no lesson name '{{ query }}'
-                                        </fwb-alert>
-                                    </template>
-                                </template>
-                                <template v-else>
+                                </fwb-table-body>
+                            </fwb-table>
+                        </div>
+                    </div>
+                    <div v-if="activebutton === 'paper'" style=" overflow-x: auto; max-height: 75vh;">
+                        <div class="p-12">
+                            <fwb-table striped>
+                                <fwb-table-body>
                                     <template v-for="(y, index) in objectarray" :key="index">
-                                        <fwb-table-row v-if="y.category == 'theory'">
+                                        <fwb-table-row v-if="y.category == 'paper'">
                                             <fwb-table-cell>
-                                                <fwb-heading style="font-size: medium;">{{ y.resource_name }}
-                                                </fwb-heading>
+                                                <fwb-heading style="font-size: medium;">{{ y.resource_name }} </fwb-heading>
                                             </fwb-table-cell>
                                             <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
                                             <fwb-table-cell class="flex justify-center items-center">
@@ -337,71 +364,54 @@ function getVideosByResourceId(resourceId) {
                                             </fwb-table-cell>
                                         </fwb-table-row>
                                     </template>
-                                </template>
-                            </fwb-table-body>
-                        </fwb-table>
-                    </div>
-                    <div v-if="activebutton === 'paper'" style=" overflow-x: auto; max-height: 75vh;">
-                        <fwb-table striped>
-                            <fwb-table-body>
-                                <template v-for="(y, index) in objectarray" :key="index">
-                                    <fwb-table-row v-if="y.category == 'paper'">
-                                        <fwb-table-cell>
-                                            <fwb-heading style="font-size: medium;">{{ y.resource_name }} </fwb-heading>
-                                        </fwb-table-cell>
-                                        <fwb-table-cell>Rs. {{ y.price }}</fwb-table-cell>
-                                        <fwb-table-cell class="flex justify-center items-center">
-                                            <fwb-button gradient="lime" size="xs" class="mr-2 text-white"
-                                                v-if="buyState(y) == 2" @click="addtocart(y)"
-                                                :disabled="isitemincart(y)">Add To Cart</fwb-button>
-                                            <fwb-badge size="sm" class="w-15 float-end" type="purple"
-                                                v-else-if="buyState(y) == 1">Purchased</fwb-badge>
-                                            <fwb-badge size="sm" class="w-15 float-end"
-                                                v-else-if="buyState(y) == 3">Processing...</fwb-badge>
-                                        </fwb-table-cell>
-                                    </fwb-table-row>
-                                </template>
-                            </fwb-table-body>
-                        </fwb-table>
+                                </fwb-table-body>
+                            </fwb-table>
+                        </div>
                     </div>
                     <div v-if="activebutton === 'myresources'">
-                        <fwb-accordion>
-                            <fwb-accordion-panel v-for="(y, index) in boughtArray" :key="index">
-                                <fwb-accordion-header>
-                                    <div style="display: flex; justify-content: space-between; width: 100%">
-                                        <span>{{ y.resource_name }}</span>
-                                        <span>Days Left: {{ calculateExpireDate(y.expiry_date) }}</span>
-                                        <span class="text-gray-500 dark:text-gray-400">
-                                            Expire Date: <span class="font-bold">{{ new
-                                                Date(y.expiry_date).toLocaleDateString('en-US',
-                                                { year: 'numeric', month: '2-digit', day: '2-digit' }) }} |</span>
-                                            Time: <span class="font-bold">{{ new
-                                                Date(y.expiry_date).toLocaleTimeString('en-US', {
-                                                    hour:
-                                                '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
-                                                }}</span>
-                                        </span>
-                                    </div>
-                                </fwb-accordion-header>
-                                <fwb-accordion-content>
-                                    <div v-if="getVideosByResourceId(y.resource_id) && getVideosByResourceId(y.resource_id).length > 0"
-                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                        <template v-for="(video, index) in getVideosByResourceId(y.resource_id)"
-                                            :key="index">
-                                            <div>
-                                                <div class="p-4">
-                                                    <div v-html="video.video_link"></div>
-                                                </div>
+                        <div class="p-12">
+                            <fwb-accordion>
+                                <template v-if="boughtArray.length > 0">
+                                    <fwb-accordion-panel v-for="(y, index) in boughtArray" :key="index">
+                                        <fwb-accordion-header>
+                                            <div style="display: flex; justify-content: space-between; width: 100%">
+                                                <span class="truncate max-w-xs" :title="y.resource_name">{{ y.resource_name }}</span>
+                                                <span>Days Left: {{ calculateExpireDate(y.expiry_date) }}</span>
+                                                <span class="text-gray-500 dark:text-gray-400">
+                                                    Expire Date: <span class="font-bold">{{ new
+                                                        Date(y.expiry_date).toLocaleDateString('en-US',
+                                                        { year: 'numeric', month: '2-digit', day: '2-digit' }) }} |</span>
+                                                    Time: <span class="font-bold">{{ new
+                                                        Date(y.expiry_date).toLocaleTimeString('en-US', {
+                                                            hour:
+                                                        '2-digit', minute: '2-digit', hour12: false })
+                                                        }}</span>
+                                                </span>
                                             </div>
-                                        </template>
-                                    </div>
-                                    <div v-else>
-                                        <p class="pt-3 pb-7 pl-4">No vidoes available</p>
-                                    </div>
-                                </fwb-accordion-content>
-                            </fwb-accordion-panel>
-
-                        </fwb-accordion>
+                                        </fwb-accordion-header>
+                                        <fwb-accordion-content>
+                                            <div v-if="getVideosByResourceId(y.resource_id) && getVideosByResourceId(y.resource_id).length > 0"
+                                                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                <template v-for="(video, index) in getVideosByResourceId(y.resource_id)"
+                                                    :key="index">
+                                                    <div>
+                                                        <div class="p-4">
+                                                            <div v-html="video.video_link"></div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                            <div v-else>
+                                                <p class="pt-3 pb-7 pl-4">No vidoes available</p>
+                                            </div>
+                                        </fwb-accordion-content>
+                                    </fwb-accordion-panel>
+                                </template>
+                                <template v-else>
+                                    <p>You haven't bought any resources</p>
+                                </template>
+                            </fwb-accordion>
+                        </div>
                     </div>
                 </div>
             </div>

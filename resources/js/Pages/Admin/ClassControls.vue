@@ -347,7 +347,7 @@ function isExpired(expiryDate) {
                             class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
                             <p>{{ $page.props.flash.errorMsg }}</p>
                         </fwb-alert>
-                        <fwb-heading tag="h4" size="lg" class="mb-10">
+                        <fwb-heading tag="h4" size="lg" class="mb-5">
                             Class Controls
                         </fwb-heading>
                         <fwb-button type="button" @click="addclassmodal"
