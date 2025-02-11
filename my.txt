@@ -1,0 +1,58 @@
+php artisan serve
+
+php artisan make:migration create_links_table
+
+php artisan make:model links -mc
+
+php artisan migrate
+
+php artisan migrate:fresh
+
+php artisan migrate:refresh
+
+php artisan migrate:status
+
+php artisan migrate:rollback
+
+php artisan make:controller MyController
+
+php artisan config:cache
+php artisan cache:clear
+php artisan view:clear
+
+
+-inatalling authantication package-
+
+1 -  composer require laravel/ui
+
+2 - php artisan ui vue --auth
+
+
+----data set----
+
+INSERT INTO resources (name, price, category) VALUES
+('Unit 1: Atomic Structure', 3000, 'theory'),
+('Unit 2: Structure and Bonding', 4000, 'theory'),
+('Unit 3: Chemical Calculations', 3000, 'theory'),
+('Unit 4: Gaseous State of Matter', 6000, 'theory'),
+('2003, 2004, 2005', 3000, 'paper'),
+('Unit 5: Energetics', 3000, 'theory'),
+('Unit 6: Inorganic chemistry - s-block', 2500, 'theory'),
+('Unit 6: Inorganic chemistry - p-block', 7000, 'theory'),
+('Unit 6: Inorganic chemistry - d-block + lon analysis', 4500, 'theory'),
+('Unit 6: Question Discussion', 5500, 'theory'),
+('Unit 7-10: Organic chemistry - unit 7 & 8', 6500, 'theory'),
+('Unit 7-10: Organic chemistry - unit 9 & 10', 6500, 'theory'),
+('Unit 7-10: Question + Conversion Practice', 6500, 'theory'),
+('2006, 2007, 2008', 3000, 'paper'),
+('Unit 11: Chemical Kinetics', 6000, 'theory'),
+('Unit 12: Chemical Equilibrium - Kp & Kc', 6500, 'theory'),
+('Unit 12: Chemical Equilibrium - Icon Equilibrium & Buffers', 6500, 'theory'),
+('Unit 12: Chemical Equilibrium - Ksp', 5500, 'theory'),
+('2009, 2010, 2011', 3000, 'paper'),
+('Unit 12: Chemical Equilibrium - Phase Equilibrium', 5500, 'theory'),
+('2012, 2013, 2014', 3000, 'paper'),
+('Unit 13: Electrochemistry', 1000, 'theory'),
+('2015, 2016, 2017', 3000, 'paper'),
+('Unit 14 - Industry & polymers', 1000, 'theory'),
+('Unit 14 - Plant based products & environmental pollution', 1000, 'theory');
