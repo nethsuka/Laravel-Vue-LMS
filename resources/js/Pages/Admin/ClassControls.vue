@@ -332,10 +332,9 @@ function isExpired(expiryDate) {
 
 </script>
 <template>
-
-    <Head title="Admin Panel" />
+    <Head title="Class Controls"></Head>
     <Sidebar>
-        <div class="py-12" >
+        <div class="py-12">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                     <!-- content -->
@@ -352,7 +351,7 @@ function isExpired(expiryDate) {
                             Class Controls
                         </fwb-heading>
                         <fwb-button type="button" @click="addclassmodal"
-                            class="float-end focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">+
+                            class="float-end focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                             Add Class</fwb-button><br><br>
                         <fwb-tabs v-model="activeTab" class="p-5">
                             <template v-if="Arrays.classDetails.length > 0">
@@ -527,11 +526,10 @@ function isExpired(expiryDate) {
                                                         d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                                                 </svg>
                                                 <span class="sr-only">Info</span>
-                                                <h3 class="text-lg font-medium">Delete The Class</h3>
+                                                <h3 class="text-lg font-medium">Warning!</h3>
                                             </div>
                                             <div class="mt-2 mb-4 text-sm">
-                                                Once this class is deleted, all data will be permanently erased and cannot
-                                                be recovered. </div>
+                                                Deleting this class will permanently erase all associated data and it cannot be recovered.</div>
                                             <div class="flex">
                                                 <button type="button" @click="deleteClass(tuteClass.id)"
                                                     class="text-white bg-red-800 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">

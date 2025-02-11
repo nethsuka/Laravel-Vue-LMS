@@ -136,7 +136,7 @@ function redirectPayment(item){
                                     <div class="overflow-hidden max-w-sm bg-white border border-gray-200 rounded-lg dark:bg-[#076F94] hover:bg-slate-50 hover:border-sky-400 hover:shadow-slate-400 shadow-md">
                                         <div class="p-3 bg-[#076F94] text-center">
                                             <h5
-                                                class="mb-2 text-2xl font-bold tracking-tight text-white text-gray-600">
+                                                class="mb-2 text-2xl font-bold tracking-tight text-gray-600">
                                                 {{ x.name }}
                                             </h5>
                                         </div>

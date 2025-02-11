@@ -22,13 +22,13 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                 <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('class_controls')" :active="route().current('class_controls')">
                     <i class="fas fa-tachometer-alt mr-2"></i>
-                    Class Controles
+                    Class Controls
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('classfees')" :active="route().current('classfees')">
                     <i class="fas fa-tasks mr-2"></i>
-                    Manage class fees
+                    Monthly Payments
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
@@ -41,19 +41,19 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                 <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('studentCPanel')" :active="route().current('studentCPanel')">
                     <i class="fas fa-tasks mr-2"></i>
-                    Student Controls
+                    Student Access Controls
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('advancedFilters')" :active="route().current('advancedFilters')">
                     <i class="fas fa-tasks mr-2"></i>
-                    Advanced Filters
+                    Advanced Student Filters
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('extraLessons')" :active="route().current('extraLessons')">
                     <i class="fas fa-tasks mr-2"></i>
-                    Extra lessons
+                    Extra Lessons
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">

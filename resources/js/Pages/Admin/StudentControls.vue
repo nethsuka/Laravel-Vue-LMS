@@ -226,7 +226,7 @@ const confirmAction = () => {
 </script>
 <template>
 
-    <Head title="Student Control Panel"></Head>
+    <Head title="Student Access Controls"></Head>
     <div>
         <Sidebar>
             <div class="py-12">
@@ -234,9 +234,9 @@ const confirmAction = () => {
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                         <div class="grid grid-cols-3 gap-2">
                             <div class="text-sm py-2 px-7 col-span-2">
-                                Please proceed with caution as this will reset the extension date for all students to
-                                the default value (7th).
-                                This action cannot be undone.
+                                Please proceed with caution. This action will reset the extension date for all students to the default value (7th).
+                                <br/>
+                               <b>This change is irreversible.</b>
                             </div>
                             <div class="py-2 px-7">
                                 <fwb-button color="default" class="ml-12" @click="confirmAction">
@@ -254,7 +254,7 @@ const confirmAction = () => {
                             class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
                             <p>{{ $page.props.flash.errorMsg }}</p>
                         </fwb-alert>
-                        <fwb-heading tag="h2" class="p-7">Students</fwb-heading>
+                        <fwb-heading tag="h2" class="p-7">Student Access Controls</fwb-heading>
                         <fwb-input v-on:input="getkey" class="max-w-sm mx-auto" v-model="query"
                             placeholder="Find student by name">
                             <template #prefix>
