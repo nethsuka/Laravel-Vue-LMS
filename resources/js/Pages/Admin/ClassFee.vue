@@ -101,7 +101,7 @@ function confirmDelete(id) {
 </script>
 
 <template>
-    <Head title="Admin Panel" />
+    <Head title="Monthly Payments" />
 
         <Sidebar>
         <div class="py-12">

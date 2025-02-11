@@ -112,7 +112,7 @@ const downloadFile = (tute_name, tute_path) => {
                     <a href="/more-classes">
                         <template v-if="classDetails.length > 0">
                             <button type="button"
-                                class="text-white bg-gradient-to-r bg-sky-700  focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-md px-4 py-1.5 text-center shadow-lg hover:shadow-sky-600/100 dark:shadow-lg dark:shadow-cyan-800/80">
+                            class="text-white bg-gradient-to-r from-sky-500 to-sky-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-sky-500/50 dark:shadow-lg dark:shadow-cyan-800/80 ml-3">
                                 Add More Classes
                             </button>
                         </template>
@@ -125,7 +125,7 @@ const downloadFile = (tute_name, tute_path) => {
                     </a>
                     <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
-                            class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg hover:shadow-purple-500/100 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-md px-4 py-1.5 text-center ml-3">
+                        class="text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 ml-3">
                             Admin Panel
                         </button>
                     </a>
@@ -142,7 +142,7 @@ const downloadFile = (tute_name, tute_path) => {
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p> -->
 
 
-                    <h3 class="text-5xl font-extrabold text-center text-gray-800 dark:text-white mt-4 mb-6">
+                    <h3 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white mt-1 mb-6">
                         My Classes
                     </h3>
                     <hr class="h-px my-6 bg-gray-200 border-0 dark:bg-gray-900">

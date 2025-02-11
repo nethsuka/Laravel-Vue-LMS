@@ -187,13 +187,13 @@ const totalPages = computed(() => {
 
 <template>
 
-    <Head title="Student's Classes"></Head>
+    <Head title="Advanced Student Filters"></Head>
     <div>
         <Sidebar>
             <div class="py-12">
                 <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
-                        <fwb-heading tag="h2" style="margin-bottom: 20px;">Students' Classes</fwb-heading>
+                        <fwb-heading tag="h2" style="margin-bottom: 20px;">Advanced Student Filters</fwb-heading>
                         <fwb-input v-model="query" @input="updateSearch" class="max-w-sm mx-auto"
                             placeholder="Find student by name">
                             <template #prefix>
@@ -206,7 +206,7 @@ const totalPages = computed(() => {
                         </fwb-input>
 
                         <div class="mt-4 space-x-4">
-                            <fwb-heading tag="h6">According to classes</fwb-heading>
+                            <fwb-heading tag="h6">Class</fwb-heading>
                             <div class="flex flex-wrap gap-4 mt-2">
                                 <template v-for="(cl, index) in classes" :key="index">
                                     <fwb-checkbox :modelValue="selectedClasses[index]"
@@ -217,7 +217,7 @@ const totalPages = computed(() => {
                         </div>
 
                         <div class="mt-4 space-x-4">
-                            <fwb-heading tag="h6">According to payment status</fwb-heading>
+                            <fwb-heading tag="h6">Payment Status</fwb-heading>
                             <div class="flex flex-wrap gap-4 mt-2">
                                 <fwb-checkbox :modelValue="forpamentfilter('paid')"
                                     @change="handlePaymentFilter('paid')" label="Paid students" />
@@ -263,7 +263,7 @@ const totalPages = computed(() => {
                             </fwb-table-body>
                             <fwb-table-body v-else>
                                 <fwb-table-row>
-                                    <fwb-table-cell colspan="5">No data found</fwb-table-cell>
+                                    <fwb-table-cell colspan="5">No Data Found</fwb-table-cell>
                                 </fwb-table-row>
                             </fwb-table-body>
                         </fwb-table>

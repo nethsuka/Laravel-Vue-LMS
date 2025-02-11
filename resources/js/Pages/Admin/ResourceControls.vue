@@ -103,7 +103,7 @@ function deleteResource(resourceId) {
 
 <template>
 
-    <Head title="Resource Control Panel"></Head>
+    <Head title="Resource Controls"></Head>
     <div>
         <Sidebar>
             <div class="py-12">
@@ -121,7 +121,7 @@ function deleteResource(resourceId) {
                             <fwb-heading tag="h3">Resources</fwb-heading>
                             <br>
                             <div class="flex justify-end mb-4">
-                                <fwb-button gradient="green" @click="showModal">+ Add Resource</fwb-button>
+                                <fwb-button gradient="green" @click="showModal">Add Resource</fwb-button>
                             </div>
                             <fwb-input  v-model="query" placeholder="Search for resources"
                                 size="md">
