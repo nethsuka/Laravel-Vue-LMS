@@ -53,8 +53,8 @@ const generateUniqueEmail = (index) => {
 };
 
 // Reactive arrays for extendDate and studata
-const extendDate = ref([]);
-const studata = ref([]);
+const extendDate = ref(Arrays.extendDetails);
+const studata = ref(Arrays.studentDetails);
 function generatedata() {
     for (let i = 1; i <= 40; i++) {
         const email = generateUniqueEmail(i);
@@ -81,13 +81,7 @@ function generatedata() {
 // Generate 20 unique records for extendDate and studata
 
 onMounted(() => {
-    console.log(Arrays.studentDetails)
-    console.log(Arrays.extendDetails)
-    studata.value = Arrays.studentDetails
-    extendDate.value = Arrays.extendDetails
     createarray()
-    console.log(showarray.value)
-
 })
 const showarray = ref([])
 const seacrharray = ref([])
@@ -188,7 +182,7 @@ function showModal(item) {
     isShowModal.value = true
 }
 
-function saveAndCloseModal(item){
+function saveAndCloseModal(item) {
     form1.st_id = st_id.value;
     form1.st_name = stuName.value;
     form1.st_email = stuemail.value;
@@ -197,6 +191,11 @@ function saveAndCloseModal(item){
     form1.expiry_date = videoexDate.value;
     form1.post('/student-controls/add/extra-video', {
         preserveScroll: false,
+        onSuccess: (page) => {
+            studata.value = page.props.studentDetails;
+            extendDate.value = page.props.extendDetails;
+            createarray();
+        }
     });
     closeModal()
 }
@@ -207,7 +206,7 @@ function deleteUser(userId) {
     if (choice) {
         form2.delete('/student-controls/delete/user', {
             preserveScroll: false,
-            onSuccess:(page)=>{
+            onSuccess: (page) => {
                 studata.value = page.props.studentDetails;
                 extendDate.value = page.props.extendDetails;
                 createarray()
@@ -235,7 +234,8 @@ const confirmAction = () => {
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                         <div class="grid grid-cols-3 gap-2">
                             <div class="text-sm py-2 px-7 col-span-2">
-                                Please proceed with caution as this will reset the extension date for all students to the default value (7th). 
+                                Please proceed with caution as this will reset the extension date for all students to
+                                the default value (7th).
                                 This action cannot be undone.
                             </div>
                             <div class="py-2 px-7">
@@ -300,13 +300,13 @@ const confirmAction = () => {
                                         <fwb-table-cell>{{ stu.w_number }}</fwb-table-cell>
                                         <fwb-table-cell>{{ stu.exam_year }}</fwb-table-cell>
                                         <fwb-table-cell>
-                                            <fwb-button @click="moredetails(index)" gradient="teal"
-                                                >View</fwb-button>
+                                            <fwb-button @click="moredetails(index)" gradient="teal">View</fwb-button>
                                         </fwb-table-cell>
                                         <fwb-table-cell>
-                                            <fwb-button @click="deleteUser(stu.id)" gradient="red" style="margin-right: 50%;">
+                                            <fwb-button @click="deleteUser(stu.id)" gradient="red"
+                                                style="margin-right: 50%;">
                                                 <!-- <Link href="/student-controls/delete/user" method="delete" :data="{ stu_id: stu.id }" as="button" type="button" > -->
-                                                    Delete
+                                                Delete
                                                 <!-- </Link> -->
                                             </fwb-button>
                                         </fwb-table-cell>
@@ -393,13 +393,21 @@ const confirmAction = () => {
                                                             </svg>
                                                             <span class="font-semibold text-gray-700">Extend till:
                                                                 &nbsp;&nbsp;</span>
-                                                            <fwb-input style="width: 40px;" 
-                                                                @input="validatenumber" placeholder="Enter count" v-model="stu.extend_date"
+                                                            <fwb-input style="width: 40px;" @input="validatenumber"
+                                                                placeholder="Enter count" v-model="stu.extend_date"
                                                                 size="sm" />
                                                             <fwb-button gradient="green" class="py-1 ml-2"
-                                                                :disabled="!stu.extend_date > 0" pill>
-                                                                <Link href="/student-controls/update/extend-date" method="patch" :data="{ email: stu.email, newDate: stu.extend_date }" as="button" type="button" >
-                                                                    Save
+                                                                :disabled="!(stu.extend_date > 0)" pill>
+                                                                <Link href="/student-controls/update/extend-date"
+                                                                    method="patch"
+                                                                    :data="{ email: stu.email, newDate: stu.extend_date }"
+                                                                    as="button" type="button" preserve-scroll @success="(page) => {
+                                                                        studata.value = page.props.studentDetails;
+                                                                        extendDate.value = page.props.extendDetails;
+                                                                        createarray();
+
+                                                                    }">
+                                                                Save
                                                                 </Link>
                                                             </fwb-button>
                                                         </div>
