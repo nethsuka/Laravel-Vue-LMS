@@ -24,43 +24,9 @@ const Arrays = defineProps({
     classDetails: Array,
 });
 
-const classes = ["2025 Paper", "2025 Theory", "2026 Paper", "2026 Theory", "2027 Paper"]
+const classes = Arrays.classDetails
 
-const names = [
-    "Thinula", "Kasun", "Nimal", "Saman", "Amal", "Ruwan", "Dilan", "Kavindu", "Isuru", "Chathura",
-    "Lakshan", "Vimukthi", "Sandeepa", "Roshan", "Gayan", "Mahesh", "Nuwan", "Tharindu", "Ashen",
-    "Janith", "Chaminda", "Sameera", "Heshan", "Sandun", "Pradeep", "Dinuka", "Charitha", "Ravindu",
-    "Thushara", "Pubudu"
-];
-
-const classNames = ["2025 Paper", "2025 Theory", "2026 Paper", "2026 Theory", "2027 Paper"];
-const paymentStatuses = ["yes", "no"];
-
-function getRandomElement(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function generateRandomNumber() {
-    return "07" + Math.floor(10000000 + Math.random() * 90000000);
-}
-
-function generateStudents(count = 50) {
-    const students = [];
-    for (let i = 0; i < count; i++) {
-        let name = getRandomElement(names);
-        students.push({
-            student_name: name,
-            email: `${name.toLowerCase()}@gmail.com`,
-            exam_year: Math.floor(Math.random() * 3) + 2025,
-            class_name: getRandomElement(classNames),
-            payment_status: getRandomElement(paymentStatuses),
-            w_number: generateRandomNumber()
-        });
-    }
-    return students;
-}
-
-const stu = ref([]);
+const stu = ref(Arrays.studentAndPaymentDetails);
 const showarray = ref([]);
 const seacrharray = ref([]);
 const query = ref("");
@@ -110,7 +76,9 @@ const classFiltered = computed(() => {
     if (selectedItems.value.length === 0) return searchFiltered.value;
 
     return searchFiltered.value.filter((student) =>
-        student.class.some(cls => selectedItems.value.includes(cls.name))
+        selectedItems.value.every(selectedClass =>
+            student.class.some(cls => cls.name === selectedClass)
+        )
     );
 });
 
@@ -143,12 +111,12 @@ watch(finalFiltered, (newValue) => {
 
 // Handler functions
 function updateSearch(event) {
-    currentPage.value = 1 
+    currentPage.value = 1
     query.value = typeof event === 'object' ? event.target.value : event;
 }
 
 function handleClassFilter(index) {
-    currentPage.value = 1 
+    currentPage.value = 1
     // Create a new array with the updated value
     const newSelectedClasses = [...selectedClasses.value];
     newSelectedClasses[index] = !newSelectedClasses[index];
@@ -163,17 +131,15 @@ function handleClassFilter(index) {
             checkall.value = true;
         }
     }
-    console.log("class filter",checkall.value)
-
     selectedClasses.value = newSelectedClasses;
 }
 function handleCheckAll() {
-    currentPage.value = 1 
+    currentPage.value = 1
     selectedClasses.value = new Array(classes.length).fill(false);
     checkall.value = true;
 }
 function handlePaymentFilter(value) {
-    currentPage.value = 1 
+    currentPage.value = 1
     if (value === 'all') {
         paymentFilter.value = 'all';
     } else {
@@ -189,13 +155,14 @@ function handlePaymentFilter(value) {
 }
 // Initialize with all classes unchecked and "All class" checked
 onMounted(() => {
-    stu.value = generateStudents();
     creatArray();
     // Initialize with default states
     selectedClasses.value = new Array(classes.length).fill(false);
     checkall.value = true;
     paymentFilter.value = 'all';
 });
+
+
 
 function forpamentfilter(item){
     if(item === paymentFilter.value){
@@ -219,6 +186,7 @@ const totalPages = computed(() => {
 </script>
 
 <template>
+
     <Head title="Student's Classes"></Head>
     <div>
         <Sidebar>
@@ -241,18 +209,18 @@ const totalPages = computed(() => {
                             <fwb-heading tag="h6">According to classes</fwb-heading>
                             <div class="flex flex-wrap gap-4 mt-2">
                                 <template v-for="(cl, index) in classes" :key="index">
-                                    <fwb-checkbox :modelValue="selectedClasses[index]" @change="handleClassFilter(index)"
-                                        :label="cl" />
+                                    <fwb-checkbox :modelValue="selectedClasses[index]"
+                                        @change="handleClassFilter(index)" :label="cl" />
                                 </template>
-                                    <fwb-checkbox v-model="checkall" @change.prevent="handleCheckAll" label="All class" />
+                                <fwb-checkbox v-model="checkall" @change.prevent="handleCheckAll" label="All class" />
                             </div>
                         </div>
 
                         <div class="mt-4 space-x-4">
                             <fwb-heading tag="h6">According to payment status</fwb-heading>
                             <div class="flex flex-wrap gap-4 mt-2">
-                                <fwb-checkbox :modelValue="forpamentfilter('paid')" @change="handlePaymentFilter('paid')"
-                                    label="Paid students" />
+                                <fwb-checkbox :modelValue="forpamentfilter('paid')"
+                                    @change="handlePaymentFilter('paid')" label="Paid students" />
                                 <fwb-checkbox :modelValue="forpamentfilter('nonpaid')"
                                     @change="handlePaymentFilter('nonpaid')" label="Non paid students" />
                                 <fwb-checkbox :modelValue="forpamentfilter('all')" @change="handlePaymentFilter('all')"
@@ -261,9 +229,16 @@ const totalPages = computed(() => {
                             </div>
                         </div>
 
+
                         <fwb-table striped class="mt-4">
                             <fwb-table-head>
-                                <fwb-table-head-cell>Name</fwb-table-head-cell>
+                                <fwb-table-head-cell>
+                                    Name &nbsp;
+                                    <span
+                                        class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                                        {{ seacrharray.length }}<span class="sr-only">Icon description</span>
+                                    </span>
+                                </fwb-table-head-cell>
                                 <fwb-table-head-cell>Email</fwb-table-head-cell>
                                 <fwb-table-head-cell>Phone Number</fwb-table-head-cell>
                                 <fwb-table-head-cell>Exam Year</fwb-table-head-cell>
@@ -271,7 +246,7 @@ const totalPages = computed(() => {
                             </fwb-table-head>
                             <fwb-table-body v-if="paginatedArray.length > 0">
                                 <fwb-table-row v-for="(st, index) in paginatedArray" :key="index">
-                                    <fwb-table-cell>{{ st.student_name }}</fwb-table-cell>
+                                    <fwb-table-cell>{{ index + 1 }}. &nbsp; {{ st.student_name }}</fwb-table-cell>
                                     <fwb-table-cell>{{ st.email }}</fwb-table-cell>
                                     <fwb-table-cell>{{ st.w_number }}</fwb-table-cell>
                                     <fwb-table-cell>{{ st.exam_year }}</fwb-table-cell>

@@ -29,7 +29,7 @@ class AdvancedFiltersController extends Controller
                                                 'u.exam_year',
                                                 'tc.id as class_id',
                                                 'tc.class_name',
-                                                DB::raw("CASE WHEN sc.id IS NOT NULL THEN 'Paid' ELSE 'Not Paid' END as payment_status")
+                                                DB::raw("CASE WHEN sc.id IS NOT NULL THEN 'yes' ELSE 'no' END as payment_status")
                                             )
                                             ->get();
         $this->classDetails = TuitionClass::pluck('class_name');
@@ -38,7 +38,7 @@ class AdvancedFiltersController extends Controller
     public function index() {
         return Inertia::render('Admin/AdvancedFilters', [ 
             'studentAndPaymentDetails' => $this->studentAndPaymentDetails,
-            'ClassDetails' => $this->classDetails
+            'classDetails' => $this->classDetails
         ]);
     }
 }
