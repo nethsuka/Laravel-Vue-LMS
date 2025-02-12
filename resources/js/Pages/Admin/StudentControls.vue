@@ -186,7 +186,7 @@ function saveAndCloseModal(item) {
     form1.st_id = st_id.value;
     form1.st_name = stuName.value;
     form1.st_email = stuemail.value;
-    form1.name = videoName.value;
+    form1.name = videoName.value.trim();
     form1.video_link = videoLink.value;
     form1.expiry_date = videoexDate.value;
     form1.post('/student-controls/add/extra-video', {

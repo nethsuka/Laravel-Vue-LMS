@@ -4,6 +4,11 @@ composer install (disable your virusguard befor run this)
 
 npm install
 
+npm uninstall flowbite
+npm uninstall flowbite-vue
+npm install flowbite@2.5.1
+npm install flowbite-vue@0.1.6
+
 mkdir -p storage/framework/views
 
 cp .env.example .env

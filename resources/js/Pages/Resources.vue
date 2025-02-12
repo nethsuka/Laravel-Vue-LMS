@@ -38,10 +38,7 @@ const showarray = ref([]);
 const query = ref('');
 const activebutton = ref('unit');
 const total = ref(0);
-
 const objectarray = ref(Arrays.userResourcesInfo);
-
-
 const boughtArray = ref(Arrays.paidResources);
 function getkey(evt) {
     showarray.value = [];
@@ -71,8 +68,9 @@ function showModal() {
 const cartarrya = ref([])
 
 onMounted(() => {
-    console.log(objectarray.value)
-    console.log(boughtArray.value)
+console.log(Arrays.userResourcesInfo)
+console.log(Arrays.userVideoData)
+console.log(Arrays.paidResources)
 
     // Retrieve items from session storage
     const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
@@ -81,7 +79,6 @@ onMounted(() => {
     for (let i = 0; i < cartarrya.value.length; i++) {
         total.value += parseInt(cartarrya.value[i].price)
     }
-    console.log(cartarrya.value)
 });
 
 function addtocart(item) {
@@ -91,21 +88,20 @@ function addtocart(item) {
     sessionStorage.setItem('cart', JSON.stringify(cartarrya.value));
     console.log(cartarrya.value)
     let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-    console.log(cart);
 }
 function removecart(item) {
     cartarrya.value = cartarrya.value.filter((x) => x !== item)
     total.value -= parseInt(item.price)
     sessionStorage.setItem('cart', JSON.stringify(cartarrya.value));
     let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-    console.log(cart);
+
 }
 function clearcart() {
     cartarrya.value = []
     total.value = 0
     sessionStorage.setItem('cart', JSON.stringify(cartarrya.value));
     let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-    console.log(cart);
+
 }
 
 function isitemincart(item) {
@@ -138,8 +134,14 @@ function buyState(item) {
 }
 
 function getVideosByResourceId(resourceId) {
-    if (!Arrays.userVideoData) return [];
-    return Arrays.userVideoData.filter(item => item.resource_id === resourceId);
+    // First check if any videos exist for this resourceId
+    const matchingVideos = Arrays.userVideoData.filter(item => item.resource_id === resourceId&& item.video_link !== null);
+    // If no matching videos found, return empty array
+    if (matchingVideos.length === 0) {
+        return [];
+    }
+    // Return the matching videos
+    return matchingVideos;
 }
 
 </script>
@@ -390,7 +392,7 @@ function getVideosByResourceId(resourceId) {
                                             </div>
                                         </fwb-accordion-header>
                                         <fwb-accordion-content>
-                                            <div v-if="getVideosByResourceId(y.resource_id) && getVideosByResourceId(y.resource_id).length > 0"
+                                            <div v-if="getVideosByResourceId(y.resource_id).length>0"
                                                 class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                                 <template v-for="(video, index) in getVideosByResourceId(y.resource_id)"
                                                     :key="index">

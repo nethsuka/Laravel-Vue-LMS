@@ -2,7 +2,7 @@
 import Sidebar from '@/Layouts/Sidebar.vue';
 import { onMounted, ref,watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import 'primeicons/primeicons.css'
+// import 'primeicons/primeicons.css'
 import { Head, useForm, usePage, router } from '@inertiajs/vue3';
 import { FwbTab, FwbAlert, FwbTabs, FwbButton, FwbModal, FwbTextarea, FwbInput, FwbSelect, FwbFileInput, FwbHeading } from 'flowbite-vue'
 
@@ -259,7 +259,7 @@ function saveclasslist(classid) {
     });
 }
 function disabledsavechanges() {
-    const nullvalues = listobj.value.filter(i => i.video_name === null || i.video_name.trim() === '' || i.video_link === null || i.video_link.trim() === '' || i.expiry_date === null || i.expiry_date.trim() === '')
+    const nullvalues = listobj.value.filter(i => i.video_link === null || i.video_link.trim() === '' || i.expiry_date === null || i.expiry_date.trim() === '')
     if (nullvalues.length > 0) {
         return true
     } else {
@@ -469,10 +469,10 @@ function isExpired(expiryDate) {
                                                                     <input type="text" v-model="item.video_name"
                                                                         id="small-input"
                                                                         class="mr-3 block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                    <fwb-alert type="warning"
+                                                                    <!-- <fwb-alert type="warning"
                                                                         v-if="item.video_name === null || item.video_name.trim() === ''">
                                                                         Video name is required
-                                                                    </fwb-alert>
+                                                                    </fwb-alert> -->
                                                                 </div>
                                                                 <div class="flex flex-col mb-4">
                                                                     <label for="message"
@@ -606,7 +606,7 @@ function isExpired(expiryDate) {
                                                         Close
                                                     </fwb-button>
                                                     <fwb-button @click="saveAndClose(tuteClass.id)" color="green"
-                                                        :disabled="!video_name || !video_link || !video_expiry_date">
+                                                        :disabled="!video_link || !video_expiry_date">
                                                         Save
                                                     </fwb-button>
                                                 </div>
