@@ -162,7 +162,7 @@ function getVideosByResourceId(resourceId) {
                     </a>
                     <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
-                        class="text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 ml-3">
+                        class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ml-2">
                             Admin Panel
                         </button>
                     </a>
@@ -176,7 +176,7 @@ function getVideosByResourceId(resourceId) {
                         <div id="app" class="inline-flex rounded-md shadow-sm mt-2" role="group">
                             <button type="button" @click="activebutton = 'unit'" :class="[
                                 'px-4 py-2 text-sm font-medium',
-                                activebutton === 'unit' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
+                                activebutton === 'unit' ? 'text-blue-700 bg-sky-50' : 'text-gray-900 bg-white',
                                 'border border-gray-200 rounded-s-lg',
                                 'hover:bg-gray-100 hover:text-blue-700',
                                 'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
@@ -185,7 +185,7 @@ function getVideosByResourceId(resourceId) {
                             </button>
                             <button type="button" @click="activebutton = 'paper'" :class="[
                                 'px-4 py-2 text-sm font-medium',
-                                activebutton === 'paper' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
+                                activebutton === 'paper' ? 'text-blue-700 bg-sky-50' : 'text-gray-900 bg-white',
                                 'border-t border-b border-gray-200',
                                 'hover:bg-gray-100 hover:text-blue-700',
                                 'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
@@ -194,7 +194,7 @@ function getVideosByResourceId(resourceId) {
                             </button>
                             <button type="button" @click="activebutton = 'myresources'" :class="[
                                 'px-4 py-2 text-sm font-medium',
-                                activebutton === 'myresources' ? 'text-blue-700 bg-gray-100' : 'text-gray-900 bg-white',
+                                activebutton === 'myresources' ? 'text-blue-700 bg-sky-50' : 'text-gray-900 bg-white',
                                 'border border-gray-200 rounded-e-lg',
                                 'hover:bg-gray-100 hover:text-blue-700',
                                 'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'

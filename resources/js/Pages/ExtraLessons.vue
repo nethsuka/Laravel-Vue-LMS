@@ -7,6 +7,10 @@ const Arrays = defineProps({
     extraLessons: Array,
 });
 
+onMounted(() => {
+    console.log(Arrays.extraLessons);
+})
+
 const { props } = usePage();
 
 </script>
@@ -27,8 +31,8 @@ const { props } = usePage();
                     </a>
                     <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
-                        class="text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 ml-3">
-                        Admin Panel
+                        class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ml-2">
+                            Admin Panel
                         </button>
                     </a>
                 </div>

@@ -103,8 +103,9 @@ function redirectPayment(item){
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Classes</h2>
                 <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                     <button type="button"
-                        class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center">Admin
-                        Panel</button>
+                    class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ml-2">
+                        Admin Panel
+                    </button>
                 </a>
             </div>
         </template>
@@ -120,29 +121,32 @@ function redirectPayment(item){
                             <template v-for="x in showarray" :key="x.name">
                                 <template v-if="x.paid == 'yes'">
                                     <div class="overflow-hidden max-w-sm bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 shadow-md">
-                                        <div class="p-3 bg-slate-300 text-center">
+                                        <div class="p-3 p-3 bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-t-lg">
                                             <h5
-                                                class="mb-2 text-2xl font-bold tracking-tight dark:text-white text-gray-600">
+                                                class="mb-2 text-2xl font-bold tracking-tight dark:text-white text-white">
                                                 {{ x.name }}
                                             </h5>
                                         </div>
                                         <div class="p-6">
-                                            <p class="mb-3 font-bold text-md text-gray-700 dark:text-gray-400 pb-3">Price - Rs.{{x.price}}/=</p>
-                                            <span class="bg-gradient-to-r from-green-400 to-green-600 text-white text-sm font-semibold px-3 py-1 rounded-full shadow-md hover:from-green-500 hover:to-green-700 transition-all duration-300">Already Purchased</span>                                        
+                                            <p class="mb-3 font-bold text-md text-gray-700 dark:text-gray-400 pb-3">Price - Rs. {{x.price}}/=</p>
+                                            <div class="flex justify-center items-center">
+                                                <fwb-badge size="sm" type="purple" class="bg-purple-200">Purchased</fwb-badge>
+                                            </div>
                                         </div>
                                     </div>
                                 </template>
                                 <template v-else>
                                     <div class="overflow-hidden max-w-sm bg-white border border-gray-200 rounded-lg dark:bg-[#076F94] hover:bg-slate-50 hover:border-sky-400 hover:shadow-slate-400 shadow-md">
-                                        <div class="p-3 bg-[#076F94] text-center">
+                                        <div class="p-3 bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-t-lg">
                                             <h5
-                                                class="mb-2 text-2xl font-bold tracking-tight text-gray-600">
+                                                class="mb-2 text-2xl font-bold tracking-tight text-white">
                                                 {{ x.name }}
                                             </h5>
                                         </div>
                                         <div class="p-6">
                                             <p class="mb-3 font-bold text-md text-gray-700 dark:text-gray-400 pb-3">Price - Rs.{{x.price}}/=</p>
-                                            <fwb-button @click="redirectPayment(x)" class="font-bold text-lg bg-gradient-to-r from-teal-400 to-teal-600 hover:from-teal-500 hover:to-teal-700 text-white">Purchase</fwb-button>
+                                            <!-- <fwb-button @click="redirectPayment(x)" class="font-bold text-lg bg-gradient-to-r from-teal-400 to-teal-600 hover:from-teal-500 hover:to-teal-700 text-white">Buy Now</fwb-button> -->
+                                            <fwb-button gradient="lime" class="px-4 py-1.5 text-white">Buy Now</fwb-button>
                                         </div>
                                     </div>
                                 </template>
@@ -154,7 +158,6 @@ function redirectPayment(item){
                             No classes are available yet. <span class="text-blue-600 font-semibold">Stay tuned</span> while we add new classes!
                         </p>
                     </template>
-
                 </div>
             </div>
         </div>
