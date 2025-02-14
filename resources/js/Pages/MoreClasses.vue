@@ -121,7 +121,7 @@ function redirectPayment(item){
                             <template v-for="x in showarray" :key="x.name">
                                 <template v-if="x.paid == 'yes'">
                                     <div class="overflow-hidden max-w-sm bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 shadow-md">
-                                        <div class="p-3 p-3 bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-t-lg">
+                                        <div class="p-3 bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-t-lg">
                                             <h5
                                                 class="mb-2 text-2xl font-bold tracking-tight dark:text-white text-white">
                                                 {{ x.name }}
