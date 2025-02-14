@@ -17,9 +17,9 @@ defineProps({
       <div class="w-full max-w-2xl px-6 lg:max-w-7xl">
         <main class="text-center">
             <div class="flex justify-center mb-6 animate-fade-in-up transform hover:scale-105 transition-transform duration-300">
-                <img src="../../assets/Logo.svg" alt="MHCHEM Logo" class="h-20 w-auto">
+                <img src="../../assets/Logo.svg" alt="MHCHEM Logo" class="h-16 w-auto">
             </div>
-          <h1 class="text-6xl md:text-7xl lg:text-8xl font-bold leading-tight mb-12 animate-fade-in-down">
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-12 animate-fade-in-down">
             <span class="block transform hover:scale-105 transition-transform duration-300">Welcome to the</span>
             <span class="block transform hover:scale-105 transition-transform duration-300">MHCHEM Learning Portal</span>
           </h1>
@@ -68,8 +68,6 @@ defineProps({
 </template>
 
 <style>
-.animate-gradient-x {
-}
 
 .animate-fade-in-down {
   animation: fade-in-down 0.8s ease-out;
