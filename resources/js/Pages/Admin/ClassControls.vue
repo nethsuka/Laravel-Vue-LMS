@@ -577,7 +577,7 @@ function isExpired(expiryDate) {
                                                         Close
                                                     </fwb-button>
                                                     <fwb-button @click="addtute(tuteClass.id)" color="green"
-                                                        :disabled="!file || !tute_name">
+                                                        :disabled="!file">
                                                         Save
                                                     </fwb-button>
                                                 </div>
