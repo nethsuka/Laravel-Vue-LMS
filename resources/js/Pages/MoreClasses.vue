@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { FwbHeading, FwbButton, FwbBadge } from 'flowbite-vue'
 
 const Arrays = defineProps({
@@ -146,7 +146,7 @@ function redirectPayment(item){
                                         <div class="p-6">
                                             <p class="mb-3 font-bold text-md text-gray-700 dark:text-gray-400 pb-3">Price - Rs.{{x.price}}/=</p>
                                             <!-- <fwb-button @click="redirectPayment(x)" class="font-bold text-lg bg-gradient-to-r from-teal-400 to-teal-600 hover:from-teal-500 hover:to-teal-700 text-white">Buy Now</fwb-button> -->
-                                            <fwb-button gradient="lime" class="px-4 py-1.5 text-white">Buy Now</fwb-button>
+                                            <fwb-button gradient="lime" class="px-4 py-1.5 text-white" @click="redirectPayment(x)">Buy Now</fwb-button>
                                         </div>
                                     </div>
                                 </template>
