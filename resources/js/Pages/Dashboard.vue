@@ -3,7 +3,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 import { FwbButton, FwbAlert } from 'flowbite-vue'
-
+import { usePreventDevTools } from '@/Components/DisableDevTools';
+usePreventDevTools()
 const Arrays = defineProps({
     //   stclassRecords: Array,
     classDetails: Array,

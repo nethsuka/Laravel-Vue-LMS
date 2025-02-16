@@ -1,5 +1,7 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import { usePreventDevTools } from '@/Components/DisableDevTools';
+usePreventDevTools()
 defineProps({
   canLogin: {
     type: Boolean,

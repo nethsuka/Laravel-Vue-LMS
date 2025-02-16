@@ -2,7 +2,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
-
+import { usePreventDevTools } from '@/Components/DisableDevTools';
+usePreventDevTools()
 const Arrays = defineProps({
     extraLessons: Array,
 });

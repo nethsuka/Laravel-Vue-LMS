@@ -2,7 +2,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
-
+import { usePreventDevTools } from '@/Components/DisableDevTools';
+usePreventDevTools()
 import {
     FwbAccordion,
     FwbAccordionContent,

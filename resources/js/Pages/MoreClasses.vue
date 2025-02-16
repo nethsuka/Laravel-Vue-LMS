@@ -1,9 +1,10 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { FwbHeading, FwbButton, FwbBadge } from 'flowbite-vue'
-
+import { usePreventDevTools } from '@/Components/DisableDevTools';
+usePreventDevTools()
 const Arrays = defineProps({
     classDetails: Array,
     paidClassDetails: Array,
@@ -20,6 +21,7 @@ onMounted(() => {
     // console.log(showarray.value)
     // console.log(Arrays.paidClassDetails)
 })
+
 
 
 function CREATING_ARRAYS() {

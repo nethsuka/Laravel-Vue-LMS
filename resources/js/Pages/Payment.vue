@@ -4,7 +4,8 @@ import InputError from '@/Components/InputError.vue';
 import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
 import { FwbCheckbox, FwbButton, FwbAlert } from 'flowbite-vue';
 import { ref, onMounted, computed } from 'vue';
-
+import { usePreventDevTools } from '@/Components/DisableDevTools';
+usePreventDevTools()
 const Arrays = defineProps({
     classDetails: Array,
     paidClasses: Array,
