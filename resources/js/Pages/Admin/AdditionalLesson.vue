@@ -53,7 +53,7 @@ function isExpired(expiryDate) {
 
 </script>
 <template>
-    <Head title="Student's Classes"></Head>
+    <Head title="Extra Lessons"></Head>
     <div>
         <Sidebar>
             <div class="py-12">
@@ -68,7 +68,7 @@ function isExpired(expiryDate) {
                                 class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
                                 <p>{{ $page.props.flash.errorMsg }}</p>
                             </fwb-alert>
-                            <fwb-heading tag="h4">Extra Classes</fwb-heading>
+                            <fwb-heading tag="h4">Extra Lessons</fwb-heading>
                             <div  class="flex justify-center items-center mb-12 mt-10">
                                 <fwb-input v-model="keyword" placeholder="Search by name or email" class="w-1/2">
                                     <template #prefix>
@@ -107,7 +107,7 @@ function isExpired(expiryDate) {
                                         <fwb-table-row>
                                             <fwb-table-cell colspan="6">
                                                 <fwb-alert class="border-t-4 rounded-none" icon type="warning">
-                                                    There is no name or email '{{ keyword }}'
+                                                    There is no name or email "{{ keyword }}"
                                                 </fwb-alert>
                                             </fwb-table-cell>
                                         </fwb-table-row>

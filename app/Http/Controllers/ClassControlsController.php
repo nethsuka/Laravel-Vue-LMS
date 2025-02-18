@@ -130,11 +130,25 @@ class ClassControlsController extends Controller
         $fileName = time() . '_' . $file->getClientOriginalName(); //making a file name
         $path = $file->storeAs('class_tutes', $fileName, 'public');
 
-        ClassTute::create([
-            'tuition_class_id' => $request->classId,
-            'tute_path' => $path,
-            'tute_name' => $request->tute_name,
-        ]);
+        if (empty($request->tute_name)) {
+            $filename = $file->getClientOriginalName();
+            $filenameParts = explode('.', $filename);
+            array_pop($filenameParts); // Remove the last part (extension)
+            $filenameWithoutExtension = implode('.', $filenameParts);
+            ClassTute::create([
+                'tuition_class_id' => $request->classId,
+                'tute_path' => $path,
+                'tute_name' => $filenameWithoutExtension,
+            ]);
+        } else {
+            ClassTute::create([
+                'tuition_class_id' => $request->classId,
+                'tute_path' => $path,
+                'tute_name' => $request->tute_name,
+            ]);
+        }
+
+        
     }
 
 

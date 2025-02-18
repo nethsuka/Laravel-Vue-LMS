@@ -50,7 +50,7 @@ const form3 = useForm({
 
 function saveResourceChanges() {
     form1.id = Arrays.resource.id;
-    form1.name = name.value;
+    form1.name = name.value.trim();
     form1.price = price.value;
     form1.category = selected.value;
     form1.patch('/resource-controls/edit/save-changes', {
@@ -69,6 +69,7 @@ const links = ref(Arrays.videos);
 function remove(index) {
     links.value.splice(index, 1)
     onup()
+    console.log(links.value)
 }
 onMounted(() => {
     links.value.sort((a, b) => a.index - b.index);
@@ -105,7 +106,7 @@ const SavecloseModal = async () => {
             index: lastindex,
         })
         form2.resource_id = Arrays.resource.id;
-        form2.name = new_title.value;
+        form2.name = new_title.value.trim();
         form2.link = new_url.value;
         form2.index = lastindex;
         await form2.post('/resource-controls/resource/add-video', {
@@ -262,7 +263,7 @@ function saveVideoChanges() {
                                         <fwb-button @click="closeModal" color="alternative">
                                             Close
                                         </fwb-button>
-                                        <fwb-button :disabled="!new_title || !new_url" @click="SavecloseModal"
+                                        <fwb-button :disabled="!new_url" @click="SavecloseModal"
                                             color="green">
                                             Save
                                         </fwb-button>

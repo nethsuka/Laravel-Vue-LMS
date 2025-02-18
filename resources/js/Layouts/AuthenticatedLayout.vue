@@ -29,7 +29,7 @@ function getGravatarURL( email ) {
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
                                     <!-- MHCHEM Logo -->
-                                    <img :src=Logo alt='Logo' />
+                                    <img :src="Logo" alt="Logo" class="w-32" />
                                 </Link>
                             </div>
 

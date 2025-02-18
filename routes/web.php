@@ -15,6 +15,8 @@ use App\Http\Controllers\ResourcesController;
 use App\Http\Controllers\ResourcesSlipController;
 use App\Http\Controllers\StudentControlsController;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Symfony\Component\Routing\Route as RoutingRoute;
@@ -27,6 +29,24 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+//---------Email verification------------------
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+ 
+    return redirect('/home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+ 
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+//-------email verification ends---------------
 
 
 Route::middleware('auth')->group(function () {
@@ -65,34 +85,40 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
 // })->name('payments');
 
 // have to add admin middleware to these routs
-Route::get('/resource-controls', [ResourceControlsController::class, 'index'])->middleware(['auth', 'verified'])->name('resourceControls');
-Route::get('/resource-controls/edit/{resourceId}', [EditResourceController::class, 'show'])->middleware(['auth', 'verified'])->name('resourceControls.edit');
-Route::patch('/resource-controls/edit/save-changes', [EditResourceController::class, 'saveResourceChanges'])->middleware(['auth', 'verified'])->name('resourceControls.saveChanges');
-Route::post('/resource-controls/add-resource', [ResourceControlsController::class, 'addResource'])->middleware(['auth', 'verified'])->name('resourceControls.addResource');
-Route::delete('/resource-controls/delete-resource', [ResourceControlsController::class, 'deleteResource'])->middleware(['auth', 'verified'])->name('resourceControls.deleteResource');
-Route::post('/resource-controls/resource/add-video', [EditResourceController::class, 'addVideo'])->middleware(['auth', 'verified'])->name('resourceControls.addVideo');
-Route::patch('/resource-controls/edit/save-video-changes', [EditResourceController::class, 'updateResourceVideoList'])->middleware(['auth', 'verified'])->name('resourceControls.updateVideoChanges');
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+    Route::get('/resource-controls', [ResourceControlsController::class, 'index'])->name('resourceControls');
+    Route::get('/resource-controls/edit/{resourceId}', [EditResourceController::class, 'show'])->name('resourceControls.edit');
+    Route::patch('/resource-controls/edit/save-changes', [EditResourceController::class, 'saveResourceChanges'])->name('resourceControls.saveChanges');
+    Route::post('/resource-controls/add-resource', [ResourceControlsController::class, 'addResource'])->name('resourceControls.addResource');
+    Route::delete('/resource-controls/delete-resource', [ResourceControlsController::class, 'deleteResource'])->name('resourceControls.deleteResource');
+    Route::post('/resource-controls/resource/add-video', [EditResourceController::class, 'addVideo'])->name('resourceControls.addVideo');
+    Route::patch('/resource-controls/edit/save-video-changes', [EditResourceController::class, 'updateResourceVideoList'])->name('resourceControls.updateVideoChanges');
+});
 
 // Student control page
-Route::get('/student-controls', [StudentControlsController::class, 'index'])->middleware(['auth', 'verified'])->name('studentCPanel');
-Route::patch('/student-controls/update/extend-date', [StudentControlsController::class, 'updateExtendDate'])->middleware(['auth', 'verified'])->name('studentCPanel.updateDate');
-Route::post('/student-controls/add/extra-video', [StudentControlsController::class, 'addExtraVideo'])->middleware(['auth', 'verified'])->name('studentCPanel.assignVideo');
-Route::delete('/student-controls/delete/user', [StudentControlsController::class, 'deleteUser'])->middleware(['auth', 'verified'])->name('studentCPanel.deleteUser');
-Route::patch('/student-controls/reset/extend-date', [StudentControlsController::class, 'resetExtendDate'])->middleware(['auth', 'verified'])->name('studentCPanel.resetDate');
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+    Route::get('/student-controls', [StudentControlsController::class, 'index'])->name('studentCPanel');
+    Route::patch('/student-controls/update/extend-date', [StudentControlsController::class, 'updateExtendDate'])->name('studentCPanel.updateDate');
+    Route::post('/student-controls/add/extra-video', [StudentControlsController::class, 'addExtraVideo'])->name('studentCPanel.assignVideo');
+    Route::delete('/student-controls/delete/user', [StudentControlsController::class, 'deleteUser'])->name('studentCPanel.deleteUser');
+    Route::patch('/student-controls/reset/extend-date', [StudentControlsController::class, 'resetExtendDate'])->name('studentCPanel.resetDate');
+});
 
 //advanced filters page
-Route::get('/advanced-filters', [AdvancedFiltersController::class, 'index'])->middleware(['auth', 'verified'])->name('advancedFilters');
+Route::get('/advanced-filters', [AdvancedFiltersController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('advancedFilters');
 
 //Extra class page
-Route::get('/aditional-lessons-controle', [AdditionalLessonController::class, 'index'])->middleware(['auth', 'verified'])->name('extraLessons');
-Route::delete('/aditional-lessons-controle/delete/lesson', [AdditionalLessonController::class, 'deleteExtraVideo'])->middleware(['auth', 'verified'])->name('extraLessons.delete');
+Route::get('/aditional-lessons-controle', [AdditionalLessonController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('extraLessons');
+Route::delete('/aditional-lessons-controle/delete/lesson', [AdditionalLessonController::class, 'deleteExtraVideo'])->middleware(['auth', 'verified', 'admin'])->name('extraLessons.delete');
 
 //Resources payment slipe page
-Route::get('/resources-payments', [ResourcesSlipController::class, 'index'])->middleware(['auth', 'verified'])->name('resourcespayments');
-Route::patch('/resources-payments', [ResourcesSlipController::class, 'acceptPayment'])->middleware(['auth', 'verified'])->name('resourcespayments.acceptPayment');
-Route::delete('/resources-payments', [ResourcesSlipController::class, 'deletePayment'])->middleware(['auth', 'verified'])->name('resourcespayments.deletePayment');
-Route::delete('/resources-payments/delete/unaccepted-payment', [ResourcesSlipController::class, 'deletePayment'])->middleware(['auth', 'verified'])->name('resourcespayments.deleteUnacceptedPayment');
-Route::delete('/resources-payments/delete/expired', [ResourcesSlipController::class, 'deleteExpiredRecords'])->middleware(['auth', 'verified'])->name('resourcespayments.deleteExpiredPayments');
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+    Route::get('/resources-payments', [ResourcesSlipController::class, 'index'])->name('resourcespayments');
+    Route::patch('/resources-payments', [ResourcesSlipController::class, 'acceptPayment'])->name('resourcespayments.acceptPayment');
+    Route::delete('/resources-payments', [ResourcesSlipController::class, 'deletePayment'])->name('resourcespayments.deletePayment');
+    Route::delete('/resources-payments/delete/unaccepted-payment', [ResourcesSlipController::class, 'deletePayment'])->name('resourcespayments.deleteUnacceptedPayment');
+    Route::delete('/resources-payments/delete/expired', [ResourcesSlipController::class, 'deleteExpiredRecords'])->name('resourcespayments.deleteExpiredPayments');
+});
 
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/classfees', [ClassFeeController::class, 'index'])->name('classfees');

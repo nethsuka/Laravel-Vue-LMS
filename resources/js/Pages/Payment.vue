@@ -4,7 +4,8 @@ import InputError from '@/Components/InputError.vue';
 import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
 import { FwbCheckbox, FwbButton, FwbAlert } from 'flowbite-vue';
 import { ref, onMounted, computed } from 'vue';
-
+import { usePreventDevTools } from '@/Components/DisableDevTools';
+usePreventDevTools()
 const Arrays = defineProps({
     classDetails: Array,
     paidClasses: Array,
@@ -264,13 +265,17 @@ const agree = ref(false)
             <div class="flex justify-between">
                 <h2 class="font-semibold text-2xl text-gray-800 leading-tight">Payments</h2>
                 <div>
-                    <Link href="/purchaceclass">
-                    <!-- <fwb-button gradient="cyan" shadow>Purchace Class</fwb-button> -->
+                    <Link href="/more-classes">
+                        <button type="button"
+                        class="text-white bg-gradient-to-r from-sky-500 to-sky-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-sky-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-sky-500/50 dark:shadow-lg dark:shadow-cyan-800/80 ml-3">
+                            Add More Classes
+                        </button>
                     </Link>
                     <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
-                            class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg hover:shadow-purple-500/100 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-md px-4 py-1.5 text-center ml-3">
-                            Admin Panel</button>
+                        class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ml-2">
+                            Admin Panel
+                        </button>
                     </a>
                 </div>
             </div>
@@ -335,7 +340,7 @@ const agree = ref(false)
                             <form class="max-w-sm mx-auto" @submit.prevent="submit1">
                                 <template v-if="st_paid.length > 0">
                                     <div class="mb-5">
-                                        <fwb-alert icon type="info" class="p-4 w-full bg-blue-100">
+                                        <fwb-alert icon type="info" class="p-4 w-full bg-teal-100 text-teal-600">
                                             <div class="flex flex-col">
                                                 <p>Already paid for -
                                                     <span v-for="(paidClass, index) in st_paid" :key="index">
@@ -402,12 +407,12 @@ const agree = ref(false)
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">
                                     PNG, JPG or PDF (MAX 2MB).</p>
                                 <InputError class="mt-2" :message="form1.errors.slip" />
-                                <fwb-checkbox v-model="agree" label="I agree tems of conditons" class="mt-4" />
+                                <fwb-checkbox v-model="agree" label="I have uploaded the correct payment slip" class="mt-4" />
                                 <button type="submit" :disabled="!agree" :class="[
                                     'mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-lg text-center',
                                     agree
                                         ? 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                                        : 'text-gray-400 bg-gray-200 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
+                                        : 'text-white bg-blue-300 cursor-not-allowed dark:bg-blue-300 dark:text-blue-300'
                                 ]">Submit</button>
                             </form>
 
@@ -489,12 +494,12 @@ const agree = ref(false)
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">
                                     PNG, JPG or PDF (MAX 2MB).</p>
                                 <InputError class="mt-2" :message="form2.errors.slip" />
-                                <fwb-checkbox v-model="agree" label="I agree tems of conditons" class="mt-4" />
+                                <fwb-checkbox v-model="agree" label="I have uploaded the correct payment slip" class="mt-4" />
                                 <button type="submit" :disabled="!agree" :class="[
                                     'mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-lg text-center',
                                     agree
                                         ? 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-                                        : 'text-gray-400 bg-gray-200 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
+                                        : 'text-white bg-blue-300 cursor-not-allowed dark:bg-blue-300 dark:text-blue-300'
                                 ]">Submit</button>
                             </form>
 

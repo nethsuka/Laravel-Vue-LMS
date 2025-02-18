@@ -57,7 +57,7 @@ const category = [
 ]
 
 function SavecloseModal() {
-    form1.name = name.value;
+    form1.name = name.value.trim();
     form1.price = price.value;
     form1.category = selected.value;
     form1.post('/resource-controls/add-resource', {
@@ -103,7 +103,7 @@ function deleteResource(resourceId) {
 
 <template>
 
-    <Head title="Resource Control Panel"></Head>
+    <Head title="Resource Controls"></Head>
     <div>
         <Sidebar>
             <div class="py-12">
@@ -121,10 +121,9 @@ function deleteResource(resourceId) {
                             <fwb-heading tag="h3">Resources</fwb-heading>
                             <br>
                             <div class="flex justify-end mb-4">
-                                <fwb-button gradient="green" @click="showModal">+ Add Resource</fwb-button>
+                                <fwb-button gradient="green" @click="showModal">Add Resource</fwb-button>
                             </div>
-                            <fwb-input  v-model="query" placeholder="Search for resources"
-                                size="md">
+                            <fwb-input v-model="query" placeholder="Search for resources" size="md">
                                 <template #prefix>
                                     <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -133,7 +132,7 @@ function deleteResource(resourceId) {
                                     </svg>
                                 </template>
                             </fwb-input>
-                            <fwb-table striped class="mt-11" >
+                            <fwb-table striped class="mt-11">
                                 <fwb-table-head>
                                     <fwb-table-head-cell>Resources name</fwb-table-head-cell>
                                     <fwb-table-head-cell>Price</fwb-table-head-cell>
@@ -158,30 +157,33 @@ function deleteResource(resourceId) {
                                         <fwb-table-row>
 
                                             <fwb-table-cell>
-                                                <span  class="text-base">
+                                                <span class="text-base">
                                                     {{ item.name }}
                                                 </span>
                                             </fwb-table-cell>
                                             <fwb-table-cell>
-                                                <span  class="text-base">
+                                                <span class="text-base">
                                                     {{ item.price }}
                                                 </span>
                                             </fwb-table-cell>
                                             <fwb-table-cell>
-                                                <span  class="text-base flex justify-center">
+                                                <span class="text-base flex justify-center">
                                                     {{ item.videos_count }}
                                                 </span>
                                             </fwb-table-cell>
                                             <fwb-table-cell class="flex justify-center">
-                                                <fwb-button
-                                                @click="redirectEdite(item.id)" gradient="cyan">Edit
-                                                <template #suffix>
-      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        <path clip-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" fill-rule="evenodd" />
-      </svg>
-    </template>
-                                            </fwb-button>
-                                                <fwb-button gradient="red" @click="deleteResource(item.id)" class="ml-2">Delete</fwb-button>
+                                                <fwb-button @click="redirectEdite(item.id)" gradient="cyan">Edit
+                                                    <template #suffix>
+                                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path clip-rule="evenodd"
+                                                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                                                fill-rule="evenodd" />
+                                                        </svg>
+                                                    </template>
+                                                </fwb-button>
+                                                <fwb-button gradient="red" @click="deleteResource(item.id)"
+                                                    class="ml-2">Delete</fwb-button>
                                             </fwb-table-cell>
                                         </fwb-table-row>
                                     </template>
@@ -195,13 +197,10 @@ function deleteResource(resourceId) {
                                 </template>
                                 <template #body>
                                     <fwb-input v-model="name" label="Resource Name" placeholder="Enter Resource name"
-                                        size="md" />
-                                    <div>
-                                        <fwb-input v-model="price" label="Price" placeholder="Enter Price" size="sm"
-                                            type="text" @input="validatenumber" />
-
-                                        <fwb-select v-model="selected" :options="category" label="Select a country" />
-                                    </div>
+                                        size="md"  class="mb-3" />
+                                    <fwb-input v-model="price" label="Price" placeholder="Enter Price" size="sm"
+                                        type="text" @input="validatenumber" class="mb-3" />
+                                    <fwb-select v-model="selected" :options="category" label="Select Resources Type" class="mb-3" />
                                 </template>
                                 <template #footer>
                                     <div class="flex justify-between">

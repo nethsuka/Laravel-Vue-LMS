@@ -3,7 +3,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 import { FwbButton, FwbAlert } from 'flowbite-vue'
-
+import { usePreventDevTools } from '@/Components/DisableDevTools';
+usePreventDevTools()
 const Arrays = defineProps({
     //   stclassRecords: Array,
     classDetails: Array,
@@ -112,7 +113,7 @@ const downloadFile = (tute_name, tute_path) => {
                     <a href="/more-classes">
                         <template v-if="classDetails.length > 0">
                             <button type="button"
-                                class="text-white bg-gradient-to-r bg-sky-700  focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-md px-4 py-1.5 text-center shadow-lg hover:shadow-sky-600/100 dark:shadow-lg dark:shadow-cyan-800/80">
+                            class="text-white bg-gradient-to-r from-sky-500 to-sky-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-sky-500/50 dark:shadow-lg dark:shadow-cyan-800/80 ml-3">
                                 Add More Classes
                             </button>
                         </template>
@@ -125,7 +126,7 @@ const downloadFile = (tute_name, tute_path) => {
                     </a>
                     <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
-                            class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg hover:shadow-purple-500/100 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-md px-4 py-1.5 text-center ml-3">
+                        class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ml-2">
                             Admin Panel
                         </button>
                     </a>
@@ -142,7 +143,7 @@ const downloadFile = (tute_name, tute_path) => {
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p> -->
 
 
-                    <h3 class="text-5xl font-extrabold text-center text-gray-800 dark:text-white mt-4 mb-6">
+                    <h3 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white mt-1 mb-6">
                         My Classes
                     </h3>
                     <hr class="h-px my-6 bg-gray-200 border-0 dark:bg-gray-900">
@@ -172,14 +173,28 @@ const downloadFile = (tute_name, tute_path) => {
                                             <fwb-alert v-if="!checkPaidOrNot(record.id)" border type="warning" icon closable class="flex justify-between items-center max-w-xl mt-7">
                                                 <p>This class is available only until the <b>{{ Arrays.extendDetails.extend_date }}th</b> of this month. If payment is not settled by this date, you will no longer have access to the class.</p>
                                             </fwb-alert>
-                                            <div class="mt-5 mb-10 flex">
-                                                <a href="#" @click="joinOnline(record.id)"
+                                            <div class="mt-5 mb-10">
+                                                <!-- <a href="#" @click="joinOnline(record.id)"
                                                     class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-xl text-sm px-6 py-3 text-center flex items-center justify-center me-2 mb-2 space-x-2">
                                                     <span>Join Zoom Class</span>
-                                                </a>
-                                                <a :href="record.tele_group"
-                                                    class="text-white bg-[#0088cc] hover:bg-[#007ab8] focus:ring-4 focus:outline-none focus:ring-[#004d6a] dark:focus:ring-[#003f58] font-medium rounded-xl text-sm px-6 py-3 text-center flex items-center justify-center me-2 mb-2 space-x-2">
-                                                    <span>Telegram Channel</span>
+                                                </a> -->
+                                                <fwb-button gradient="teal" class="mr-2.5 mb-1" @click="joinOnline(record.id)">
+                                                    <template #prefix>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50" style="fill:#FFFFFF;">
+                                                            <path d="M33.619,4H16.381C9.554,4,4,9.554,4,16.381v17.238C4,40.446,9.554,46,16.381,46h17.238C40.446,46,46,40.446,46,33.619V16.381C46,9.554,40.446,4,33.619,4z M30,30.386C30,31.278,29.278,32,28.386,32H15.005C12.793,32,11,30.207,11,27.995v-9.382C11,17.722,11.722,17,12.614,17h13.382C28.207,17,30,18.793,30,21.005V30.386z M39,30.196c0,0.785-0.864,1.264-1.53,0.848l-5-3.125C32.178,27.736,32,27.416,32,27.071v-5.141c0-0.345,0.178-0.665,0.47-0.848l5-3.125C38.136,17.54,39,18.019,39,18.804V30.196z"></path>
+                                                        </svg>
+                                                    </template>
+                                                    Join Zoom Class
+                                                </fwb-button>
+                                                <a :href="record.tele_group">
+                                                    <fwb-button gradient="teal">
+                                                        <template #prefix>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="mr-2">
+                                                                <path d="M9.45 14.72l-.38 5.36c.54 0 .78-.23 1.07-.5l2.56-2.46 5.3 3.87c.97.53 1.66.25 1.91-.89l3.45-16.23.01-.02c.31-1.46-.53-2.04-1.46-1.71L1.29 9.81c-1.41.55-1.39 1.35-.24 1.71l5.04 1.56 11.67-7.36c.55-.33 1.06-.15.64.21"/>
+                                                            </svg>
+                                                        </template>
+                                                        Telegram Channel
+                                                    </fwb-button>
                                                 </a>
                                             </div>
 
@@ -218,9 +233,9 @@ const downloadFile = (tute_name, tute_path) => {
                                                         class="bg-white shadow-md rounded-lg mb-4 p-4 hover:bg-gray-100 transition-colors duration-300">
                                                         <div class="flex justify-end">
                                                             <div
-                                                                class="inline-block bg-sky-100 text-gray-800 text-sm py-1 px-3 rounded-full">
+                                                                class="inline-block bg-gray-300 text-gray-800 text-sm py-1 px-3 rounded-full">
                                                                 Expires on <span class="font-bold">{{ video.expiry_date
-                                                                    }}</span>
+                                                                    }} | Time : 23:59</span>
                                                             </div>
                                                         </div>
                                                         <div class="mt-2 text-sm text-gray-600">
@@ -238,9 +253,7 @@ const downloadFile = (tute_name, tute_path) => {
                                         </div>
                                         <div v-else class="container flex justify-center items-center py-20">
                                             <a href="/payments">
-                                                <button type="button"
-                                                    class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Payment
-                                                    Required</button>
+                                                <fwb-button color="dark" class="rounded-full">Payment Required</fwb-button>
                                             </a>
                                         </div>
                                     </div>
@@ -267,9 +280,17 @@ const downloadFile = (tute_name, tute_path) => {
 </template>
 
 <style scoped>
-.back-color {
+/* .back-color {
     background-color: #2279e3;
     color: white;
+} */
+.back-color {
+    background: linear-gradient(to right, #84cc16, #65a30d, #4d7c0f); /* from-lime-500 via-lime-600 to-lime-700 */
+    color: white;
+}
+
+.back-color:hover {
+    background: linear-gradient(to right, #65a30d, #4d7c0f, #3b6210); /* Hover gradient */
 }
 
 @media only screen and (min-width: 300px) {

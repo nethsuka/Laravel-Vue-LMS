@@ -31,7 +31,7 @@ class ResourcesController extends Controller
             ->get();
 
         // Get the current date and time in Sri Lanka timezone
-        $todayInSriLanka = Carbon::now('Asia/Colombo')->toDateString();
+        $todayInSriLanka = Carbon::now('Asia/Colombo');
 
         $userVideoData = DB::table('resources as r')
             ->leftJoin('stu_res_slips as srs', function($join) {

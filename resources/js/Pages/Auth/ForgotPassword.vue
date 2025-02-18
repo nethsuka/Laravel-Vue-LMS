@@ -24,6 +24,8 @@ const submit = () => {
 </script>
 
 <template>
+    <DumyGuestLayout>
+        <Head title="Login" />
     <div class="min-h-screen flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat" :style="{ backgroundImage: `url(${LoginBG})` }">
         <!-- Wave Decoration -->
         <div class="absolute bottom-0 left-0 right-0">
@@ -82,6 +84,7 @@ const submit = () => {
             </form>
         </div>
     </div>
+    </DumyGuestLayout>
 </template>
 
 <style scoped>

@@ -29,7 +29,7 @@ function getGravatarURL( email ) {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <img :src=Logo alt='Logo' />
+                                    <img :src=Logo alt='Logo' class="w-32" />
                                 </Link>
                             </div>
 
@@ -120,7 +120,7 @@ function getGravatarURL( email ) {
                 >
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('class_controls')" :active="route().current('class_controls')">
-                            Class Controles
+                            Class Controls
                         </ResponsiveNavLink>
                     </div>
 
