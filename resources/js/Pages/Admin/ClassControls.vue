@@ -2,7 +2,7 @@
 import Sidebar from '@/Layouts/Sidebar.vue';
 import { onMounted, ref,watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
-// import 'primeicons/primeicons.css'
+import 'primeicons/primeicons.css'
 import { Head, useForm, usePage, router } from '@inertiajs/vue3';
 import { FwbTab, FwbAlert, FwbTabs, FwbButton, FwbModal, FwbTextarea, FwbInput, FwbSelect, FwbFileInput, FwbHeading } from 'flowbite-vue'
 
@@ -525,7 +525,7 @@ function isExpired(expiryDate) {
                                                     <path
                                                         d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                                                 </svg>
-                                                <span class="sr-only">Info</span>
+                                                <!-- <span class="sr-only">Info</span> Outer Overflow bug comes due to this tag-->
                                                 <h3 class="text-lg font-medium">Warning!</h3>
                                             </div>
                                             <div class="mt-2 mb-4 text-sm">
