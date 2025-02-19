@@ -1,54 +1,59 @@
-# Use Node.js LTS version
+# Use Node.js + PHP image
 FROM node:20-alpine
+
+# Install PHP and composer
+RUN apk add --no-cache \
+    php82 \
+    php82-phar \
+    php82-openssl \
+    php82-json \
+    php82-mbstring \
+    php82-tokenizer \
+    php82-fileinfo \
+    php82-dom \
+    php82-xml \
+    php82-xmlwriter \
+    php82-curl \
+    composer
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy composer files
+COPY composer.json composer.lock ./
+
+# Install composer dependencies
+RUN composer install --no-scripts --no-autoloader
+
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Create exact versions package.json
-RUN cat > package.json << 'EOL'
-{
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    },
-    "devDependencies": {
-        "@inertiajs/vue3": "1.0.0",
-        "@tailwindcss/forms": "0.5.3",
-        "@vitejs/plugin-vue": "5.0.0",
-        "autoprefixer": "10.4.12",
-        "axios": "1.6.4",
-        "laravel-vite-plugin": "1.0.0",
-        "postcss": "8.4.31",
-        "tailwindcss": "3.2.1",
-        "vite": "5.0.0",
-        "vue": "3.4.0"
-    },
-    "dependencies": {
-        "flowbite": "2.5.1",
-        "flowbite-vue": "0.1.6",
-        "js-sha256": "0.11.0",
-        "primeicons": "7.0.0",
-        "vue-draggable-plus": "0.6.0"
-    }
-}
-EOL
-
-# Install dependencies with exact versions
-RUN npm install
+# Install npm packages with specific versions
+RUN npm install && \
+    npm uninstall flowbite flowbite-vue && \
+    npm install flowbite@2.5.1 flowbite-vue@0.1.6
 
 # Copy the rest of the application
 COPY . .
 
-# Build the application
+# Create storage directories
+RUN mkdir -p storage/framework/views && \
+    mkdir -p storage/framework/cache && \
+    mkdir -p storage/framework/sessions
+
+# Set up environment
+RUN cp .env.example .env && \
+    php artisan key:generate && \
+    php artisan storage:link
+
+# Generate composer autoloader
+RUN composer dump-autoload
+
+# Build assets
 RUN npm run build
 
-# Expose port if needed
-EXPOSE 3000
+# Expose ports
+EXPOSE 8000 5173
 
-# Start command
-CMD ["npm", "run", "dev"]
+# Start script
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=8000 & npm run dev"]
