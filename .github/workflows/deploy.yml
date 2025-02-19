@@ -19,12 +19,11 @@ jobs:
           script: |
             # Navigate to web directory
             cd /var/www/html
-            
-            # Kill existing processes
+
+            # Remove existing repository
             pkill -f "artisan serve" || true
             pkill -f "npm run dev" || true
-            sleep 2  # Give processes time to terminate
-            
+
             # Clone/pull repository
             if [ ! -d "Laravel-Vue-LMS" ]; then
               git clone https://github.com/nethsuka/Laravel-Vue-LMS.git
@@ -38,6 +37,7 @@ jobs:
             #composer install
             
             npm i
+            
             npm uninstall flowbite
             npm uninstall flowbite-vue
             npm install flowbite@2.5.1
@@ -46,56 +46,13 @@ jobs:
             mkdir -p storage/framework/views
             
             cp .env.example .env
+            
             php artisan key:generate
+            
             php artisan storage:link
             
-            # Start the servers using systemd service files
-            # Create Laravel service file
-            sudo tee /etc/systemd/system/laravel-server.service << 'EOL'
-            [Unit]
-            Description=Laravel Development Server
-            After=network.target
-
-            [Service]
-            Type=simple
-            User=root
-            WorkingDirectory=/var/www/html/Laravel-Vue-LMS
-            ExecStart=/usr/bin/php artisan serve --host=0.0.0.0 --port=8000
-            Restart=always
-
-            [Install]
-            WantedBy=multi-user.target
-            EOL
-
-            # Create NPM service file
-            sudo tee /etc/systemd/system/npm-server.service << 'EOL'
-            [Unit]
-            Description=NPM Development Server
-            After=network.target
-
-            [Service]
-            Type=simple
-            User=root
-            WorkingDirectory=/var/www/html/Laravel-Vue-LMS
-            ExecStart=/usr/bin/npm run dev -- --host
-            Restart=always
-
-            [Install]
-            WantedBy=multi-user.target
-            EOL
-
-            # Reload systemd, enable and start services
-            sudo systemctl daemon-reload
-            sudo systemctl enable laravel-server
-            sudo systemctl enable npm-server
-            sudo systemctl restart laravel-server
-            sudo systemctl restart npm-server
+            # Start the servers in background with nohup
+            nohup php artisan serve --host=0.0.0.0 --port=8000 > laravel.log 2>&1 &
+            nohup npm run dev > npm.log 2>&1 &
             
-            # Wait a moment for services to start
-            sleep 5
-            
-            # Check service status
-            sudo systemctl status laravel-server --no-pager
-            sudo systemctl status npm-server --no-pager
-            
-            echo "Deployment complete. Services have been installed and started."
+            echo "Deployment complete. Check laravel.log and npm.log for server outputs."
