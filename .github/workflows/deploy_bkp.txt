@@ -31,3 +31,82 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             APP_KEY=${{ secrets.APP_KEY }}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            new vanila cicd
+
+
+
+
+            name: Deploy to Server
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy using SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: 22
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Navigate to web directory
+            cd /var/www/html
+            
+            # Clone/pull repository
+            if [ ! -d "Laravel-Vue-LMS" ]; then
+              git clone https://github.com/nethsuka/Laravel-Vue-LMS.git
+              cd Laravel-Vue-LMS
+            else
+              cd Laravel-Vue-LMS
+              git pull origin main
+            fi
+            
+            # Run the exact commands in order
+            #composer install
+            
+            npm i
+            
+            npm uninstall flowbite
+            npm uninstall flowbite-vue
+            npm install flowbite@2.5.1
+            npm install flowbite-vue@0.1.6
+            
+            mkdir -p storage/framework/views
+            
+            cp .env.example .env
+            
+            php artisan key:generate
+            
+            php artisan storage:link
+            
+            # Start the servers in background with nohup
+            nohup php artisan serve --host=0.0.0.0 --port=8000 > laravel.log 2>&1 &
+            nohup npm run dev > npm.log 2>&1 &
+            
+            echo "Deployment complete. Check laravel.log and npm.log for server outputs."

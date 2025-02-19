@@ -20,6 +20,16 @@ jobs:
             # Navigate to web directory
             cd /var/www/html
             
+            # Kill existing processes
+            pkill -f "artisan serve" || true
+            pkill -f "npm run dev" || true
+            
+            # Increase file watchers limit if not already set
+            if ! grep -q "fs.inotify.max_user_watches" /etc/sysctl.conf; then
+              echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+              sudo sysctl -p
+            fi
+            
             # Clone/pull repository
             if [ ! -d "Laravel-Vue-LMS" ]; then
               git clone https://github.com/nethsuka/Laravel-Vue-LMS.git
@@ -33,7 +43,6 @@ jobs:
             #composer install
             
             npm i
-            
             npm uninstall flowbite
             npm uninstall flowbite-vue
             npm install flowbite@2.5.1
@@ -42,13 +51,11 @@ jobs:
             mkdir -p storage/framework/views
             
             cp .env.example .env
-            
             php artisan key:generate
-            
             php artisan storage:link
             
             # Start the servers in background with nohup
             nohup php artisan serve --host=0.0.0.0 --port=8000 > laravel.log 2>&1 &
-            nohup npm run dev > npm.log 2>&1 &
+            nohup npm run dev --host > npm.log 2>&1 &
             
             echo "Deployment complete. Check laravel.log and npm.log for server outputs."
