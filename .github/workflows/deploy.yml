@@ -52,3 +52,4 @@ jobs:
             nohup npm run dev > npm.log 2>&1 &
             
             echo "Deployment complete. Check laravel.log and npm.log for server outputs."
+            echo"end of the pipeline"
