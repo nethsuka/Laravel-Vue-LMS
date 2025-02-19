@@ -20,6 +20,8 @@ RUN apk add --no-cache \
     php82-pdo_mysql \
     php82-bcmath \
     php82-zip \
+    php82-sqlite3 \
+    php82-simplexml \
     composer
 
 # Set working directory
@@ -39,7 +41,7 @@ RUN npm install && \
     npm uninstall flowbite flowbite-vue && \
     npm install flowbite@2.5.1 flowbite-vue@0.1.6
 
-# Copy the rest of the application
+# Copy the application code
 COPY . .
 
 # Set proper permissions
@@ -49,12 +51,11 @@ RUN chmod -R 775 storage bootstrap/cache && \
 # Create storage directories
 RUN mkdir -p storage/framework/views && \
     mkdir -p storage/framework/cache && \
-    mkdir -p storage/framework/sessions
+    mkdir -p storage/framework/sessions && \
+    chown -R nobody:nobody storage
 
-# Set up environment
-RUN cp .env.example .env && \
-    php artisan key:generate && \
-    php artisan storage:link
+# No need to copy .env.example since we're using the provided .env
+RUN php artisan storage:link
 
 # Generate composer autoloader
 RUN composer dump-autoload
