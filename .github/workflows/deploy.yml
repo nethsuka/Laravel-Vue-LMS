@@ -30,9 +30,9 @@ jobs:
             fi
             
             # Run the exact commands in order
-            composer install
+            #composer install
             
-            npm install
+            npm i
             
             npm uninstall flowbite
             npm uninstall flowbite-vue
