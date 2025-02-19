@@ -12,17 +12,10 @@ jobs:
       - name: Deploy using SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: "147.93.107.203"
-          username: "root"
-          port: "22"
-          key: |
-            -----BEGIN OPENSSH PRIVATE KEY-----
-            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-            QyNTUxOQAAACCkCvMupcEO1SjBXUGtJnKkSHPPYJ+oXhG62uHcgv60JAAAAKBwha43cIWu
-            NwAAAAtzc2gtZWQyNTUxOQAAACCkCvMupcEO1SjBXUGtJnKkSHPPYJ+oXhG62uHcgv60JA
-            AAAECki7kxYBWMT1uRzr+5dX7UQDJZE6B/Y2oPyjZuF3S2BqQK8y6lwQ7VKMFdQa0mcqRI
-            c89gn6heEbra4dyC/rQkAAAAFnRlYW13aXMuaW5mb0BnbWFpbC5jb20BAgMEBQYH
-            -----END OPENSSH PRIVATE KEY-----
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: 22
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # Navigate to web directory
             cd /var/www/html
