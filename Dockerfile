@@ -27,38 +27,37 @@ RUN apk add --no-cache \
 # Set working directory
 WORKDIR /app
 
-# Copy composer files
+# Copy composer files first
 COPY composer.json composer.lock ./
 
 # Install composer dependencies
 RUN composer install --no-scripts --no-autoloader --ignore-platform-reqs
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy the entire application
+COPY . .
+
+# Set up permissions
+RUN chmod -R 775 storage bootstrap/cache && \
+    chown -R nobody:nobody storage bootstrap/cache
+
+# Create necessary directories and set permissions
+RUN mkdir -p \
+    storage/framework/views \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/app/public && \
+    chown -R nobody:nobody storage
+
+# Generate composer autoloader
+RUN composer dump-autoload
 
 # Install npm packages with specific versions
 RUN npm install && \
     npm uninstall flowbite flowbite-vue && \
     npm install flowbite@2.5.1 flowbite-vue@0.1.6
 
-# Copy the application code
-COPY . .
-
-# Set proper permissions
-RUN chmod -R 775 storage bootstrap/cache && \
-    chown -R nobody:nobody storage bootstrap/cache
-
-# Create storage directories
-RUN mkdir -p storage/framework/views && \
-    mkdir -p storage/framework/cache && \
-    mkdir -p storage/framework/sessions && \
-    chown -R nobody:nobody storage
-
-# No need to copy .env.example since we're using the provided .env
-RUN php artisan storage:link
-
-# Generate composer autoloader
-RUN composer dump-autoload
+# Create symlink for storage after all permissions are set
+RUN php artisan storage:link || true
 
 # Build assets
 RUN npm run build
