@@ -14,7 +14,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: "-----BEGIN OPENSSH PRIVATE KEY-----b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZWQyNTUxOQAAACCkCvMupcEO1SjBXUGtJnKkSHPPYJ+oXhG62uHcgv60JAAAAKBwha43cIWuNwAAAAtzc2gtZWQyNTUxOQAAACCkCvMupcEO1SjBXUGtJnKkSHPPYJ+oXhG62uHcgv60JAAAAECki7kxYBWMT1uRzr+5dX7UQDJZE6B/Y2oPyjZuF3S2BqQK8y6lwQ7VKMFdQa0mcqRIc89gn6heEbra4dyC/rQkAAAAFnRlYW13aXMuaW5mb0BnbWFpbC5jb20BAgMEBQYH-----END OPENSSH PRIVATE KEY-----"
           port: 22
           script: |
             # Navigate to web directory
