@@ -1,7 +1,7 @@
 # Use Node.js + PHP image
 FROM node:20-alpine
 
-# Install PHP and composer
+# Install PHP and all required extensions
 RUN apk add --no-cache \
     php82 \
     php82-phar \
@@ -14,6 +14,12 @@ RUN apk add --no-cache \
     php82-xml \
     php82-xmlwriter \
     php82-curl \
+    php82-session \
+    php82-ctype \
+    php82-pdo \
+    php82-pdo_mysql \
+    php82-bcmath \
+    php82-zip \
     composer
 
 # Set working directory
@@ -23,7 +29,7 @@ WORKDIR /app
 COPY composer.json composer.lock ./
 
 # Install composer dependencies
-RUN composer install --no-scripts --no-autoloader
+RUN composer install --no-scripts --no-autoloader --ignore-platform-reqs
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
@@ -35,6 +41,10 @@ RUN npm install && \
 
 # Copy the rest of the application
 COPY . .
+
+# Set proper permissions
+RUN chmod -R 775 storage bootstrap/cache && \
+    chown -R nobody:nobody storage bootstrap/cache
 
 # Create storage directories
 RUN mkdir -p storage/framework/views && \
