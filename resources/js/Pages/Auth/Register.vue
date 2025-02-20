@@ -169,7 +169,7 @@ function validatenumber(event) {
                 </div>
                 
                 <div class="mt-4">
-                    <InputLabel class="text-gray-600 text-sm" for="whatsapp">9. Whatsapp Number</InputLabel>
+                    <InputLabel class="text-gray-600 text-sm" for="whatsapp">9. Student's Whatsapp Number</InputLabel>
                     
                     <TextInput
                     id="wnum"
