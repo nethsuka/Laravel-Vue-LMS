@@ -84,7 +84,8 @@ jobs:
             sudo pm2 startup
 
             # delete hot file
-            rm public/hot
+            cd /var/www/html/Laravel-Vue-LMS/public
+            rm hot
 
             echo "Production deployment completed successfully"
 
@@ -178,7 +179,8 @@ jobs:
             pm2 save
             sudo pm2 startup
             
-            # Delete hot file
-            rm -f public/hot
+            # delete hot file
+            cd /var/www/html/Laravel-Vue-LMS/public
+            rm hot
             
             echo "Development deployment completed successfully"
