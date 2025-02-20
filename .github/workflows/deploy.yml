@@ -12,6 +12,42 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - name: Debug SSH Variables
+        run: |
+          if [ -n "${{ secrets.SSH_HOST }}" ]; then
+            echo "SSH_HOST is set"
+          else
+            echo "SSH_HOST is missing"
+          fi
+          
+          if [ -n "${{ secrets.SSH_USERNAME }}" ]; then
+            echo "SSH_USERNAME is set"
+          else
+            echo "SSH_USERNAME is missing"
+          fi
+          
+          if [ -n "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            echo "SSH_PRIVATE_KEY is set"
+          else
+            echo "SSH_PRIVATE_KEY is missing"
+          fi
+
+      - name: Check SSH Connection
+        run: |
+          # Create debug SSH config
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          
+          # Test SSH connection with verbose output
+          ssh -v -o "StrictHostKeyChecking=no" -i ~/.ssh/deploy_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'SSH Connection Test'" || echo "SSH connection failed"
+          
+          # Check SSH key format
+          ssh-keygen -l -f ~/.ssh/deploy_key || echo "Invalid SSH key format"
+          
+          # Cleanup
+          rm -f ~/.ssh/deploy_key
+
       - name: Deploy to Production Server
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -19,7 +55,17 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: 22
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          debug: true
           script: |
+            # Test initial connection
+            echo "Testing connection as $USER on $(hostname)"
+            
+            # Check server environment
+            echo "Checking server environment..."
+            echo "Current user: $USER"
+            echo "Home directory: $HOME"
+            echo "Current directory: $(pwd)"
+            
             # Install PM2 if not exists
             if ! command -v pm2 &> /dev/null; then
               echo "Installing PM2..."
@@ -85,7 +131,7 @@ jobs:
 
             # delete hot file
             cd /var/www/html/Laravel-Vue-LMS/public
-            rm hot
+            rm -f hot
 
             echo "Production deployment completed successfully"
 
@@ -93,6 +139,42 @@ jobs:
     if: github.ref == 'refs/heads/Development(DO_NOT_REMOVE)'
     runs-on: ubuntu-latest
     steps:
+      - name: Debug SSH Variables (Development)
+        run: |
+          if [ -n "${{ secrets.DEV_SSH_HOST }}" ]; then
+            echo "DEV_SSH_HOST is set"
+          else
+            echo "DEV_SSH_HOST is missing"
+          fi
+          
+          if [ -n "${{ secrets.DEV_SSH_USERNAME }}" ]; then
+            echo "DEV_SSH_USERNAME is set"
+          else
+            echo "DEV_SSH_USERNAME is missing"
+          fi
+          
+          if [ -n "${{ secrets.DEV_SSH_PRIVATE_KEY }}" ]; then
+            echo "DEV_SSH_PRIVATE_KEY is set"
+          else
+            echo "DEV_SSH_PRIVATE_KEY is missing"
+          fi
+
+      - name: Check SSH Connection (Development)
+        run: |
+          # Create debug SSH config
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEV_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          
+          # Test SSH connection with verbose output
+          ssh -v -o "StrictHostKeyChecking=no" -i ~/.ssh/deploy_key ${{ secrets.DEV_SSH_USERNAME }}@${{ secrets.DEV_SSH_HOST }} "echo 'SSH Connection Test'" || echo "SSH connection failed"
+          
+          # Check SSH key format
+          ssh-keygen -l -f ~/.ssh/deploy_key || echo "Invalid SSH key format"
+          
+          # Cleanup
+          rm -f ~/.ssh/deploy_key
+
       - name: Deploy to Development Server
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -100,7 +182,17 @@ jobs:
           username: ${{ secrets.DEV_SSH_USERNAME }}
           port: 22
           key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
+          debug: true
           script: |
+            # Test initial connection
+            echo "Testing connection as $USER on $(hostname)"
+            
+            # Check server environment
+            echo "Checking server environment..."
+            echo "Current user: $USER"
+            echo "Home directory: $HOME"
+            echo "Current directory: $(pwd)"
+            
             # Install PM2 if not exists
             if ! command -v pm2 &> /dev/null; then
               echo "Installing PM2..."
@@ -181,6 +273,6 @@ jobs:
             
             # delete hot file
             cd /var/www/html/Laravel-Vue-LMS/public
-            rm hot
+            rm -f hot
             
             echo "Development deployment completed successfully"
