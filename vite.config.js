@@ -22,6 +22,6 @@ export default defineConfig({
         hmr: {
             host: 'lms.mhchem.lk'
         },
-        allowedHosts: ['lms.mhchem.lk']
+        allowedHosts: ['lms.mhchem.lk', 'lms.teamwis.dev.test.mhchem.lk']
     },
 });
