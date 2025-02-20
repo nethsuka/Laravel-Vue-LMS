@@ -28,7 +28,7 @@ jobs:
 
             # Set up application directory with proper permissions
             sudo mkdir -p /var/www/html/Laravel-Vue-LMS
-            sudo chown -R $USER:$USER /var/www/html/Laravel-Vue-LMS
+            sudo chown -R azureuser:www-data /var/www/html/Laravel-Vue-LMS
 
             # Navigate to web directory
             cd /var/www/html/Laravel-Vue-LMS
@@ -45,8 +45,9 @@ jobs:
               git clone -b main https://github.com/nethsuka/Laravel-Vue-LMS.git .
             fi
 
-            # Ensure proper ownership of files
-            sudo chown -R $USER:$USER .
+            # Set proper permissions
+            sudo find . -type f -exec chmod 664 {} \;
+            sudo find . -type d -exec chmod 775 {} \;
 
             # Install PHP dependencies
             composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -67,13 +68,20 @@ jobs:
             sudo mkdir -p storage/logs
             sudo mkdir -p bootstrap/cache
 
-            # Set proper permissions for Laravel
-            sudo chown -R www-data:www-data storage bootstrap/cache
+            # Set proper permissions for Laravel storage and cache
+            sudo chown -R azureuser:www-data storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
+            sudo chmod -R g+s storage bootstrap/cache  # Set SGID bit
 
-            # Ensure proper ownership for npm and Laravel
-            sudo chown -R $USER:$USER node_modules
-            sudo chown -R $USER:$USER public/build
+            # Clear Laravel caches
+            php artisan config:clear
+            php artisan cache:clear
+            php artisan view:clear
+            php artisan route:clear
+
+            # Set proper ownership for npm and build directories
+            sudo chown -R azureuser:www-data node_modules
+            sudo chown -R azureuser:www-data public/build
 
             # Start services using PM2
             pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
@@ -83,9 +91,8 @@ jobs:
             pm2 save
             sudo pm2 startup
 
-            # delete hot file
-            cd /var/www/html/Laravel-Vue-LMS/public
-            rm hot
+            # Delete hot file if exists
+            rm -f public/hot
 
             echo "Production deployment completed successfully"
 
@@ -160,13 +167,6 @@ jobs:
             php artisan view:clear
             php artisan route:clear
             
-            # Ensure proper SELinux context if enabled
-            if command -v semanage &> /dev/null; then
-              sudo semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/Laravel-Vue-LMS/storage(/.*)?"
-              sudo semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/Laravel-Vue-LMS/bootstrap/cache(/.*)?"
-              sudo restorecon -Rv /var/www/html/Laravel-Vue-LMS
-            fi
-            
             # Set proper ownership for npm and build directories
             sudo chown -R azureuser:www-data node_modules
             sudo chown -R azureuser:www-data public/build
@@ -179,8 +179,7 @@ jobs:
             pm2 save
             sudo pm2 startup
             
-            # delete hot file
-            cd /var/www/html/Laravel-Vue-LMS/public
-            rm hot
+            # Delete hot file if exists
+            rm -f public/hot
             
             echo "Development deployment completed successfully"
