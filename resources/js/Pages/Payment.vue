@@ -463,9 +463,8 @@ const agree = ref(false)
                                         </div>
                                     </template>
                                     <template v-else>
-                                        <p class="text-sm pl-4 mb-2 text-blue-600 underline">You can pick Resources from the<a
-                                                href="/resources">
-                                                HERE
+                                        <p class="text-sm pl-4 mb-2">You can pick Resources from <a
+                                                href="/resources" class=" text-blue-600 underline">HERE
                                             </a>
                                         </p>
                                     </template>
