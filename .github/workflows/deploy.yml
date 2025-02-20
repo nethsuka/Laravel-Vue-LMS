@@ -23,51 +23,66 @@ jobs:
             # Install PM2 if not exists
             if ! command -v pm2 &> /dev/null; then
               echo "Installing PM2..."
-              npm install -g pm2
+              sudo npm install -g pm2
             fi
 
+            # Set up application directory with proper permissions
+            sudo mkdir -p /var/www/html/Laravel-Vue-LMS
+            sudo chown -R $USER:$USER /var/www/html/Laravel-Vue-LMS
+
             # Navigate to web directory
-            cd /var/www/html
-            
+            cd /var/www/html/Laravel-Vue-LMS
+
             # Safely stop existing processes
             pm2 stop all || true
             pm2 delete all || true
-            
+
             # Clone/pull repository
-            if [ ! -d "Laravel-Vue-LMS" ]; then
-              git clone https://github.com/nethsuka/Laravel-Vue-LMS.git
-              cd Laravel-Vue-LMS
-            else
-              cd Laravel-Vue-LMS
+            if [ -d ".git" ]; then
               git fetch origin main
               git reset --hard origin/main
+            else
+              git clone -b main https://github.com/nethsuka/Laravel-Vue-LMS.git .
             fi
-            
+
+            # Ensure proper ownership of files
+            sudo chown -R $USER:$USER .
+
             # Install PHP dependencies
             composer install --no-interaction --prefer-dist --optimize-autoloader
-            
+
             # Install and build frontend assets
-            npm ci
+            npm install
             npm uninstall flowbite flowbite-vue
             npm install flowbite@2.5.1 flowbite-vue@0.1.6
             npm run build
-            
+
             # Set up Laravel environment
             cp .env.example .env
             php artisan key:generate --force
             php artisan storage:link --force
-            
-            # Set proper permissions
+
+            # Create storage directories with proper permissions
+            sudo mkdir -p storage/framework/{sessions,views,cache}
+            sudo mkdir -p storage/logs
+            sudo mkdir -p bootstrap/cache
+
+            # Set proper permissions for Laravel
             sudo chown -R www-data:www-data storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
-            
-            # Create required directories
-            mkdir -p storage/framework/{sessions,views,cache}
-            
+
+            # Ensure proper ownership for npm and Laravel
+            sudo chown -R $USER:$USER node_modules
+            sudo chown -R $USER:$USER public/build
+
             # Start services using PM2
-            pm2 start "php artisan serve --host=0.0.0.0 --port=8000" --name "laravel"
-            pm2 start "npm run dev" --name "vite"
-            
+            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
+            pm2 start --name "vite" npm -- run dev
+
+            # Save PM2 process list and set to start on reboot
+            pm2 save
+            sudo pm2 startup
+
             echo "Production deployment completed successfully"
 
   deploy-development:
@@ -88,46 +103,61 @@ jobs:
               sudo npm install -g pm2
             fi
 
+            # Set up application directory with proper permissions
+            sudo mkdir -p /var/www/html/Laravel-Vue-LMS
+            sudo chown -R $USER:$USER /var/www/html/Laravel-Vue-LMS
+
             # Navigate to web directory
-            cd /var/www/html
-            
+            cd /var/www/html/Laravel-Vue-LMS
+
             # Safely stop existing processes
             pm2 stop all || true
             pm2 delete all || true
-            
+
             # Clone/pull repository with escaped branch name
-            if [ ! -d "Laravel-Vue-LMS" ]; then
-              git clone -b "Development(DO_NOT_REMOVE)" https://github.com/nethsuka/Laravel-Vue-LMS.git
-              cd Laravel-Vue-LMS
-            else
-              cd Laravel-Vue-LMS
+            if [ -d ".git" ]; then
               git fetch origin "Development(DO_NOT_REMOVE)"
               git reset --hard "origin/Development(DO_NOT_REMOVE)"
+            else
+              git clone -b "Development(DO_NOT_REMOVE)" https://github.com/nethsuka/Laravel-Vue-LMS.git .
             fi
-            
+
+            # Ensure proper ownership of files
+            sudo chown -R $USER:$USER .
+
             # Install PHP dependencies
             composer install --no-interaction --prefer-dist --optimize-autoloader
-            
+
             # Install and build frontend assets
-            npm ci
+            npm install
             npm uninstall flowbite flowbite-vue
             npm install flowbite@2.5.1 flowbite-vue@0.1.6
             npm run build
-            
+
             # Set up Laravel environment
             cp .env.example .env
             php artisan key:generate --force
             php artisan storage:link --force
-            
-            # Set proper permissions
+
+            # Create storage directories with proper permissions
+            sudo mkdir -p storage/framework/{sessions,views,cache}
+            sudo mkdir -p storage/logs
+            sudo mkdir -p bootstrap/cache
+
+            # Set proper permissions for Laravel
             sudo chown -R www-data:www-data storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
-            
-            # Create required directories
-            mkdir -p storage/framework/{sessions,views,cache}
-            
+
+            # Ensure proper ownership for npm and Laravel
+            sudo chown -R $USER:$USER node_modules
+            sudo chown -R $USER:$USER public/build
+
             # Start services using PM2
-            pm2 start "php artisan serve --host=0.0.0.0 --port=8000" --name "laravel"
-            pm2 start "npm run dev" --name "vite"
-            
+            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
+            pm2 start --name "vite" npm -- run dev
+
+            # Save PM2 process list and set to start on reboot
+            pm2 save
+            sudo pm2 startup
+
             echo "Development deployment completed successfully"
