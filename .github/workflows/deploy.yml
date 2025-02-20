@@ -20,6 +20,12 @@ jobs:
           port: 22
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # Install PM2 if not exists
+            if ! command -v pm2 &> /dev/null; then
+              echo "Installing PM2..."
+              npm install -g pm2
+            fi
+
             # Navigate to web directory
             cd /var/www/html
             
@@ -76,6 +82,12 @@ jobs:
           port: 22
           key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
           script: |
+            # Install PM2 if not exists
+            if ! command -v pm2 &> /dev/null; then
+              echo "Installing PM2..."
+              sudo npm install -g pm2
+            fi
+
             # Navigate to web directory
             cd /var/www/html
             
@@ -83,14 +95,14 @@ jobs:
             pm2 stop all || true
             pm2 delete all || true
             
-            # Clone/pull repository
+            # Clone/pull repository with escaped branch name
             if [ ! -d "Laravel-Vue-LMS" ]; then
-              git clone -b Development(DO_NOT_REMOVE) https://github.com/nethsuka/Laravel-Vue-LMS.git
+              git clone -b "Development(DO_NOT_REMOVE)" https://github.com/nethsuka/Laravel-Vue-LMS.git
               cd Laravel-Vue-LMS
             else
               cd Laravel-Vue-LMS
-              git fetch origin Development(DO_NOT_REMOVE)
-              git reset --hard origin/Development(DO_NOT_REMOVE)
+              git fetch origin "Development(DO_NOT_REMOVE)"
+              git reset --hard "origin/Development(DO_NOT_REMOVE)"
             fi
             
             # Install PHP dependencies
