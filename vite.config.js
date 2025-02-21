@@ -7,6 +7,7 @@ export default defineConfig({
         laravel({
             input: 'resources/js/app.js',
             refresh: true,
+            hotFile: 'storage/framework/hot',
         }),
         vue({
             template: {
@@ -22,6 +23,6 @@ export default defineConfig({
         hmr: {
             host: 'lms.mhchem.lk'
         },
-        allowedHosts: ['lms.mhchem.lk']
+        allowedHosts: ['lms.mhchem.lk', 'lms.teamwis.dev.test.mhchem.lk']
     },
 });

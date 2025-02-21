@@ -98,6 +98,7 @@ function confirmDelete(id) {
     });
     }
 }
+
 </script>
 
 <template>
@@ -141,7 +142,13 @@ function confirmDelete(id) {
                                 </div>
                                 <fwb-table hoverable>
                                     <fwb-table-head>
-                                        <fwb-table-head-cell>Student Name</fwb-table-head-cell>
+                                        <fwb-table-head-cell>Name
+                                            &nbsp;
+                                        <span
+                                            class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-white bg-gray-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                                            {{ unpaidCount() }}
+                                        </span>
+                                        </fwb-table-head-cell>
                                         <fwb-table-head-cell>Email</fwb-table-head-cell>
                                         <fwb-table-head-cell>Joined Classes</fwb-table-head-cell>
                                         <fwb-table-head-cell>Paid Classes</fwb-table-head-cell>
@@ -216,7 +223,13 @@ function confirmDelete(id) {
                                 </div>
                                 <fwb-table hoverable>
                                     <fwb-table-head>
-                                        <fwb-table-head-cell>Student Name</fwb-table-head-cell>
+                                        <fwb-table-head-cell>Name
+                                            &nbsp;
+                                        <span
+                                            class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-white bg-gray-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                                            {{ paidCount() }}
+                                        </span>
+                                        </fwb-table-head-cell>
                                         <fwb-table-head-cell>Email</fwb-table-head-cell>
                                         <fwb-table-head-cell>Joined Classes</fwb-table-head-cell>
                                         <fwb-table-head-cell>Paid Classes</fwb-table-head-cell>

@@ -114,6 +114,7 @@ const confirmAction = (id) => {
         });
     }
 };
+
 </script>
 
 <template>
@@ -156,7 +157,11 @@ const confirmAction = (id) => {
                                 </div>
                                 <fwb-table hoverable>
                                     <fwb-table-head>
-                                        <fwb-table-head-cell>Student Name</fwb-table-head-cell>
+                                        <fwb-table-head-cell>Name&nbsp;
+                                        <span
+                                            class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-white bg-gray-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                                            {{ unpaidCount() }}
+                                        </span></fwb-table-head-cell>
                                         <fwb-table-head-cell>Email</fwb-table-head-cell>
                                         <fwb-table-head-cell>Selected Resources</fwb-table-head-cell>
                                         <fwb-table-head-cell>Slip Data</fwb-table-head-cell>
@@ -227,7 +232,13 @@ const confirmAction = (id) => {
                                 </div>
                                 <fwb-table hoverable>
                                     <fwb-table-head>
-                                        <fwb-table-head-cell>Student Name</fwb-table-head-cell>
+                                        <fwb-table-head-cell>Name
+                                            &nbsp;
+                                        <span
+                                            class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-white bg-gray-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                                            {{ paidCount() }}
+                                        </span>
+                                        </fwb-table-head-cell>
                                         <fwb-table-head-cell>Email</fwb-table-head-cell>
                                         <fwb-table-head-cell>Selected Resources</fwb-table-head-cell>
                                         <fwb-table-head-cell>Expire Date</fwb-table-head-cell>

@@ -84,6 +84,8 @@ function getVideoList(classID) {
             videoList.push(element);
         }
     }
+    videoList.sort((a, b) => a.index - b.index);
+
     return videoList;
 }
 
