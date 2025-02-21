@@ -69,9 +69,7 @@ function showModal() {
 const cartarrya = ref([])
 
 onMounted(() => {
-console.log(Arrays.userResourcesInfo)
-console.log(Arrays.userVideoData)
-console.log(Arrays.paidResources)
+
 
     // Retrieve items from session storage
     const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
@@ -85,9 +83,8 @@ console.log(Arrays.paidResources)
 function addtocart(item) {
     cartarrya.value.push(item)
     total.value += parseInt(item.price)
-    console.log(total.value)
     sessionStorage.setItem('cart', JSON.stringify(cartarrya.value));
-    console.log(cartarrya.value)
+
     let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 }
 function removecart(item) {
@@ -142,6 +139,7 @@ function getVideosByResourceId(resourceId) {
         return [];
     }
     // Return the matching videos
+    matchingVideos.sort((a, b) => parseInt(a.video_index) - parseInt(b.video_index));
     return matchingVideos;
 }
 
