@@ -160,7 +160,6 @@ function handlePaymentFilter(value) {
 // Initialize with all classes unchecked and "All class" checked
 onMounted(() => {
     creatArray();
-    console.log(seacrharray.value);
     // Initialize with default states
     selectedClasses.value = new Array(classes.length).fill(false);
     checkall.value = true;
