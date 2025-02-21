@@ -160,4 +160,13 @@ jobs:
             pm2 save
             sudo pm2 startup
 
+
+            #change the permission of the storage folder
+
+            cd /var/www/html/Laravel-Vue-LMS
+            sudo chown -R $USER:$USER storage
+            sudo chown -R $USER:$USER bootstrap/cache
+            sudo chmod -R 775 storage
+            sudo chmod -R 775 bootstrap/cache
+            
             echo "Development deployment completed successfully"
