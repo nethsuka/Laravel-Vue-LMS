@@ -223,6 +223,10 @@ const confirmAction = () => {
     }
 };
 
+function getnumber(id) {
+    return seacrharray.value.findIndex(student => student.id === id);
+}
+
 </script>
 <template>
 
@@ -280,7 +284,13 @@ const confirmAction = () => {
                         </div>
                         <fwb-table striped style="max-width: 1200px; margin: 20px 0 20px 0 ;">
                             <fwb-table-head>
-                                <fwb-table-head-cell>Name</fwb-table-head-cell>
+                                <fwb-table-head-cell>Name
+                                 &nbsp;
+                                        <span
+                                            class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-white bg-gray-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                                            {{ seacrharray.length }}
+                                        </span>
+                                </fwb-table-head-cell>
                                 <fwb-table-head-cell>Email</fwb-table-head-cell>
                                 <fwb-table-head-cell>Phone Number</fwb-table-head-cell>
                                 <fwb-table-head-cell>Exam Year</fwb-table-head-cell>
@@ -290,7 +300,7 @@ const confirmAction = () => {
                             <fwb-table-body>
                                 <template v-for="(stu, index) in paginatedArray" :key="index">
                                     <fwb-table-row>
-                                        <fwb-table-cell>{{ stu.name }}
+                                        <fwb-table-cell>{{ getnumber(stu.id) + 1 }}. &nbsp;  {{ stu.name }}
                                             <fwb-badge href="#" size="sm" v-if="parseInt(stu.extend_date) > 7"
                                                 style="max-width: 60%; margin-top: 5px;">
                                                 Extended

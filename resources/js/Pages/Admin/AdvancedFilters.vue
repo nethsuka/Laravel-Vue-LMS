@@ -37,10 +37,12 @@ const paymentFilter = ref('all');
 
 function creatArray() {
     const tempArray = [];
+    let id_stu = 0;
     for (let raw of stu.value) {
         const existingStudent = tempArray.find(item => item.student_name === raw.student_name);
         if (!existingStudent) {
             tempArray.push({
+                id: id_stu,
                 student_name: raw.student_name,
                 email: raw.email,
                 exam_year: raw.exam_year,
@@ -49,6 +51,7 @@ function creatArray() {
                     { name: raw.class_name, paid: raw.payment_status }
                 ]
             });
+            id_stu++;
         } else {
             existingStudent.class.push({ name: raw.class_name, paid: raw.payment_status });
         }
@@ -157,6 +160,7 @@ function handlePaymentFilter(value) {
 // Initialize with all classes unchecked and "All class" checked
 onMounted(() => {
     creatArray();
+    console.log(seacrharray.value);
     // Initialize with default states
     selectedClasses.value = new Array(classes.length).fill(false);
     checkall.value = true;
@@ -165,8 +169,8 @@ onMounted(() => {
 
 
 
-function forpamentfilter(item){
-    if(item === paymentFilter.value){
+function forpamentfilter(item) {
+    if (item === paymentFilter.value) {
         return true;
     }
     return false;
@@ -184,6 +188,10 @@ const paginatedArray = computed(() => {
 const totalPages = computed(() => {
     return Math.ceil(seacrharray.value.length / itemsPerPage.value)
 })
+
+function getnumber(id) {
+    return seacrharray.value.findIndex(student => student.id === id);
+}
 </script>
 
 <template>
@@ -214,7 +222,8 @@ const totalPages = computed(() => {
                                         <fwb-checkbox :modelValue="selectedClasses[index]"
                                             @change="handleClassFilter(index)" :label="cl" />
                                     </template>
-                                    <fwb-checkbox v-model="checkall" @change.prevent="handleCheckAll" label="All class" />
+                                    <fwb-checkbox v-model="checkall" @change.prevent="handleCheckAll"
+                                        label="All class" />
                                 </div>
                             </div>
 
@@ -225,8 +234,8 @@ const totalPages = computed(() => {
                                         @change="handlePaymentFilter('paid')" label="Paid students" />
                                     <fwb-checkbox :modelValue="forpamentfilter('nonpaid')"
                                         @change="handlePaymentFilter('nonpaid')" label="Non paid students" />
-                                    <fwb-checkbox :modelValue="forpamentfilter('all')" @change="handlePaymentFilter('all')"
-                                        label="Paid or Non paid students" />
+                                    <fwb-checkbox :modelValue="forpamentfilter('all')"
+                                        @change="handlePaymentFilter('all')" label="Paid or Non paid students" />
 
                                 </div>
                             </div>
@@ -237,7 +246,7 @@ const totalPages = computed(() => {
                                         Name &nbsp;
                                         <span
                                             class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-white bg-gray-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                                            {{ seacrharray.length }}<span class="sr-only">Icon description</span>
+                                            {{ seacrharray.length }}
                                         </span>
                                     </fwb-table-head-cell>
                                     <fwb-table-head-cell>Email</fwb-table-head-cell>
@@ -248,7 +257,8 @@ const totalPages = computed(() => {
                                 <fwb-table-body>
                                     <template v-if="paginatedArray.length > 0">
                                         <fwb-table-row v-for="(st, index) in paginatedArray" :key="index">
-                                            <fwb-table-cell>{{ index + 1 }}. &nbsp; {{ st.student_name }}</fwb-table-cell>
+                                            <fwb-table-cell>{{ getnumber(st.id) + 1 }}. &nbsp; {{ st.student_name
+                                                }}</fwb-table-cell>
                                             <fwb-table-cell>{{ st.email }}</fwb-table-cell>
                                             <fwb-table-cell>{{ st.w_number }}</fwb-table-cell>
                                             <fwb-table-cell>{{ st.exam_year }}</fwb-table-cell>
@@ -256,7 +266,8 @@ const totalPages = computed(() => {
                                                 <template v-for="(cl, index) in st.class" :key="index">
                                                     <fwb-p class="flex items-center gap-2 text-xs">
                                                         {{ cl.name }}:
-                                                        <fwb-badge type="red" v-if="cl.paid === 'no'">Not paid</fwb-badge>
+                                                        <fwb-badge type="red" v-if="cl.paid === 'no'">Not
+                                                            paid</fwb-badge>
                                                         <fwb-badge v-else>Paid</fwb-badge>
                                                     </fwb-p>
                                                 </template>
@@ -269,13 +280,14 @@ const totalPages = computed(() => {
                                                 <fwb-alert class="border-t-4 rounded-none" icon type="warning">
                                                     No data !
                                                 </fwb-alert>
-                                            </fwb-table-cell>                                  
+                                            </fwb-table-cell>
                                         </fwb-table-row>
                                     </template>
                                 </fwb-table-body>
                             </fwb-table>
                             <div class="flex justify-center mt-4">
-                                <fwb-pagination v-model="currentPage" :total-pages="totalPages" show-icons></fwb-pagination>
+                                <fwb-pagination v-model="currentPage" :total-pages="totalPages"
+                                    show-icons></fwb-pagination>
                             </div>
                         </div>
                     </div>
