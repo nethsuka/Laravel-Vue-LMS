@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://lms.teamwis.dev.test.mhchem.lk'),
+    'url' => env('APP_URL', 'https://lms.mhchem.lk'),
 
     /*
     |--------------------------------------------------------------------------
@@ -124,7 +124,7 @@ return [
     ],
 
     'vite' => [
-        'base_url' => env('VITE_APP_BASE_URL', 'http://lms.teamwis.dev.test.mhchem.lk'),
+        'base_url' => env('VITE_APP_BASE_URL', 'https://lms.mhchem.lk'),
     ],
 
 ];
