@@ -103,15 +103,6 @@ jobs:
             sudo chown -R www-data:www-data storage/framework
             sudo chmod -R 775 storage/framework
 
-
-            
-            #change the permission of the storage folder
-
-            cd /var/www/html/Laravel-Vue-LMS
-            sudo chown -R $USER:$USER storage
-            sudo chown -R $USER:$USER bootstrap/cache
-            sudo chmod -R 775 storage
-            sudo chmod -R 775 bootstrap/cache
             
             
             echo "Production deployment completed successfully"
