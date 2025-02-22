@@ -138,8 +138,8 @@ jobs:
 
             # Clone/pull repository
             if [ -d ".git" ]; then
-              git fetch origin main
-              git reset --hard origin/main
+              git fetch origin Development(DO_NOT_REMOVE)
+              git reset --hard origin/Development(DO_NOT_REMOVE)
             else
               git clone -b main git@github.com:nethsuka/Laravel-Vue-LMS.git .
             fi
@@ -206,6 +206,10 @@ jobs:
             #change the permission of the storage folder
             cd /var/www/html/Laravel-Vue-LMS/storage/framework/views
             sudo chmod 777 views
+
+            #change the permission of log file 
+            cd /var/www/html/Laravel-Vue-LMS/storage/logs
+            sudo chmod 777 laravel.log
 
             
             
