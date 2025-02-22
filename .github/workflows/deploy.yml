@@ -163,19 +163,6 @@ jobs:
               sudo mkdir -p storage/logs
               sudo mkdir -p bootstrap/cache
               
-              # Set initial ownership for npm and public build
-              sudo chown -R $USER:$USER node_modules
-              sudo chown -R $USER:$USER public/build
-              
-              # Set proper Laravel storage permissions
-              sudo chown -R www-data:www-data storage
-              sudo chown -R www-data:www-data bootstrap/cache
-              sudo chmod -R 775 storage
-              sudo chmod -R 775 bootstrap/cache
-              
-              # Ensure framework directories are properly set
-              sudo chown -R www-data:www-data storage/framework
-              sudo chmod -R 775 storage/framework
               
               # Add deployment user to www-data group if not already added
               sudo usermod -a -G www-data $USER
@@ -191,5 +178,19 @@ jobs:
               # Save PM2 process list and set to start on reboot
               pm2 save
               sudo pm2 startup
+
+              # Set initial ownership for npm and public build
+              sudo chown -R $USER:$USER node_modules
+              sudo chown -R $USER:$USER public/build
+              
+              # Set proper Laravel storage permissions
+              sudo chown -R www-data:www-data storage
+              sudo chown -R www-data:www-data bootstrap/cache
+              sudo chmod -R 775 storage
+              sudo chmod -R 775 bootstrap/cache
+              
+              # Ensure framework directories are properly set
+              sudo chown -R www-data:www-data storage/framework
+              sudo chmod -R 775 storage/framework
               
               echo "Development deployment completed successfully"
