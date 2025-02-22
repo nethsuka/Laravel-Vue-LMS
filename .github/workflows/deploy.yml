@@ -79,6 +79,10 @@ jobs:
             sudo chown -R www-data:www-data storage/framework/views
             sudo chmod -R 775 storage/framework/views
 
+            # Ensure correct permissions for storage directory and subdirectories
+            sudo chown -R www-data:www-data storage
+            sudo chmod -R 775 storage
+
             # Start services using PM2
             pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
             pm2 start --name "vite" npm -- run dev
@@ -169,6 +173,10 @@ jobs:
             # Ensure correct permissions for storage directory
             sudo chown -R www-data:www-data storage/framework/views
             sudo chmod -R 775 storage/framework/views
+
+            # Ensure correct permissions for storage directory and subdirectories
+            sudo chown -R www-data:www-data storage
+            sudo chmod -R 775 storage
 
             # Start services using PM2
             pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
