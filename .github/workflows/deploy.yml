@@ -68,7 +68,7 @@ jobs:
             sudo mkdir -p bootstrap/cache
 
             # Set proper permissions for Laravel
-            sudo chown -R www-data:www-data storage bootstrap/cache
+            sudo chown -R $USER:$USER storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
 
             # Ensure proper ownership for npm and Laravel
@@ -76,15 +76,15 @@ jobs:
             sudo chown -R $USER:$USER public/build
 
             # Ensure correct permissions for storage directory
-            sudo chown -R www-data:www-data storage/framework/views
+            sudo chown -R $USER:$USER storage/framework/views
             sudo chmod -R 775 storage/framework/views
 
             # Ensure correct permissions for storage directory and subdirectories
-            sudo chown -R www-data:www-data storage
+            sudo chown -R $USER:$USER storage
             sudo chmod -R 775 storage
 
             # Ensure correct permissions for storage/framework directory and subdirectories
-            sudo chown -R www-data:www-data storage/framework
+            sudo chown -R $USER:$USER storage/framework
             sudo chmod -R 775 storage/framework
 
             # Start services using PM2
@@ -167,7 +167,7 @@ jobs:
             sudo mkdir -p bootstrap/cache
 
             # Set proper permissions for Laravel
-            sudo chown -R www-data:www-data storage bootstrap/cache
+            sudo chown -R $USER:$USER storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
 
             # Ensure proper ownership for npm and Laravel
@@ -175,15 +175,15 @@ jobs:
             sudo chown -R $USER:$USER public/build
 
             # Ensure correct permissions for storage directory
-            sudo chown -R www-data:www-data storage/framework/views
+            sudo chown -R $USER:$USER storage/framework/views
             sudo chmod -R 775 storage/framework/views
 
             # Ensure correct permissions for storage directory and subdirectories
-            sudo chown -R www-data:www-data storage
+            sudo chown -R $USER:$USER storage
             sudo chmod -R 775 storage
 
             # Ensure correct permissions for storage/framework directory and subdirectories
-            sudo chown -R www-data:www-data storage/framework
+            sudo chown -R $USER:$USER storage/framework
             sudo chmod -R 775 storage/framework
 
             # Start services using PM2
