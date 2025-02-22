@@ -202,6 +202,11 @@ jobs:
             sudo chown -R www-data:www-data storage/framework
             sudo chmod -R 775 storage/framework
 
+
+            #change the permission of the storage folder
+            cd /var/www/html/Laravel-Vue-LMS/storage/framework/views
+            sudo chmod 777 views
+
             
             
             echo "Production deployment completed successfully"
