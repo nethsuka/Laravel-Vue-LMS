@@ -1,4 +1,3 @@
-
 name: Deploy to Servers
 
 on:
@@ -75,6 +74,10 @@ jobs:
             # Ensure proper ownership for npm and Laravel
             sudo chown -R $USER:$USER node_modules
             sudo chown -R $USER:$USER public/build
+
+            # Ensure correct permissions for storage directory
+            sudo chown -R www-data:www-data storage/framework/views
+            sudo chmod -R 775 storage/framework/views
 
             # Start services using PM2
             pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
@@ -162,6 +165,10 @@ jobs:
             # Ensure proper ownership for npm and Laravel
             sudo chown -R $USER:$USER node_modules
             sudo chown -R $USER:$USER public/build
+
+            # Ensure correct permissions for storage directory
+            sudo chown -R www-data:www-data storage/framework/views
+            sudo chmod -R 775 storage/framework/views
 
             # Start services using PM2
             pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
