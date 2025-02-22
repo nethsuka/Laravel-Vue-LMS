@@ -1,4 +1,3 @@
-
 name: Deploy to Servers
 
 on:
@@ -43,7 +42,7 @@ jobs:
               git fetch origin main
               git reset --hard origin/main
             else
-              git clone -b main https://github.com/nethsuka/Laravel-Vue-LMS.git .
+              git clone -b main git@github.com:nethsuka/Laravel-Vue-LMS.git .
             fi
 
             # Ensure proper ownership of files
@@ -68,6 +67,22 @@ jobs:
             sudo mkdir -p storage/logs
             sudo mkdir -p bootstrap/cache
 
+            # Save PM2 process list and set to start on reboot
+            pm2 save
+            sudo pm2 startup
+
+            # Start services using PM2
+            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
+            pm2 start --name "vite" npm -- run dev
+
+
+            #change the permission of the storage folder
+            cd /var/www/html/Laravel-Vue-LMS
+            sudo chown -R $USER:$USER storage
+            sudo chown -R $USER:$USER bootstrap/cache
+            sudo chmod -R 775 storage
+            sudo chmod -R 775 bootstrap/cache
+
             # Set proper permissions for Laravel
             sudo chown -R www-data:www-data storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
@@ -76,22 +91,18 @@ jobs:
             sudo chown -R $USER:$USER node_modules
             sudo chown -R $USER:$USER public/build
 
-            # Start services using PM2
-            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
-            pm2 start --name "vite" npm -- run dev
+            # Ensure correct permissions for storage directory
+            sudo chown -R www-data:www-data storage/framework/views
+            sudo chmod -R 775 storage/framework/views
 
-            # Save PM2 process list and set to start on reboot
-            pm2 save
-            sudo pm2 startup
-
-            
-            #change the permission of the storage folder
-
-            cd /var/www/html/Laravel-Vue-LMS
-            sudo chown -R $USER:$USER storage
-            sudo chown -R $USER:$USER bootstrap/cache
+            # Ensure correct permissions for storage directory and subdirectories
+            sudo chown -R www-data:www-data storage
             sudo chmod -R 775 storage
-            sudo chmod -R 775 bootstrap/cache
+
+            # Ensure correct permissions for storage/framework directory and subdirectories
+            sudo chown -R www-data:www-data storage/framework
+            sudo chmod -R 775 storage/framework
+
             
             
             echo "Production deployment completed successfully"
@@ -130,7 +141,7 @@ jobs:
               git fetch origin "Development(DO_NOT_REMOVE)"
               git reset --hard "origin/Development(DO_NOT_REMOVE)"
             else
-              git clone -b "Development(DO_NOT_REMOVE)" https://github.com/nethsuka/Laravel-Vue-LMS.git .
+              git clone -b "Development(DO_NOT_REMOVE)" git@github.com:nethsuka/Laravel-Vue-LMS.git .
             fi
 
             # Ensure proper ownership of files
@@ -155,6 +166,22 @@ jobs:
             sudo mkdir -p storage/logs
             sudo mkdir -p bootstrap/cache
 
+            # Save PM2 process list and set to start on reboot
+            pm2 save
+            sudo pm2 startup
+
+            # Start services using PM2
+            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
+            pm2 start --name "vite" npm -- run dev
+
+
+            #change the permission of the storage folder
+            cd /var/www/html/Laravel-Vue-LMS
+            sudo chown -R $USER:$USER storage
+            sudo chown -R $USER:$USER bootstrap/cache
+            sudo chmod -R 775 storage
+            sudo chmod -R 775 bootstrap/cache
+
             # Set proper permissions for Laravel
             sudo chown -R www-data:www-data storage bootstrap/cache
             sudo chmod -R 775 storage bootstrap/cache
@@ -163,21 +190,18 @@ jobs:
             sudo chown -R $USER:$USER node_modules
             sudo chown -R $USER:$USER public/build
 
-            # Start services using PM2
-            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
-            pm2 start --name "vite" npm -- run dev
+            # Ensure correct permissions for storage directory
+            sudo chown -R www-data:www-data storage/framework/views
+            sudo chmod -R 775 storage/framework/views
 
-            # Save PM2 process list and set to start on reboot
-            pm2 save
-            sudo pm2 startup
-
-
-            #change the permission of the storage folder
-
-            cd /var/www/html/Laravel-Vue-LMS
-            sudo chown -R $USER:$USER storage
-            sudo chown -R $USER:$USER bootstrap/cache
+            # Ensure correct permissions for storage directory and subdirectories
+            sudo chown -R www-data:www-data storage
             sudo chmod -R 775 storage
-            sudo chmod -R 775 bootstrap/cache
 
-            echo "Development deployment completed successfully"
+            # Ensure correct permissions for storage/framework directory and subdirectories
+            sudo chown -R www-data:www-data storage/framework
+            sudo chmod -R 775 storage/framework
+
+            
+            
+            echo "Production deployment completed successfully"
