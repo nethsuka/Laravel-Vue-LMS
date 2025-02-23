@@ -144,6 +144,15 @@ jobs:
               git clone -b "Development(DO_NOT_REMOVE)" git@github.com:nethsuka/Laravel-Vue-LMS.git .
             fi
 
+
+
+            # Create storage directories with proper permissions
+            cd /var/www/html/Laravel-Vue-LMS
+            sudo mkdir -p storage/framework/{sessions,views,cache}
+            sudo mkdir -p storage/logs
+            sudo mkdir -p bootstrap/cache
+
+
             # Ensure proper ownership of files
             sudo chown -R $USER:$USER .
 
@@ -156,28 +165,17 @@ jobs:
             npm install flowbite@2.5.1 flowbite-vue@0.1.6
             npm run build
 
+
             # Set up Laravel environment
             cp .env.example .env
             php artisan key:generate --force
             php artisan storage:link --force
 
-            # Create storage directories with proper permissions
-            # sudo mkdir -p storage/framework/{sessions,views,cache}
-            # sudo mkdir -p storage/logs
-            # sudo mkdir -p bootstrap/cache
-
-
-
-
-
-            # Create and set permissions for framework directories
-            cd /var/www/html/Laravel-Vue-LMS/storage/framework
-            sudo mkdir -p views
-            sudo mkdir -p cache
-            sudo mkdir -p sessions
-            sudo chown -R www-data:www-data .
-            sudo chmod -R 775 .
-
+            # Now set the final permissions
+            sudo chown -R www-data:www-data storage
+            sudo chown -R www-data:www-data bootstrap/cache
+            sudo chmod -R 775 storage
+            sudo chmod -R 775 bootstrap/cache
 
             # Save PM2 process list and set to start on reboot
             pm2 save
@@ -188,12 +186,6 @@ jobs:
             pm2 start --name "vite" npm -- run dev
 
 
-            #change the permission of the storage folder
-            cd /var/www/html/Laravel-Vue-LMS
-            sudo chown -R $USER:$USER storage
-            sudo chown -R $USER:$USER bootstrap/cache
-            sudo chmod -R 775 storage
-            sudo chmod -R 775 bootstrap/cache
 
             # Set proper permissions for Laravel
             sudo chown -R www-data:www-data storage bootstrap/cache
