@@ -42,6 +42,7 @@ class ResourcesSlipController extends Controller
                                                 'stu_res_slips.expiry_date',
                                                 'resource_slips.created_at'
                                             )
+                                            ->orderBy('resource_slips.created_at', 'DESC')
                                             ->get();
     }
 

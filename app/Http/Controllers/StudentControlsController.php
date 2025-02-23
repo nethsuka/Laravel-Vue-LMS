@@ -16,7 +16,7 @@ class StudentControlsController extends Controller
 
     public function __construct()
     {
-        $this->studentDetails = User::where('role', 'member')->get();
+        $this->studentDetails = User::where('role', 'member')->orderBy('created_at', 'desc')->get();
         $this->extendDetails = StExtendDate::all();
     }
 
