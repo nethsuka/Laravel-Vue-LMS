@@ -138,6 +138,7 @@ jobs:
 
 
             # Clear Laravel cache
+            cd /var/www/html/Laravel-Vue-LMS
             php artisan cache:clear
             php artisan config:clear
             php artisan view:clear
@@ -145,7 +146,7 @@ jobs:
             # Clear Vite cache
             rm -rf /var/www/html/Laravel-Vue-LMS/node_modules/.vite
 
-            
+
             # Clone/pull repository
             if [ -d ".git" ]; then
               git fetch origin "Development(DO_NOT_REMOVE)"
@@ -161,6 +162,13 @@ jobs:
             sudo mkdir -p storage/framework/cache
             sudo mkdir -p storage/logs
             sudo mkdir -p bootstrap/cache
+
+
+            # Clear Laravel cache
+            cd /var/www/html/Laravel-Vue-LMS
+            php artisan cache:clear
+            php artisan config:clear
+            php artisan view:clear
 
             # Set initial ownership to azureuser for installations
             sudo chown -R azureuser:azureuser .
