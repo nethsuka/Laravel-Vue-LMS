@@ -146,7 +146,7 @@ const downloadFile = (tute_name, tute_path) => {
 
 
                     <h3 class="text-3xl font-extrabold text-center text-gray-800 dark:text-white mt-1 mb-6">
-                        My Classes testing hi 
+                        My Classes testing hi , commit 2 change
                     </h3>
                     <hr class="h-px my-6 bg-gray-200 border-0 dark:bg-gray-900">
 
