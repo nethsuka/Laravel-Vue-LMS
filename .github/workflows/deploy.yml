@@ -136,6 +136,16 @@ jobs:
             pm2 stop all || true
             pm2 delete all || true
 
+
+            # Clear Laravel cache
+            php artisan cache:clear
+            php artisan config:clear
+            php artisan view:clear
+
+            # Clear Vite cache
+            rm -rf /var/www/html/Laravel-Vue-LMS/node_modules/.vite
+
+            
             # Clone/pull repository
             if [ -d ".git" ]; then
               git fetch origin "Development(DO_NOT_REMOVE)"
