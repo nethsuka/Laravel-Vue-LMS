@@ -23,7 +23,7 @@ defineProps({
             </div>
           <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-12 animate-fade-in-down">
             <span class="block transform hover:scale-105 transition-transform duration-300">Welcome to the</span>
-            <span class="block transform hover:scale-105 transition-transform duration-300">MHCHEM Learning Portal</span>
+            <span class="block transform hover:scale-105 transition-transform duration-300">MHCHEM Learning Portal bojngodnrogndofngodfng</span>
           </h1>
           <div 
             v-if="!$page.props.auth.user" 
