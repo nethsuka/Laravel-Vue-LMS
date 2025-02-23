@@ -89,28 +89,37 @@ function isExpired(expiryDate) {
                                     <fwb-table-head-cell>Action</fwb-table-head-cell>
                                 </fwb-table-head>
                                 <fwb-table-body>
-                                    <template v-if="filteredItems.length > 0">
-                                        <fwb-table-row v-for="record in filteredItems" :key="record.id">
-                                            <fwb-table-cell>{{ record.st_name }}</fwb-table-cell>
-                                            <fwb-table-cell>{{ record.st_email }}</fwb-table-cell>
-                                            <fwb-table-cell>{{ record.name }}</fwb-table-cell>
-                                            <fwb-table-cell>
-                                                {{ record.expiry_date }}
-                                                <fwb-badge type="red" v-if="isExpired(record.expiry_date)" class="flex justify-center max-w-14">Expired</fwb-badge>
-                                            </fwb-table-cell>
-                                            <fwb-table-cell class="flex justify-items-center">
-                                                <fwb-button gradient="red" @click="confirmAction(record.id)">Delete</fwb-button>
-                                            </fwb-table-cell>
-                                        </fwb-table-row>
+                                    <template v-if="Arrays.extendDetails.length > 0">
+                                        <template v-if="filteredItems.length > 0">
+                                            <fwb-table-row v-for="record in filteredItems" :key="record.id">
+                                                <fwb-table-cell>{{ record.st_name }}</fwb-table-cell>
+                                                <fwb-table-cell>{{ record.st_email }}</fwb-table-cell>
+                                                <fwb-table-cell>{{ record.name }}</fwb-table-cell>
+                                                <fwb-table-cell>
+                                                    {{ record.expiry_date }}
+                                                    <fwb-badge type="red" v-if="isExpired(record.expiry_date)" class="flex justify-center max-w-14">Expired</fwb-badge>
+                                                </fwb-table-cell>
+                                                <fwb-table-cell class="flex justify-items-center">
+                                                    <fwb-button gradient="red" @click="confirmAction(record.id)">Delete</fwb-button>
+                                                </fwb-table-cell>
+                                            </fwb-table-row>
+                                        </template>
+                                        <template v-else>
+                                            <fwb-table-row>
+                                                <fwb-table-cell colspan="6">
+                                                    <fwb-alert class="border-t-4 rounded-none" icon type="warning">
+                                                        There is no name or email "{{ keyword }}"
+                                                    </fwb-alert>
+                                                </fwb-table-cell>
+                                            </fwb-table-row>
+                                        </template>
                                     </template>
                                     <template v-else>
                                         <fwb-table-row>
-                                            <fwb-table-cell colspan="6">
-                                                <fwb-alert class="border-t-4 rounded-none" icon type="warning">
-                                                    There is no name or email "{{ keyword }}"
-                                                </fwb-alert>
-                                            </fwb-table-cell>
-                                        </fwb-table-row>
+                                                <fwb-table-cell colspan="6" class="float-start">
+                                                        No records available.
+                                                </fwb-table-cell>
+                                            </fwb-table-row>
                                     </template>
                                 </fwb-table-body>
                             </fwb-table>
