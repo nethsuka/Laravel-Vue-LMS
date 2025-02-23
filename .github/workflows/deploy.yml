@@ -127,7 +127,7 @@ jobs:
 
             # Set up application directory with proper permissions
             sudo mkdir -p /var/www/html/Laravel-Vue-LMS
-            sudo chown -R $USER:$USER /var/www/html/Laravel-Vue-LMS
+            sudo chown -R azureuser:azureuser /var/www/html/Laravel-Vue-LMS
 
             # Navigate to web directory
             cd /var/www/html/Laravel-Vue-LMS
@@ -138,14 +138,22 @@ jobs:
 
             # Clone/pull repository
             if [ -d ".git" ]; then
-              git fetch origin main
-              git reset --hard origin/main
+              git fetch origin "Development(DO_NOT_REMOVE)"
+              git reset --hard "origin/Development(DO_NOT_REMOVE)"
             else
-              git clone -b main git@github.com:nethsuka/Laravel-Vue-LMS.git .
+              git clone -b "Development(DO_NOT_REMOVE)" git@github.com:nethsuka/Laravel-Vue-LMS.git .
             fi
 
-            # Ensure proper ownership of files
-            sudo chown -R $USER:$USER .
+            # First create all required directories with proper structure
+            cd /var/www/html/Laravel-Vue-LMS
+            sudo mkdir -p storage/framework/views
+            sudo mkdir -p storage/framework/sessions
+            sudo mkdir -p storage/framework/cache
+            sudo mkdir -p storage/logs
+            sudo mkdir -p bootstrap/cache
+
+            # Set initial ownership to azureuser for installations
+            sudo chown -R azureuser:azureuser .
 
             # Install PHP dependencies
             composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -161,47 +169,40 @@ jobs:
             php artisan key:generate --force
             php artisan storage:link --force
 
-            # Create storage directories with proper permissions
-            sudo mkdir -p storage/framework/{sessions,views,cache}
-            sudo mkdir -p storage/logs
-            sudo mkdir -p bootstrap/cache
+            # Set correct permissions for Laravel storage and cache
+            sudo chown -R azureuser:azureuser storage
+            sudo chown -R azureuser:azureuser bootstrap/cache
+            sudo chmod -R 775 storage
+            sudo chmod -R 775 bootstrap/cache
+
+            # Set specific permissions for framework directories
+            cd /var/www/html/Laravel-Vue-LMS/storage/framework
+            sudo chown -R azureuser:azureuser views
+            sudo chown -R azureuser:azureuser sessions
+            sudo chown -R azureuser:azureuser cache
+            sudo chmod -R 775 views
+            sudo chmod -R 775 sessions
+            sudo chmod -R 775 cache
+
+            # Ensure frontend build directories are owned by user
+            cd /var/www/html/Laravel-Vue-LMS
+            sudo chown -R azureuser:azureuser node_modules
+            sudo chown -R azureuser:azureuser public/build
+
+            # Set log file permissions
+            sudo touch storage/logs/laravel.log
+            sudo chown azureuser:azureuser storage/logs/laravel.log
+            sudo chmod 775 storage/logs/laravel.log
 
             # Save PM2 process list and set to start on reboot
             pm2 save
             sudo pm2 startup
 
-            # Start services using PM2
-            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
-            pm2 start --name "vite" npm -- run dev
+            # Start services with proper logging
+            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000" --time
+            pm2 start --name "vite" "npm run dev" --time
 
+            # Final PM2 save to ensure processes persist
+            pm2 save
 
-            #change the permission of the storage folder
-            cd /var/www/html/Laravel-Vue-LMS
-            sudo chown -R $USER:$USER storage
-            sudo chown -R $USER:$USER bootstrap/cache
-            sudo chmod -R 775 storage
-            sudo chmod -R 775 bootstrap/cache
-
-            # Set proper permissions for Laravel
-            sudo chown -R www-data:www-data storage bootstrap/cache
-            sudo chmod -R 775 storage bootstrap/cache
-
-            # Ensure proper ownership for npm and Laravel
-            sudo chown -R $USER:$USER node_modules
-            sudo chown -R $USER:$USER public/build
-
-            # Ensure correct permissions for storage directory
-            sudo chown -R www-data:www-data storage/framework/views
-            sudo chmod -R 775 storage/framework/views
-
-            # Ensure correct permissions for storage directory and subdirectories
-            sudo chown -R www-data:www-data storage
-            sudo chmod -R 775 storage
-
-            # Ensure correct permissions for storage/framework directory and subdirectories
-            sudo chown -R www-data:www-data storage/framework
-            sudo chmod -R 775 storage/framework
-
-            
-            
             echo "Production deployment completed successfully"
