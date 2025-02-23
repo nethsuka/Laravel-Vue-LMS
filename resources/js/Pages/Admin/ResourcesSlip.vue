@@ -121,7 +121,7 @@ const confirmAction = (id) => {
     <Head title="Resource Payments"></Head>
         <Sidebar>
         <div class="py-12">
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" :style="{ overflowY: 'auto', maxHeight: '85vh' }">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                     <div class="grid grid-cols-3 gap-4">
                         <div class="text-sm py-2 px-7 col-span-2">
@@ -157,11 +157,9 @@ const confirmAction = (id) => {
                                 </div>
                                 <fwb-table hoverable>
                                     <fwb-table-head>
-                                        <fwb-table-head-cell>Name&nbsp;
-                                        <span
-                                            class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-white bg-gray-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                                            {{ unpaidCount() }}
-                                        </span></fwb-table-head-cell>
+                                        <fwb-table-head-cell>
+                                            <div class="flex justify-items-center"><span class="pt-0.5">Name &nbsp;</span><fwb-badge type="dark" class="rounded-full bg-gray-500 text-white">{{ unpaidCount() }}</fwb-badge></div>
+                                        </fwb-table-head-cell>
                                         <fwb-table-head-cell>Email</fwb-table-head-cell>
                                         <fwb-table-head-cell>Selected Resources</fwb-table-head-cell>
                                         <fwb-table-head-cell>Slip Data</fwb-table-head-cell>
@@ -170,10 +168,10 @@ const confirmAction = (id) => {
                                     <fwb-table-body>
                                         <template v-if="unpaidCount() > 0">
                                             <template v-if="no_filteredItems.length > 0">
-                                                <fwb-table-row v-for="element in no_filteredItems" :key="element.slip_id">
+                                                <fwb-table-row v-for="(element, index) in no_filteredItems" :key="element.slip_id">
                                                     <template v-if="element.paid == 'no'">
-                                                        <fwb-table-cell>{{ element.student_name }}</fwb-table-cell>
-                                                        <fwb-table-cell>{{ element.student_email }}</fwb-table-cell>
+                                                        <fwb-table-cell class="max-w-52 truncate" :title="element.student_name">{{index + 1 }}. {{ element.student_name }}</fwb-table-cell>
+                                                        <fwb-table-cell class="max-w-48 truncate" :title="element.student_email">{{ element.student_email }}</fwb-table-cell>
                                                         <fwb-table-cell>
                                                             <div v-html="addbr(element.selected_resources)"></div>
                                                         </fwb-table-cell>
@@ -232,12 +230,8 @@ const confirmAction = (id) => {
                                 </div>
                                 <fwb-table hoverable>
                                     <fwb-table-head>
-                                        <fwb-table-head-cell>Name
-                                            &nbsp;
-                                        <span
-                                            class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-white bg-gray-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                                            {{ paidCount() }}
-                                        </span>
+                                        <fwb-table-head-cell>
+                                            <div class="flex justify-items-center"><span class="pt-0.5">Name &nbsp;</span><fwb-badge type="dark" class="rounded-full bg-gray-500 text-white">{{ paidCount() }}</fwb-badge></div>
                                         </fwb-table-head-cell>
                                         <fwb-table-head-cell>Email</fwb-table-head-cell>
                                         <fwb-table-head-cell>Selected Resources</fwb-table-head-cell>
@@ -248,10 +242,10 @@ const confirmAction = (id) => {
                                     <fwb-table-body>
                                         <template v-if="paidCount() > 0">
                                             <template v-if="yes_filteredItems.length > 0">
-                                                <fwb-table-row v-for="element in yes_filteredItems" :key="element.slip_id">
+                                                <fwb-table-row v-for="(element, index) in yes_filteredItems" :key="element.slip_id">
                                                     <template v-if="element.paid == 'yes'">
-                                                        <fwb-table-cell>{{ element.student_name }}</fwb-table-cell>
-                                                        <fwb-table-cell>{{ element.student_email }}</fwb-table-cell>
+                                                        <fwb-table-cell class="max-w-52 truncate" :title="element.student_name">{{index + 1}}. {{ element.student_name }}</fwb-table-cell>
+                                                        <fwb-table-cell class="max-w-48 truncate" :title="element.student_email">{{ element.student_email }}</fwb-table-cell>
                                                         <fwb-table-cell>
                                                             <div v-html="addbr(element.selected_resources)"></div>
                                                         </fwb-table-cell>

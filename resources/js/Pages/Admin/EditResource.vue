@@ -191,7 +191,7 @@ function saveVideoChanges() {
                                     size="sm" />
                                 <fwb-input v-model="price" label="Price" placeholder="Enter Price" size="sm" type="text"
                                     @input="validatenumber" />
-                                <fwb-select v-model="selected" :options="category" label="Select a country" />
+                                <fwb-select v-model="selected" :options="category" label="Select a category" />
                                 <div class="flex justify-end mt-4">
                                     <fwb-button @click="saveResourceChanges" :disabled="!name || !price || !selected"
                                         gradient="green">Save

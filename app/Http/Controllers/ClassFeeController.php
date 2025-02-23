@@ -48,6 +48,7 @@ class ClassFeeController extends Controller
                 's.created_at',
                 's.updated_at'
             )
+            ->orderBy('s.created_at', 'DESC') // Order by latest created records
             ->get();
 
 

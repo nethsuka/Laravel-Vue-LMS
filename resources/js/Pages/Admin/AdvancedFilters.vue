@@ -242,11 +242,7 @@ function getnumber(id) {
                             <fwb-table striped class="mt-4">
                                 <fwb-table-head>
                                     <fwb-table-head-cell>
-                                        Name &nbsp;
-                                        <span
-                                            class="inline-flex items-center justify-center w-5 h-5 me-2 text-sm font-semibold text-white bg-gray-500 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                                            {{ seacrharray.length }}
-                                        </span>
+                                        <div class="flex justify-items-center"><span class="pt-0.5">Name &nbsp;</span><fwb-badge type="dark" class="rounded-full bg-gray-500 text-white">{{ seacrharray.length }}</fwb-badge></div>
                                     </fwb-table-head-cell>
                                     <fwb-table-head-cell>Email</fwb-table-head-cell>
                                     <fwb-table-head-cell>Phone Number</fwb-table-head-cell>

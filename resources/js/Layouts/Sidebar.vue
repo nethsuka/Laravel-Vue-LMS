@@ -20,6 +20,12 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
             <nav class="mt-10">
             <ul>
                 <li class="hover:bg-gray-200">
+                    <AdminNavLink :href="route('studentCPanel')" :active="route().current('studentCPanel')">
+                    <i class="fas fa-tasks mr-2"></i>
+                    Student Access Controls
+                    </AdminNavLink>
+                </li>
+                <li class="hover:bg-gray-200">
                     <AdminNavLink :href="route('class_controls')" :active="route().current('class_controls')">
                     <i class="fas fa-tachometer-alt mr-2"></i>
                     Class Controls
@@ -29,19 +35,6 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                     <AdminNavLink :href="route('classfees')" :active="route().current('classfees')">
                     <i class="fas fa-tasks mr-2"></i>
                     Monthly Payments
-                    </AdminNavLink>
-                </li>
-                <li class="hover:bg-gray-200">
-                    <AdminNavLink :href="route('resourceControls')" :active="route().current('resourceControls')">
-                    <i class="fas fa-tasks mr-2"></i>
-                    Resource Controls
-                    </AdminNavLink>
-                </li>
-                
-                <li class="hover:bg-gray-200">
-                    <AdminNavLink :href="route('studentCPanel')" :active="route().current('studentCPanel')">
-                    <i class="fas fa-tasks mr-2"></i>
-                    Student Access Controls
                     </AdminNavLink>
                 </li>
                 <li class="hover:bg-gray-200">
@@ -62,12 +55,12 @@ const sidebarOpen = ref(false); // Control the sidebar visibility
                     Resource Payments
                     </AdminNavLink>
                 </li>
-                <!-- <li class="hover:bg-gray-200">
-                    <AdminNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                <li class="hover:bg-gray-200">
+                    <AdminNavLink :href="route('resourceControls')" :active="route().current('resourceControls')">
                     <i class="fas fa-tasks mr-2"></i>
-                    Sign Out
+                    Resource Controls
                     </AdminNavLink>
-                </li> -->
+                </li>
             </ul>
             </nav>
         </aside>
