@@ -138,10 +138,10 @@ jobs:
 
             # Clone/pull repository
             if [ -d ".git" ]; then
-              git fetch origin main
-              git reset --hard origin/main
+              git fetch origin "Development(DO_NOT_REMOVE)"
+              git reset --hard "origin/Development(DO_NOT_REMOVE)"
             else
-              git clone -b main git@github.com:nethsuka/Laravel-Vue-LMS.git .
+              git clone -b Development(DO_NOT_REMOVE) git@github.com:nethsuka/Laravel-Vue-LMS.git .
             fi
 
             # Ensure proper ownership of files
