@@ -392,7 +392,7 @@ function getVideosByResourceId(resourceId) {
                                         </fwb-accordion-header>
                                         <fwb-accordion-content>
                                             <div v-if="getVideosByResourceId(y.resource_id).length>0"
-                                                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4">
                                                 <template v-for="(video, index) in getVideosByResourceId(y.resource_id)"
                                                     :key="index">
                                                     <div>
