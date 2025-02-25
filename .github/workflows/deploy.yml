@@ -86,13 +86,30 @@ jobs:
             sudo touch storage/logs/laravel.log
             sudo chown $USER:$USER storage/logs/laravel.log
             sudo chmod 775 storage/logs/laravel.log
-            
+
+            # Set ownership to root:www-data (so both root and www-data have access)
+            sudo chown -R root:www-data /var/www/html/Laravel-Vue-LMS/storage
+            sudo chown -R root:www-data /var/www/html/Laravel-Vue-LMS/bootstrap/cache
+
+            # Make sure the group has write permissions
+            sudo chmod -R 775 /var/www/html/Laravel-Vue-LMS/storage
+            sudo chmod -R 775 /var/www/html/Laravel-Vue-LMS/bootstrap/cache
+
+            # Specifically ensure views directory has proper permissions
+            sudo mkdir -p /var/www/html/Laravel-Vue-LMS/storage/framework/views
+            sudo chown -R root:www-data /var/www/html/Laravel-Vue-LMS/storage/framework/views
+            sudo chmod -R 775 /var/www/html/Laravel-Vue-LMS/storage/framework/views
+
             # PM2 operations
             sudo pm2 save || true
             sudo pm2 startup
             sudo pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
             sudo pm2 start --name "vite" "npm run dev"
             sudo pm2 save
+
+            # Restart services
+            sudo systemctl restart nginx
+            sudo pm2 restart all
 
             echo "Production deployment completed successfully"
 
