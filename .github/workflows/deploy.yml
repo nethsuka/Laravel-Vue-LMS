@@ -42,7 +42,7 @@ jobs:
               sudo git fetch origin main
               sudo git reset --hard origin/main
             else
-              sudo git clone -b main git@github.com:nethsuka/Laravel-Vue-LMS.git .
+              sudo git clone -b main https://github.com/nethsuka/Laravel-Vue-LMS.git .
             fi
 
             # Install dependencies with sudo
@@ -117,7 +117,7 @@ jobs:
               sudo git fetch origin "Development(DO_NOT_REMOVE)"
               sudo git reset --hard "origin/Development(DO_NOT_REMOVE)"
             else
-              sudo git clone -b "Development(DO_NOT_REMOVE)" git@github.com:nethsuka/Laravel-Vue-LMS.git .
+              sudo git clone -b "Development(DO_NOT_REMOVE)" https://github.com/nethsuka/Laravel-Vue-LMS.git .
             fi
 
             # Create directory structure
