@@ -55,7 +55,7 @@ jobs:
             fi
 
             # Set proper permissions after clone
-            sudo chown -R www-data:www-data /var/www/html/Laravel-Vue-LMS
+            sudo chown -R $USER:$USER /var/www/html/Laravel-Vue-LMS
 
             # Create directory structure before composer install
             sudo mkdir -p storage/framework/{sessions,views,cache}
@@ -75,16 +75,16 @@ jobs:
             sudo php artisan storage:link --force
             
             # Set proper permissions
-            sudo chown -R www-data:www-data storage
-            sudo chown -R www-data:www-data bootstrap/cache
+            sudo chown -R $USER:$USER storage
+            sudo chown -R $USER:$USER bootstrap/cache
             sudo chmod -R 775 storage
             sudo chmod -R 775 bootstrap/cache
-            sudo chown -R www-data:www-data node_modules
-            sudo chown -R www-data:www-data public/build
+            sudo chown -R $USER:$USER node_modules
+            sudo chown -R $USER:$USER public/build
             
             # Create and ensure proper permissions for log file
             sudo touch storage/logs/laravel.log
-            sudo chown www-data:www-data storage/logs/laravel.log
+            sudo chown $USER:$USER storage/logs/laravel.log
             sudo chmod 775 storage/logs/laravel.log
             
             # PM2 operations
