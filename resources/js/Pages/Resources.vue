@@ -171,76 +171,67 @@ function getVideosByResourceId(resourceId) {
         <div class="py-12">
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
-                    <div class="px-4 sm:px-6 md:px-8">
-                        <!-- Mobile and desktop navigation + cart button -->
-                        <div class="relative">
-                            <!-- Navigation tabs - responsive design -->
-                            <div id="app" class="flex flex-wrap justify-center w-full mt-2" role="group">
-                                <div class="inline-flex rounded-md shadow-sm w-full sm:w-auto">
-                                    <button type="button" @click="activebutton = 'unit'" :class="[
-                                        'flex-1 sm:flex-none px-4 py-2 text-sm font-medium',
-                                        activebutton === 'unit' ? 'text-blue-700 bg-sky-50' : 'text-gray-900 bg-white',
-                                        'border border-gray-200 rounded-s-lg',
-                                        'hover:bg-gray-100 hover:text-blue-700',
-                                        'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
-                                    ]">
-                                        Unit Based Lessons
-                                    </button>
-                                    <button type="button" @click="activebutton = 'paper'" :class="[
-                                        'flex-1 sm:flex-none px-4 py-2 text-sm font-medium',
-                                        activebutton === 'paper' ? 'text-blue-700 bg-sky-50' : 'text-gray-900 bg-white',
-                                        'border-t border-b border-r border-l sm:border-l-0 border-gray-200',
-                                        'hover:bg-gray-100 hover:text-blue-700',
-                                        'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
-                                    ]">
-                                        Past Papers
-                                    </button>
-                                    <button type="button" @click="activebutton = 'myresources'" :class="[
-                                        'flex-1 sm:flex-none px-4 py-2 text-sm font-medium',
-                                        activebutton === 'myresources' ? 'text-blue-700 bg-sky-50' : 'text-gray-900 bg-white',
-                                        'border border-gray-200 rounded-e-lg',
-                                        'hover:bg-gray-100 hover:text-blue-700',
-                                        'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
-                                    ]">
-                                        My Resources
-                                    </button>
-                                    <button @click="showModal"
-                                    class="absolute right-0 top-0 sm:hidden inline-flex items-center p-2 text-md font-medium text-center text-white rounded-xl border-2 border-gray-400 hover:border-gray-500 hover:bg-gray-200 focus:ring-4 focus:outline-1 focus:ring-blue-300">
-                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                            viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
-                                        </svg>
-                                        <div
-                                            class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                                            {{ cartarrya.length }}
-                                        </div>
-                                    </button>
-
-                                </div>
-
-                                <!-- Cart button - positioned better for mobile -->
-                                <button type="button" @click="showModal"
-                                    class="absolute large_cart right-0 top-0 sm:relative sm:ml-4 inline-flex items-center p-2 text-md font-medium text-center text-white rounded-xl border-2 border-gray-400 hover:border-gray-500 hover:bg-gray-200 focus:ring-4 focus:outline-1 focus:ring-blue-300">
-                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                        viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
-                                    </svg>
-                                    <div
-                                        class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                                        {{ cartarrya.length }}
-                                    </div>
-                                </button>
-                            </div>
+                    <div class="flex justify-center relative items-start">
+                        <div id="app" class="inline-flex rounded-md shadow-sm mt-2" role="group">
+                            <button type="button" @click="activebutton = 'unit'" :class="[
+                                'px-4 py-2 text-sm font-medium',
+                                activebutton === 'unit' ? 'text-blue-700 bg-sky-50' : 'text-gray-900 bg-white',
+                                'border border-gray-200 rounded-s-lg',
+                                'hover:bg-gray-100 hover:text-blue-700',
+                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
+                            ]">
+                                Unit Based Lessons
+                            </button>
+                            <button type="button" @click="activebutton = 'paper'" :class="[
+                                'px-4 py-2 text-sm font-medium',
+                                activebutton === 'paper' ? 'text-blue-700 bg-sky-50' : 'text-gray-900 bg-white',
+                                'border-t border-b border-gray-200',
+                                'hover:bg-gray-100 hover:text-blue-700',
+                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
+                            ]">
+                                Past Papers
+                            </button>
+                            <button type="button" @click="activebutton = 'myresources'" :class="[
+                                'px-4 py-2 text-sm font-medium',
+                                activebutton === 'myresources' ? 'text-blue-700 bg-sky-50' : 'text-gray-900 bg-white',
+                                'border border-gray-200 rounded-e-lg',
+                                'hover:bg-gray-100 hover:text-blue-700',
+                                'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:text-white'
+                            ]">
+                                My Resources
+                            </button>
                         </div>
 
-                        <!-- Cart Modal - Now responsive -->
-                        <fwb-modal v-if="isShowModal" @close="closeModal" class="w-full max-w-md mx-auto">
+                        <!-- <button type="button" @click="showModal"
+                            class="mt-1.5 absolute right-0 sm:mt-0 inline-flex items-center p-2 text-md font-medium text-center text-white rounded-xl border-2 border-gray-400 hover:border-gray-500 hover:bg-gray-200 focus:ring-4 focus:outline-1 focus:ring-blue-300">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                            </svg>
+                            <span class="sr-only">Notifications</span>
+                            <div
+                                class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
+                                {{ cartarrya.length }}</div>
+                        </button> -->
+                        <button type="button" @click="showModal"
+                            class="sm:absolute sm:right-0 mx-auto block w-fit sm:w-auto mt-4 sm:mt-1.5 items-center justify-center p-2 text-md font-medium text-center text-white rounded-xl border-2 border-gray-400 hover:border-gray-500 hover:bg-gray-200 focus:ring-4 focus:outline-1 focus:ring-blue-300">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                            </svg>
+                            <span class="sr-only">Notifications</span>
+                            <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
+                                {{ cartarrya.length }}</div>
+                        </button>
+                    </div>
+
+                    <fwb-modal v-if="isShowModal" @close="closeModal" class="w-full max-w-md mx-auto">
                             <template #header>
                                 <div class="flex items-center text-lg">
                                     Cart
@@ -327,9 +318,9 @@ function getVideosByResourceId(resourceId) {
                                 </div>
                             </template>
                         </fwb-modal>
-                    </div>
 
                     <!-- Unit tab content -->
+                    <hr class="h-px my-6 bg-gray-200 border-2 dark:bg-gray-700">
                     <div v-if="activebutton === 'unit'" class="py-3">
                         <div class="px-4 md:px-12 pb-6 md:pb-12">
                             <!-- Search input - responsive width -->
@@ -522,51 +513,55 @@ function getVideosByResourceId(resourceId) {
                         </div>
                     </div>
                     <div v-if="activebutton === 'myresources'">
-                        <div class="p-12">
-                            <fwb-accordion>
-                                <template v-if="boughtArray.length > 0">
-                                    <fwb-accordion-panel v-for="(y, index) in boughtArray" :key="index">
-                                        <fwb-accordion-header>
-                                            <div style="display: flex; justify-content: space-between; width: 100%">
-                                                <span class="truncate max-w-xs" :title="y.resource_name">{{
-                                                    y.resource_name }}</span>
-                                                <span>Days Left: {{ calculateExpireDate(y.expiry_date) }}</span>
-                                                <span class="text-gray-500 dark:text-gray-400">
-                                                    Expire Date: <span class="font-bold">{{ new
-                                                        Date(y.expiry_date).toLocaleDateString('en-US',
-                                                            { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
-                                                        |</span>
-                                                    Time: <span class="font-bold">{{ new
-                                                        Date(y.expiry_date).toLocaleTimeString('en-US', {
-                                                            hour:
-                                                                '2-digit', minute: '2-digit', hour12: false
-                                                        })
-                                                    }}</span>
-                                                </span>
+                        <div class="p-4 md:p-6">
+                        <fwb-accordion>
+                            <template v-if="boughtArray.length > 0">
+                            <fwb-accordion-panel v-for="(y, index) in boughtArray" :key="index" class="mb-3">
+                                <fwb-accordion-header class="bg-gray-50 rounded-lg">
+                                <div class="flex flex-col space-y-2 w-full">
+                                    <div class="flex justify-between items-center">
+                                    <span class="font-medium truncate max-w-xs" :title="y.resource_name">{{ y.resource_name }}</span>
+                                    <span class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full">{{ calculateExpireDate(y.expiry_date) }} days left</span>
+                                    </div>
+                                    <div class="text-xs text-gray-500">
+                                    <div class="flex flex-wrap gap-x-2">
+                                        <span>
+                                        Expires: <span class="font-medium">{{ new Date(y.expiry_date).toLocaleDateString('en-US', 
+                                            { year: 'numeric', month: '2-digit', day: '2-digit' }) }}</span>
+                                        </span>
+                                        <span>
+                                        Time: <span class="font-medium">{{ new Date(y.expiry_date).toLocaleTimeString('en-US', 
+                                            { hour: '2-digit', minute: '2-digit', hour12: false }) }}</span>
+                                        </span>
+                                    </div>
+                                    </div>
+                                </div>
+                                </fwb-accordion-header>
+                                
+                                <fwb-accordion-content>
+                                    <div v-if="getVideosByResourceId(y.resource_id).length>0"
+                                        class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4">
+                                        <template v-for="(video, index) in getVideosByResourceId(y.resource_id)"
+                                            :key="index">
+                                            <div>
+                                                <div class="p-4">
+                                                    <div v-html="video.video_link"></div>
+                                                </div>
                                             </div>
-                                        </fwb-accordion-header>
-                                        <fwb-accordion-content>
-                                            <div v-if="getVideosByResourceId(y.resource_id).length > 0"
-                                                class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4">
-                                                <template v-for="(video, index) in getVideosByResourceId(y.resource_id)"
-                                                    :key="index">
-                                                    <div>
-                                                        <div class="p-4">
-                                                            <div v-html="video.video_link"></div>
-                                                        </div>
-                                                    </div>
-                                                </template>
-                                            </div>
-                                            <div v-else>
-                                                <p class="pt-3 pb-7 pl-4">No vidoes available</p>
-                                            </div>
-                                        </fwb-accordion-content>
-                                    </fwb-accordion-panel>
-                                </template>
-                                <template v-else>
-                                    <p>You haven't bought any resources</p>
-                                </template>
-                            </fwb-accordion>
+                                        </template>
+                                    </div>
+                                    <div v-else>
+                                        <p class="pt-3 pb-7 pl-4">No vidoes available</p>
+                                    </div>
+                                </fwb-accordion-content>
+                            </fwb-accordion-panel>
+                            </template>
+                            <template v-else>
+                            <div class="text-center p-6 bg-gray-50 rounded-lg border border-gray-200">
+                                <p class="text-gray-500">You haven't bought any resources</p>
+                            </div>
+                            </template>
+                        </fwb-accordion>
                         </div>
                     </div>
                 </div>
