@@ -1,0 +1,278 @@
+name: Deploy to Servers
+
+on:
+  push:
+    branches: 
+      - "main"
+      - "Development(DO_NOT_REMOVE)"
+  workflow_dispatch:
+
+jobs:
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug SSH Variables
+        run: |
+          if [ -n "${{ secrets.SSH_HOST }}" ]; then
+            echo "SSH_HOST is set"
+          else
+            echo "SSH_HOST is missing"
+          fi
+          
+          if [ -n "${{ secrets.SSH_USERNAME }}" ]; then
+            echo "SSH_USERNAME is set"
+          else
+            echo "SSH_USERNAME is missing"
+          fi
+          
+          if [ -n "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            echo "SSH_PRIVATE_KEY is set"
+          else
+            echo "SSH_PRIVATE_KEY is missing"
+          fi
+
+      - name: Check SSH Connection
+        run: |
+          # Create debug SSH config
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          
+          # Test SSH connection with verbose output
+          ssh -v -o "StrictHostKeyChecking=no" -i ~/.ssh/deploy_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'SSH Connection Test'" || echo "SSH connection failed"
+          
+          # Check SSH key format
+          ssh-keygen -l -f ~/.ssh/deploy_key || echo "Invalid SSH key format"
+          
+          # Cleanup
+          rm -f ~/.ssh/deploy_key
+
+      - name: Deploy to Production Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: 22
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          debug: true
+          script: |
+            # Test initial connection
+            echo "Testing connection as $USER on $(hostname)"
+            
+            # Check server environment
+            echo "Checking server environment..."
+            echo "Current user: $USER"
+            echo "Home directory: $HOME"
+            echo "Current directory: $(pwd)"
+            
+            # Install PM2 if not exists
+            if ! command -v pm2 &> /dev/null; then
+              echo "Installing PM2..."
+              sudo npm install -g pm2
+            fi
+
+            # Set up application directory with proper permissions
+            sudo mkdir -p /var/www/html/Laravel-Vue-LMS
+            sudo chown -R $USER:$USER /var/www/html/Laravel-Vue-LMS
+
+            # Navigate to web directory
+            cd /var/www/html/Laravel-Vue-LMS
+
+            # Safely stop existing processes
+            pm2 stop all || true
+            pm2 delete all || true
+
+            # Clone/pull repository
+            if [ -d ".git" ]; then
+              git fetch origin main
+              git reset --hard origin/main
+            else
+              git clone -b main https://github.com/nethsuka/Laravel-Vue-LMS.git .
+            fi
+
+            # Ensure proper ownership of files
+            sudo chown -R $USER:$USER .
+
+            # Install PHP dependencies
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+
+            # Install and build frontend assets
+            npm install
+            npm uninstall flowbite flowbite-vue
+            npm install flowbite@2.5.1 flowbite-vue@0.1.6
+            npm run build
+
+            # Set up Laravel environment
+            cp .env.example .env
+            php artisan key:generate --force
+            php artisan storage:link --force
+
+            # Create storage directories with proper permissions
+            sudo mkdir -p storage/framework/{sessions,views,cache}
+            sudo mkdir -p storage/logs
+            sudo mkdir -p bootstrap/cache
+
+            # Set proper permissions for Laravel
+            sudo chown -R www-data:www-data storage bootstrap/cache
+            sudo chmod -R 775 storage bootstrap/cache
+
+            # Ensure proper ownership for npm and Laravel
+            sudo chown -R $USER:$USER node_modules
+            sudo chown -R $USER:$USER public/build
+
+            # Start services using PM2
+            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
+            pm2 start --name "vite" npm -- run dev
+
+            # Save PM2 process list and set to start on reboot
+            pm2 save
+            sudo pm2 startup
+
+            # delete hot file
+            cd /var/www/html/Laravel-Vue-LMS/public
+            rm -f hot
+
+            echo "Production deployment completed successfully"
+
+  deploy-development:
+    if: github.ref == 'refs/heads/Development(DO_NOT_REMOVE)'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug SSH Variables (Development)
+        run: |
+          if [ -n "${{ secrets.DEV_SSH_HOST }}" ]; then
+            echo "DEV_SSH_HOST is set"
+          else
+            echo "DEV_SSH_HOST is missing"
+          fi
+          
+          if [ -n "${{ secrets.DEV_SSH_USERNAME }}" ]; then
+            echo "DEV_SSH_USERNAME is set"
+          else
+            echo "DEV_SSH_USERNAME is missing"
+          fi
+          
+          if [ -n "${{ secrets.DEV_SSH_PRIVATE_KEY }}" ]; then
+            echo "DEV_SSH_PRIVATE_KEY is set"
+          else
+            echo "DEV_SSH_PRIVATE_KEY is missing"
+          fi
+
+      - name: Check SSH Connection (Development)
+        run: |
+          # Create debug SSH config
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEV_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          
+          # Test SSH connection with verbose output
+          ssh -v -o "StrictHostKeyChecking=no" -i ~/.ssh/deploy_key ${{ secrets.DEV_SSH_USERNAME }}@${{ secrets.DEV_SSH_HOST }} "echo 'SSH Connection Test'" || echo "SSH connection failed"
+          
+          # Check SSH key format
+          ssh-keygen -l -f ~/.ssh/deploy_key || echo "Invalid SSH key format"
+          
+          # Cleanup
+          rm -f ~/.ssh/deploy_key
+
+      - name: Deploy to Development Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USERNAME }}
+          port: 22
+          key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
+          debug: true
+          script: |
+            # Test initial connection
+            echo "Testing connection as $USER on $(hostname)"
+            
+            # Check server environment
+            echo "Checking server environment..."
+            echo "Current user: $USER"
+            echo "Home directory: $HOME"
+            echo "Current directory: $(pwd)"
+            
+            # Install PM2 if not exists
+            if ! command -v pm2 &> /dev/null; then
+              echo "Installing PM2..."
+              sudo npm install -g pm2
+            fi
+            
+            # Set up application directory
+            sudo mkdir -p /var/www/html/Laravel-Vue-LMS
+            sudo chown -R azureuser:www-data /var/www/html/Laravel-Vue-LMS
+            
+            # Navigate to web directory
+            cd /var/www/html/Laravel-Vue-LMS
+            
+            # Safely stop existing processes
+            pm2 stop all || true
+            pm2 delete all || true
+            
+            # Clone/pull repository with escaped branch name
+            if [ -d ".git" ]; then
+              git fetch origin "Development(DO_NOT_REMOVE)"
+              git reset --hard "origin/Development(DO_NOT_REMOVE)"
+            else
+              git clone -b "Development(DO_NOT_REMOVE)" https://github.com/nethsuka/Laravel-Vue-LMS.git .
+            fi
+            
+            # Set proper permissions
+            sudo find . -type f -exec chmod 664 {} \;
+            sudo find . -type d -exec chmod 775 {} \;
+            
+            # Install PHP dependencies
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+            
+            # Install and build frontend assets
+            npm install
+            npm uninstall flowbite flowbite-vue
+            npm install flowbite@2.5.1 flowbite-vue@0.1.6
+            npm run build
+            
+            # Set up Laravel environment
+            cp .env.example .env
+            php artisan key:generate --force
+            php artisan storage:link --force
+            
+            # Create storage directories with proper permissions
+            sudo mkdir -p storage/framework/{sessions,views,cache}
+            sudo mkdir -p storage/logs
+            sudo mkdir -p bootstrap/cache
+            
+            # Set proper permissions for Laravel storage and cache
+            sudo chown -R azureuser:www-data storage bootstrap/cache
+            sudo chmod -R 775 storage bootstrap/cache
+            sudo chmod -R g+s storage bootstrap/cache  # Set SGID bit
+            
+            # Clear Laravel caches
+            php artisan config:clear
+            php artisan cache:clear
+            php artisan view:clear
+            php artisan route:clear
+            
+            # Ensure proper SELinux context if enabled
+            if command -v semanage &> /dev/null; then
+              sudo semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/Laravel-Vue-LMS/storage(/.*)?"
+              sudo semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/html/Laravel-Vue-LMS/bootstrap/cache(/.*)?"
+              sudo restorecon -Rv /var/www/html/Laravel-Vue-LMS
+            fi
+            
+            # Set proper ownership for npm and build directories
+            sudo chown -R azureuser:www-data node_modules
+            sudo chown -R azureuser:www-data public/build
+            
+            # Start services using PM2
+            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
+            pm2 start --name "vite" npm -- run dev
+            
+            # Save PM2 process list and set to start on reboot
+            pm2 save
+            sudo pm2 startup
+            
+            # delete hot file
+            cd /var/www/html/Laravel-Vue-LMS/public
+            rm -f hot
+            
+            echo "Development deployment completed successfully"
