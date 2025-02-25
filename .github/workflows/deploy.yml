@@ -28,27 +28,44 @@ jobs:
 
             # Set up application directory with proper permissions
             sudo mkdir -p /var/www/html/Laravel-Vue-LMS
-            sudo chown -R www-data:www-data /var/www/html/Laravel-Vue-LMS
-
+            
             # Navigate to web directory
             cd /var/www/html/Laravel-Vue-LMS
+            
+            # Fix Git ownership issues
+            sudo git config --global --add safe.directory /var/www/html/Laravel-Vue-LMS
+            
+            # Clear existing directory contents if artisan file is missing
+            if [ ! -f "artisan" ]; then
+              echo "Laravel files missing, cleaning directory..."
+              sudo rm -rf /var/www/html/Laravel-Vue-LMS/* 
+              sudo rm -rf /var/www/html/Laravel-Vue-LMS/.* 2>/dev/null || true
+            fi
 
             # Safely stop existing processes
             sudo pm2 stop all || true
             sudo pm2 delete all || true
 
             # Clone/pull repository
-            if [ -d ".git" ]; then
+            if [ -d ".git" ] && [ -f "artisan" ]; then
               sudo git fetch origin main
               sudo git reset --hard origin/main
             else
               sudo git clone -b main https://github.com/nethsuka/Laravel-Vue-LMS.git .
             fi
 
+            # Set proper permissions after clone
+            sudo chown -R www-data:www-data /var/www/html/Laravel-Vue-LMS
+
+            # Create directory structure before composer install
+            sudo mkdir -p storage/framework/{sessions,views,cache}
+            sudo mkdir -p storage/logs
+            sudo mkdir -p bootstrap/cache
+
             # Install dependencies with sudo
             sudo composer install --no-interaction --prefer-dist --optimize-autoloader
             sudo npm install
-            sudo npm uninstall flowbite flowbite-vue
+            sudo npm uninstall flowbite flowbite-vue || true
             sudo npm install flowbite@2.5.1 flowbite-vue@0.1.6
             sudo npm run build
 
@@ -56,11 +73,6 @@ jobs:
             sudo cp .env.example .env
             sudo php artisan key:generate --force
             sudo php artisan storage:link --force
-
-            # Create and set permissions for directories
-            sudo mkdir -p storage/framework/{sessions,views,cache}
-            sudo mkdir -p storage/logs
-            sudo mkdir -p bootstrap/cache
             
             # Set proper permissions
             sudo chown -R www-data:www-data storage
@@ -70,8 +82,13 @@ jobs:
             sudo chown -R www-data:www-data node_modules
             sudo chown -R www-data:www-data public/build
             
+            # Create and ensure proper permissions for log file
+            sudo touch storage/logs/laravel.log
+            sudo chown www-data:www-data storage/logs/laravel.log
+            sudo chmod 775 storage/logs/laravel.log
+            
             # PM2 operations
-            sudo pm2 save
+            sudo pm2 save || true
             sudo pm2 startup
             sudo pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
             sudo pm2 start --name "vite" "npm run dev"
@@ -99,36 +116,56 @@ jobs:
 
             # Directory setup
             sudo mkdir -p /var/www/html/Laravel-Vue-LMS
-            sudo chown -R www-data:www-data /var/www/html/Laravel-Vue-LMS
+            
+            # Navigate to directory
             cd /var/www/html/Laravel-Vue-LMS
+            
+            # Fix Git ownership issues
+            sudo git config --global --add safe.directory /var/www/html/Laravel-Vue-LMS
+            
+            # Clear existing directory contents if artisan file is missing
+            if [ ! -f "artisan" ]; then
+              echo "Laravel files missing, cleaning directory..."
+              sudo rm -rf /var/www/html/Laravel-Vue-LMS/* 
+              sudo rm -rf /var/www/html/Laravel-Vue-LMS/.* 2>/dev/null || true
+            fi
 
             # Stop existing processes
             sudo pm2 stop all || true
             sudo pm2 delete all || true
 
-            # Clear caches
-            sudo php artisan cache:clear
-            sudo php artisan config:clear
-            sudo php artisan view:clear
-            sudo rm -rf node_modules/.vite
-
-            # Repository operations
-            if [ -d ".git" ]; then
+            # Repository operations - handle clean clone vs update
+            if [ -d ".git" ] && [ -f "artisan" ]; then
+              # Only clear caches if artisan exists
+              sudo php artisan cache:clear || true
+              sudo php artisan config:clear || true
+              sudo php artisan view:clear || true
+              
+              # Update existing repo
               sudo git fetch origin "Development(DO_NOT_REMOVE)"
               sudo git reset --hard "origin/Development(DO_NOT_REMOVE)"
             else
+              # Fresh clone
               sudo git clone -b "Development(DO_NOT_REMOVE)" https://github.com/nethsuka/Laravel-Vue-LMS.git .
             fi
+            
+            # Set proper permissions after clone
+            sudo chown -R www-data:www-data /var/www/html/Laravel-Vue-LMS
 
             # Create directory structure
             sudo mkdir -p storage/framework/{views,sessions,cache}
             sudo mkdir -p storage/logs
             sudo mkdir -p bootstrap/cache
 
+            # Clean npm cache if exists
+            if [ -d "node_modules/.vite" ]; then
+              sudo rm -rf node_modules/.vite
+            fi
+
             # Install dependencies
             sudo composer install --no-interaction --prefer-dist --optimize-autoloader
             sudo npm install
-            sudo npm uninstall flowbite flowbite-vue
+            sudo npm uninstall flowbite flowbite-vue || true
             sudo npm install flowbite@2.5.1 flowbite-vue@0.1.6
             sudo npm run build
 
@@ -151,7 +188,7 @@ jobs:
             sudo chmod 775 storage/logs/laravel.log
 
             # PM2 setup and start
-            sudo pm2 save
+            sudo pm2 save || true
             sudo pm2 startup
             sudo pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000" --time
             sudo pm2 start --name "vite" "npm run dev" --time
