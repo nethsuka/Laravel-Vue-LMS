@@ -28,83 +28,72 @@ jobs:
 
             # Set up application directory with proper permissions
             sudo mkdir -p /var/www/html/Laravel-Vue-LMS
-            sudo chown -R $USER:$USER /var/www/html/Laravel-Vue-LMS
-
+            
             # Navigate to web directory
             cd /var/www/html/Laravel-Vue-LMS
-
-            # Safely stop existing processes
-            pm2 stop all || true
-            pm2 delete all || true
-
-            # Clone/pull repository
-            if [ -d ".git" ]; then
-              git fetch origin main
-              git reset --hard origin/main
-            else
-              git clone -b main git@github.com:nethsuka/Laravel-Vue-LMS.git .
+            
+            # Fix Git ownership issues
+            sudo git config --global --add safe.directory /var/www/html/Laravel-Vue-LMS
+            
+            # Clear existing directory contents if artisan file is missing
+            if [ ! -f "artisan" ]; then
+              echo "Laravel files missing, cleaning directory..."
+              sudo rm -rf /var/www/html/Laravel-Vue-LMS/* 
+              sudo rm -rf /var/www/html/Laravel-Vue-LMS/.* 2>/dev/null || true
             fi
 
-            # Ensure proper ownership of files
-            sudo chown -R $USER:$USER .
+            # Safely stop existing processes
+            sudo pm2 stop all || true
+            sudo pm2 delete all || true
 
-            # Install PHP dependencies
-            composer install --no-interaction --prefer-dist --optimize-autoloader
+            # Clone/pull repository
+            if [ -d ".git" ] && [ -f "artisan" ]; then
+              sudo git fetch origin main
+              sudo git reset --hard origin/main
+            else
+              sudo git clone -b main https://github.com/nethsuka/Laravel-Vue-LMS.git .
+            fi
 
-            # Install and build frontend assets
-            npm install
-            npm uninstall flowbite flowbite-vue
-            npm install flowbite@2.5.1 flowbite-vue@0.1.6
-            npm run build
+            # Set proper permissions after clone
+            sudo chown -R www-data:www-data /var/www/html/Laravel-Vue-LMS
 
-            # Set up Laravel environment
-            cp .env.example .env
-            php artisan key:generate --force
-            php artisan storage:link --force
-
-            # Create storage directories with proper permissions
+            # Create directory structure before composer install
             sudo mkdir -p storage/framework/{sessions,views,cache}
             sudo mkdir -p storage/logs
             sudo mkdir -p bootstrap/cache
 
-            # Save PM2 process list and set to start on reboot
-            pm2 save
-            sudo pm2 startup
+            # Install dependencies with sudo
+            sudo composer install --no-interaction --prefer-dist --optimize-autoloader
+            sudo npm install
+            sudo npm uninstall flowbite flowbite-vue || true
+            sudo npm install flowbite@2.5.1 flowbite-vue@0.1.6
+            sudo npm run build
 
-            # Start services using PM2
-            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
-            pm2 start --name "vite" npm -- run dev
-
-
-            #change the permission of the storage folder
-            cd /var/www/html/Laravel-Vue-LMS
-            sudo chown -R $USER:$USER storage
-            sudo chown -R $USER:$USER bootstrap/cache
+            # Laravel setup with sudo
+            sudo cp .env.example .env
+            sudo php artisan key:generate --force
+            sudo php artisan storage:link --force
+            
+            # Set proper permissions
+            sudo chown -R www-data:www-data storage
+            sudo chown -R www-data:www-data bootstrap/cache
             sudo chmod -R 775 storage
             sudo chmod -R 775 bootstrap/cache
-
-            # Set proper permissions for Laravel
-            sudo chown -R www-data:www-data storage bootstrap/cache
-            sudo chmod -R 775 storage bootstrap/cache
-
-            # Ensure proper ownership for npm and Laravel
-            sudo chown -R $USER:$USER node_modules
-            sudo chown -R $USER:$USER public/build
-
-            # Ensure correct permissions for storage directory
-            sudo chown -R www-data:www-data storage/framework/views
-            sudo chmod -R 775 storage/framework/views
-
-            # Ensure correct permissions for storage directory and subdirectories
-            sudo chown -R www-data:www-data storage
-            sudo chmod -R 775 storage
-
-            # Ensure correct permissions for storage/framework directory and subdirectories
-            sudo chown -R www-data:www-data storage/framework
-            sudo chmod -R 775 storage/framework
-
+            sudo chown -R www-data:www-data node_modules
+            sudo chown -R www-data:www-data public/build
             
+            # Create and ensure proper permissions for log file
+            sudo touch storage/logs/laravel.log
+            sudo chown www-data:www-data storage/logs/laravel.log
+            sudo chmod 775 storage/logs/laravel.log
             
+            # PM2 operations
+            sudo pm2 save || true
+            sudo pm2 startup
+            sudo pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000"
+            sudo pm2 start --name "vite" "npm run dev"
+            sudo pm2 save
+
             echo "Production deployment completed successfully"
 
   deploy-development:
@@ -125,84 +114,84 @@ jobs:
               sudo npm install -g pm2
             fi
 
-            # Set up application directory with proper permissions
+            # Directory setup
             sudo mkdir -p /var/www/html/Laravel-Vue-LMS
-            sudo chown -R azureuser:azureuser /var/www/html/Laravel-Vue-LMS
-
-            # Navigate to web directory
+            
+            # Navigate to directory
             cd /var/www/html/Laravel-Vue-LMS
-
-            # Safely stop existing processes
-            pm2 stop all || true
-            pm2 delete all || true
-
-            # Clone/pull repository
-            if [ -d ".git" ]; then
-              git fetch origin "Development(DO_NOT_REMOVE)"
-              git reset --hard "origin/Development(DO_NOT_REMOVE)"
-            else
-              git clone -b "Development(DO_NOT_REMOVE)" git@github.com:nethsuka/Laravel-Vue-LMS.git .
+            
+            # Fix Git ownership issues
+            sudo git config --global --add safe.directory /var/www/html/Laravel-Vue-LMS
+            
+            # Clear existing directory contents if artisan file is missing
+            if [ ! -f "artisan" ]; then
+              echo "Laravel files missing, cleaning directory..."
+              sudo rm -rf /var/www/html/Laravel-Vue-LMS/* 
+              sudo rm -rf /var/www/html/Laravel-Vue-LMS/.* 2>/dev/null || true
             fi
 
-            # First create all required directories with proper structure
-            cd /var/www/html/Laravel-Vue-LMS
-            sudo mkdir -p storage/framework/views
-            sudo mkdir -p storage/framework/sessions
-            sudo mkdir -p storage/framework/cache
+            # Stop existing processes
+            sudo pm2 stop all || true
+            sudo pm2 delete all || true
+
+            # Repository operations - handle clean clone vs update
+            if [ -d ".git" ] && [ -f "artisan" ]; then
+              # Only clear caches if artisan exists
+              sudo php artisan cache:clear || true
+              sudo php artisan config:clear || true
+              sudo php artisan view:clear || true
+              
+              # Update existing repo
+              sudo git fetch origin "Development(DO_NOT_REMOVE)"
+              sudo git reset --hard "origin/Development(DO_NOT_REMOVE)"
+            else
+              # Fresh clone
+              sudo git clone -b "Development(DO_NOT_REMOVE)" https://github.com/nethsuka/Laravel-Vue-LMS.git .
+            fi
+            
+            # Set proper permissions after clone
+            sudo chown -R www-data:www-data /var/www/html/Laravel-Vue-LMS
+
+            # Create directory structure
+            sudo mkdir -p storage/framework/{views,sessions,cache}
             sudo mkdir -p storage/logs
             sudo mkdir -p bootstrap/cache
 
-            # Set initial ownership to azureuser for installations
-            sudo chown -R azureuser:azureuser .
+            # Clean npm cache if exists
+            if [ -d "node_modules/.vite" ]; then
+              sudo rm -rf node_modules/.vite
+            fi
 
-            # Install PHP dependencies
-            composer install --no-interaction --prefer-dist --optimize-autoloader
+            # Install dependencies
+            sudo composer install --no-interaction --prefer-dist --optimize-autoloader
+            sudo npm install
+            sudo npm uninstall flowbite flowbite-vue || true
+            sudo npm install flowbite@2.5.1 flowbite-vue@0.1.6
+            sudo npm run build
 
-            # Install and build frontend assets
-            npm install
-            npm uninstall flowbite flowbite-vue
-            npm install flowbite@2.5.1 flowbite-vue@0.1.6
-            npm run build
+            # Laravel setup
+            sudo cp .env.example .env
+            sudo php artisan key:generate --force
+            sudo php artisan storage:link --force
 
-            # Set up Laravel environment
-            cp .env.example .env
-            php artisan key:generate --force
-            php artisan storage:link --force
-
-            # Set correct permissions for Laravel storage and cache
-            sudo chown -R azureuser:azureuser storage
-            sudo chown -R azureuser:azureuser bootstrap/cache
+            # Set permissions
+            sudo chown -R www-data:www-data storage
+            sudo chown -R www-data:www-data bootstrap/cache
             sudo chmod -R 775 storage
             sudo chmod -R 775 bootstrap/cache
-
-            # Set specific permissions for framework directories
-            cd /var/www/html/Laravel-Vue-LMS/storage/framework
-            sudo chown -R azureuser:azureuser views
-            sudo chown -R azureuser:azureuser sessions
-            sudo chown -R azureuser:azureuser cache
-            sudo chmod -R 775 views
-            sudo chmod -R 775 sessions
-            sudo chmod -R 775 cache
-
-            # Ensure frontend build directories are owned by user
-            cd /var/www/html/Laravel-Vue-LMS
-            sudo chown -R azureuser:azureuser node_modules
-            sudo chown -R azureuser:azureuser public/build
+            sudo chown -R www-data:www-data node_modules
+            sudo chown -R www-data:www-data public/build
 
             # Set log file permissions
             sudo touch storage/logs/laravel.log
-            sudo chown azureuser:azureuser storage/logs/laravel.log
+            sudo chown www-data:www-data storage/logs/laravel.log
             sudo chmod 775 storage/logs/laravel.log
 
-            # Save PM2 process list and set to start on reboot
-            pm2 save
+            # PM2 setup and start
+            sudo pm2 save || true
             sudo pm2 startup
+            sudo pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000" --time
+            sudo pm2 start --name "vite" "npm run dev" --time
+            sudo pm2 save
 
-            # Start services with proper logging
-            pm2 start --name "laravel" "php artisan serve --host=0.0.0.0 --port=8000" --time
-            pm2 start --name "vite" "npm run dev" --time
-
-            # Final PM2 save to ensure processes persist
-            pm2 save
-
-            echo "Production deployment completed successfully"
+            echo "Development deployment completed successfully"

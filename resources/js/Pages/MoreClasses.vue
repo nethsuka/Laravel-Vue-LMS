@@ -103,7 +103,7 @@ function redirectPayment(item){
         <template #header>
             <div class="flex justify-between">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Classes</h2>
-                <a href="/class-controls" v-if="props.auth.user.role === 'admin'">
+                <a href="/student-controls" v-if="props.auth.user.role === 'admin'">
                     <button type="button"
                     class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ml-2">
                         Admin Panel

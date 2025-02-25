@@ -47,7 +47,7 @@ function validatenumber(event) {
 
         <form @submit.prevent="submit" enctype="multipart/form-data">
             <div>
-                <InputLabel class="text-gray-600 text-sm" for="first_name">1. Name</InputLabel>
+                <InputLabel class="text-gray-600 text-sm" for="first_name">1. Full Name</InputLabel>
 
                 <TextInput
                     id="name"
