@@ -567,7 +567,7 @@ function isExpired(expiryDate) {
                                                             <p v-if="file" class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ file.name }}</p>
                                                         </div>
                                                         <input id="dropzone-file" 
-                                                            @change="handleFileChange" 
+                                                            @input="form5.file = $event.target.files[0]"
                                                             accept=".pdf,.png,.jpg,.jpeg,.doc,.xlsx,.txt" 
                                                             type="file" 
                                                             class="hidden" 
