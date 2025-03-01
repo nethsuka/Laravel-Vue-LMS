@@ -126,6 +126,11 @@ class ClassControlsController extends Controller
 
     public function addTute(Request $request) {
 
+        $request->validate([
+            'file' => 'required|file|max:18432',
+            // 'file' => 'required|file|max:1024',
+        ]);
+
         $file = $request->file('file');
         $fileName = time() . '_' . $file->getClientOriginalName(); //making a file name
         $path = $file->storeAs('class_tutes', $fileName, 'public');
