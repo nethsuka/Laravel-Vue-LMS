@@ -347,6 +347,10 @@ function isExpired(expiryDate) {
                             class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
                             <p>{{ $page.props.flash.errorMsg }}</p>
                         </fwb-alert>
+                        <fwb-alert v-if="form5.errors.file" closable icon type="danger"
+                            class="flex justify-center fixed top-24 left-1/2 transform -translate-x-1/2 z-50">
+                            <p>{{ form5.errors.file }}</p>
+                        </fwb-alert>
                         <fwb-heading tag="h4" size="lg" class="mb-5">
                             Class Controls
                         </fwb-heading>

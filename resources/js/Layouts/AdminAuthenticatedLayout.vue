@@ -120,7 +120,25 @@ function getGravatarURL( email ) {
                 >
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('class_controls')" :active="route().current('class_controls')">
+                            Student Access Controls
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('studentCPanel')" :active="route().current('studentCPanel')">
                             Class Controls
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('class_controls')" :active="route().current('class_controls')">
+                            Monthly Payments
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('advancedFilters')" :active="route().current('advancedFilters')">
+                            Advanced Student Filters
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('extraLessons')" :active="route().current('extraLessons')">
+                            Extra Lessons
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('resourcespayments')" :active="route().current('resourcespayments')">
+                            Resource Payments
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('resourceControls')" :active="route().current('resourceControls')">
+                            Resource Controls
                         </ResponsiveNavLink>
                     </div>
 

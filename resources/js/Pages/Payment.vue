@@ -13,6 +13,8 @@ const Arrays = defineProps({
 
 const activeTab = ref('Monthly Payment');
 const showAlert = ref(true);
+const loading1 = ref(false); // Add loading state for first form
+const loading2 = ref(false); // Add loading state for second form
 
 const setActiveTab = (tab) => {
     activeTab.value = tab;
@@ -75,6 +77,7 @@ function redirectedFromMoreclass() {
 }
 
 function submit1() {
+    loading1.value = true; // Set loading to true before submitting
     form1.post('/payments', {
         preserveScroll: true,
         onSuccess: (page) => {
@@ -85,13 +88,20 @@ function submit1() {
             );
             form1.reset();
             window.scrollTo(0, 0);
-
+            loading1.value = false; // Reset loading state on success
         },
+        onError: () => {
+            loading1.value = false; // Reset loading state on error
+        },
+        onFinish: () => {
+            loading1.value = false; // Ensure loading state is reset
+        }
     });
     showAlert.value = true;
 }
 
 function submit2() {
+    loading2.value = true; // Set loading to true before submitting
     form2.selected_resources = cart;
     form2.post('/payments/resource-payment', {
         preserveScroll: true,
@@ -100,7 +110,14 @@ function submit2() {
             form2.reset();
             sessionStorage.removeItem('cart');
             window.scrollTo(0, 0);
+            loading2.value = false; // Reset loading state on success
         },
+        onError: () => {
+            loading2.value = false; // Reset loading state on error
+        },
+        onFinish: () => {
+            loading2.value = false; // Ensure loading state is reset
+        }
     });
     showAlert.value = true;
 }
@@ -316,6 +333,16 @@ const agree = ref(false)
             <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
 
+                    <fwb-alert type="dark" class="mb-5 my-5 bg-gray-200">
+                        <span class="font-medium"><u>Account details</u></span>
+                        <ul class="mt-1.5 ml-4 list-disc list-inside">
+                            <li>Account No : 8760031609</li>
+                            <li>Name : H.D.M.Chathurika</li>
+                            <li>Bank : Commercial Bank</li>
+                            <li>Branch : Horana</li>
+                        </ul>
+                    </fwb-alert>
+
                     <ul
                         class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
                         <li class="me-2">
@@ -408,12 +435,18 @@ const agree = ref(false)
                                     PNG, JPG or PDF (MAX 2MB).</p>
                                 <InputError class="mt-2" :message="form1.errors.slip" />
                                 <fwb-checkbox v-model="agree" label="I have uploaded the correct payment slip" class="mt-4" />
-                                <button type="submit" :disabled="!agree" :class="[
-                                    'mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-lg text-center',
-                                    agree
+                                <button type="submit" :disabled="!agree || loading1" :class="[
+                                    'mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-lg text-center flex justify-center items-center',
+                                    agree && !loading1
                                         ? 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
                                         : 'text-white bg-blue-300 cursor-not-allowed dark:bg-blue-300 dark:text-blue-300'
-                                ]">Submit</button>
+                                ]">
+                                    <svg v-if="loading1" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    {{ loading1 ? 'Submitting...' : 'Submit' }}
+                                </button>
                             </form>
 
                         </template>
@@ -494,12 +527,18 @@ const agree = ref(false)
                                     PNG, JPG or PDF (MAX 2MB).</p>
                                 <InputError class="mt-2" :message="form2.errors.slip" />
                                 <fwb-checkbox v-model="agree" label="I have uploaded the correct payment slip" class="mt-4" />
-                                <button type="submit" :disabled="!agree" :class="[
-                                    'mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-lg text-center',
-                                    agree
+                                <button type="submit" :disabled="!agree || loading2" :class="[
+                                    'mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-lg text-center flex justify-center items-center',
+                                    agree && !loading2
                                         ? 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
                                         : 'text-white bg-blue-300 cursor-not-allowed dark:bg-blue-300 dark:text-blue-300'
-                                ]">Submit</button>
+                                ]">
+                                    <svg v-if="loading2" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    {{ loading2 ? 'Submitting...' : 'Submit' }}
+                                </button>
                             </form>
 
                         </template>
