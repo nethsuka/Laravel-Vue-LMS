@@ -316,6 +316,16 @@ const agree = ref(false)
             <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
 
+                    <fwb-alert type="dark" class="mb-5 my-5">
+                        <span class="font-medium"><u>Account details</u></span>
+                        <ul class="mt-1.5 ml-4 list-disc list-inside">
+                            <li>Account No : 8760031609</li>
+                            <li>Name : H.D.M.Chathurika</li>
+                            <li>Bank : Commercial Bank</li>
+                            <li>Branch : Horana</li>
+                        </ul>
+                    </fwb-alert>
+
                     <ul
                         class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
                         <li class="me-2">
