@@ -158,7 +158,7 @@ function deleteResource(resourceId) {
 
                                             <fwb-table-cell>
                                                 <span class="text-base">
-                                                    {{ item.name }}
+                                                    {{index + 1}}. {{ item.name }}
                                                 </span>
                                             </fwb-table-cell>
                                             <fwb-table-cell>

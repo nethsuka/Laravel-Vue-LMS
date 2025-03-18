@@ -12,7 +12,7 @@ class AdditionalLessonController extends Controller
 
     public function __construct()
     {
-        $this->extendDetails = ExtraVideo::all();
+        $this->extendDetails = ExtraVideo::orderBy('created_at', 'desc')->get();
     }
 
     public function index() {

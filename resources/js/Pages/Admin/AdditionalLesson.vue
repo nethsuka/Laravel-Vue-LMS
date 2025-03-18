@@ -91,8 +91,8 @@ function isExpired(expiryDate) {
                                 <fwb-table-body>
                                     <template v-if="Arrays.extendDetails.length > 0">
                                         <template v-if="filteredItems.length > 0">
-                                            <fwb-table-row v-for="record in filteredItems" :key="record.id">
-                                                <fwb-table-cell>{{ record.st_name }}</fwb-table-cell>
+                                            <fwb-table-row v-for="(record, index) in filteredItems" :key="record.id">
+                                                <fwb-table-cell>{{index + 1}}. {{ record.st_name }}</fwb-table-cell>
                                                 <fwb-table-cell>{{ record.st_email }}</fwb-table-cell>
                                                 <fwb-table-cell>{{ record.name }}</fwb-table-cell>
                                                 <fwb-table-cell>
