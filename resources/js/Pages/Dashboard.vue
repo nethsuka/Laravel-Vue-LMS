@@ -172,7 +172,7 @@ const downloadFile = (tute_name, tute_path) => {
                                         <div v-if="checkPaidOrNot(record.id) || checkDateRange()">
                                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{
                                                 record.class_name }} Class</h3>
-                                            <fwb-alert v-if="!checkPaidOrNot(record.id)" border type="warning" icon closable class="flex justify-between items-center max-w-xl mt-7">
+                                            <fwb-alert v-if="!checkPaidOrNot(record.id)" border type="warning" icon class="flex justify-between items-center max-w-xl mt-7">
                                                 <p>This class is available only until the <b>{{ Arrays.extendDetails.extend_date }}th</b> of this month. If payment is not settled by this date, you will no longer have access to the class.</p>
                                             </fwb-alert>
                                             <div class="mt-5 mb-10">
@@ -237,7 +237,7 @@ const downloadFile = (tute_name, tute_path) => {
                                                             <div
                                                                 class="inline-block bg-gray-300 text-gray-800 text-sm py-1 px-3 rounded-full">
                                                                 Expires on <span class="font-bold">{{ video.expiry_date
-                                                                    }} | Time : 23:59</span>
+                                                                    }} | Time : 12:00 am</span>
                                                             </div>
                                                         </div>
                                                         <div class="mt-2 text-sm text-gray-600">

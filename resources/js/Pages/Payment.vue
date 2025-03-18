@@ -333,7 +333,7 @@ const agree = ref(false)
             <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3">
 
-                    <fwb-alert type="dark" class="mb-5 my-5 bg-gray-200">
+                    <fwb-alert type="success" class="mb-5 my-5 bg-green-100 border-2 border-green-300">
                         <span class="font-medium"><u>Account details</u></span>
                         <ul class="mt-1.5 ml-4 list-disc list-inside">
                             <li>Account No : 8760031609</li>
