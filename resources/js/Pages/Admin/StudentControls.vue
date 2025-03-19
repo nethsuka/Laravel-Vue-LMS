@@ -96,7 +96,8 @@ function createarray() {
         )
         return {
             ...student,
-            ...matchedExtendData
+            ...matchedExtendData,
+
         }
     })
     seacrharray.value = showarray.value
@@ -108,9 +109,11 @@ function aftersave() {
         const matchedExtendData = Arrays.extendDetails.find(extendItem =>
             extendItem.user_email === student.email
         )
+
         return {
             ...student,
-            ...matchedExtendData
+            ...matchedExtendData,
+
         }
     })
     seacrharray.value = showarray.value
@@ -140,9 +143,13 @@ function getkey() {
 
 const isextended = ref(null)
 function extentedStundents() {
-    currentPage.value = 1 // Reset to first page on filtering
-    seacrharray.value = seacrharray.value.filter(student => student.extend_date > 7);
-    
+    currentPage.value = 1 
+    seacrharray.value = seacrharray.value.filter(student => student.extend_date > 7)
+        .sort((a, b) => {
+            const dateA = new Date(a.updated_at);
+            const dateB = new Date(b.updated_at);
+            return dateB - dateA; 
+        });
     if (isextended.value == null) {
         isextended.value = true;
         return;
@@ -394,7 +401,7 @@ function getnumber(id) {
                                                             <span class="font-semibold text-gray-700">Father's
                                                                 Number:</span>
                                                             <span class="ml-2 text-gray-600">{{ stu.f_number
-                                                                }}</span>
+                                                            }}</span>
                                                         </div>
 
                                                         <div class="flex items-center">
