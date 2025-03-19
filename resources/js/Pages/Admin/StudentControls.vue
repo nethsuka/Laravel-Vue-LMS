@@ -31,6 +31,8 @@ const Arrays = defineProps({
     extendDetails: Array
 });
 
+
+
 const currentPage = ref(1)
 const itemsPerPage = ref(15) // Number of items per page
 
@@ -94,7 +96,24 @@ function createarray() {
         )
         return {
             ...student,
-            ...matchedExtendData
+            ...matchedExtendData,
+
+        }
+    })
+    seacrharray.value = showarray.value
+}
+function aftersave() {
+    showarray.value = Arrays.studentDetails.filter(student =>
+        Arrays.extendDetails.some(extendItem => extendItem.user_email === student.email)
+    ).map(student => {
+        const matchedExtendData = Arrays.extendDetails.find(extendItem =>
+            extendItem.user_email === student.email
+        )
+
+        return {
+            ...student,
+            ...matchedExtendData,
+
         }
     })
     seacrharray.value = showarray.value
@@ -124,8 +143,13 @@ function getkey() {
 
 const isextended = ref(null)
 function extentedStundents() {
-    currentPage.value = 1 // Reset to first page on filtering
-    seacrharray.value = seacrharray.value.filter(student => student.extend_date > 7);
+    currentPage.value = 1 
+    seacrharray.value = seacrharray.value.filter(student => student.extend_date > 7)
+        .sort((a, b) => {
+            const dateA = new Date(a.updated_at);
+            const dateB = new Date(b.updated_at);
+            return dateB - dateA; 
+        });
     if (isextended.value == null) {
         isextended.value = true;
         return;
@@ -238,9 +262,10 @@ function getnumber(id) {
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-6 py-3 mb-4">
                         <div class="grid grid-cols-3 gap-2">
                             <div class="text-sm py-2 px-7 col-span-2">
-                                Please proceed with caution. This action will reset the extension date for all students to the default value (7th).
-                                <br/>
-                               <b>This change is irreversible.</b>
+                                Please proceed with caution. This action will reset the extension date for all students
+                                to the default value (7th).
+                                <br />
+                                <b>This change is irreversible.</b>
                             </div>
                             <div class="py-2 px-7">
                                 <fwb-button color="default" class="ml-12" @click="confirmAction">
@@ -285,7 +310,11 @@ function getnumber(id) {
                         <fwb-table striped style="max-width: 1200px; margin: 20px 0 20px 0 ;">
                             <fwb-table-head>
                                 <fwb-table-head-cell>
-                                    <div class="flex justify-items-center"><span class="pt-0.5">Name &nbsp;</span><fwb-badge type="dark" class="rounded-full bg-gray-500 text-white">{{ seacrharray.length }}</fwb-badge></div>
+                                    <div class="flex justify-items-center"><span class="pt-0.5">Name
+                                            &nbsp;</span><fwb-badge type="dark"
+                                            class="rounded-full bg-gray-500 text-white">{{
+                                                seacrharray.length
+                                            }}</fwb-badge></div>
                                 </fwb-table-head-cell>
                                 <fwb-table-head-cell>Email</fwb-table-head-cell>
                                 <fwb-table-head-cell>Phone Number</fwb-table-head-cell>
@@ -296,7 +325,7 @@ function getnumber(id) {
                             <fwb-table-body>
                                 <template v-for="(stu, index) in paginatedArray" :key="index">
                                     <fwb-table-row>
-                                        <fwb-table-cell>{{ getnumber(stu.id) + 1 }}. &nbsp;  {{ stu.name }}
+                                        <fwb-table-cell>{{ getnumber(stu.id) + 1 }}. &nbsp; {{ stu.name }}
                                             <fwb-badge href="#" size="sm" v-if="parseInt(stu.extend_date) > 7"
                                                 style="max-width: 60%; margin-top: 5px;">
                                                 Extended
@@ -311,9 +340,7 @@ function getnumber(id) {
                                         <fwb-table-cell>
                                             <fwb-button @click="deleteUser(stu.id)" gradient="red"
                                                 style="margin-right: 50%;">
-                                                <!-- <Link href="/student-controls/delete/user" method="delete" :data="{ stu_id: stu.id }" as="button" type="button" > -->
                                                 Delete
-                                                <!-- </Link> -->
                                             </fwb-button>
                                         </fwb-table-cell>
                                     </fwb-table-row>
@@ -374,7 +401,7 @@ function getnumber(id) {
                                                             <span class="font-semibold text-gray-700">Father's
                                                                 Number:</span>
                                                             <span class="ml-2 text-gray-600">{{ stu.f_number
-                                                                }}</span>
+                                                            }}</span>
                                                         </div>
 
                                                         <div class="flex items-center">
@@ -408,10 +435,10 @@ function getnumber(id) {
                                                                     method="patch"
                                                                     :data="{ email: stu.email, newDate: stu.extend_date }"
                                                                     as="button" type="button" preserve-scroll @success="(page) => {
+                                                                        // console.log(page.props.extendDetails)
                                                                         studata.value = page.props.studentDetails;
                                                                         extendDate.value = page.props.extendDetails;
-                                                                        createarray();
-
+                                                                        aftersave();
                                                                     }">
                                                                 Save
                                                                 </Link>
