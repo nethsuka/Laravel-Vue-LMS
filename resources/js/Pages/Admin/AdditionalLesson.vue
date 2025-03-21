@@ -46,7 +46,8 @@ const confirmAction = (id) => {
 function isExpired(expiryDate) {
     const currentDate = new Date();
     const expiry = new Date(expiryDate);
-
+    currentDate.setHours(0, 0, 0, 0);
+    expiry.setHours(0, 0, 0, 0);
     // Check if the expiry date is before the current date
     return expiry < currentDate;
 }
