@@ -31,7 +31,6 @@ function setActiveTab(tab) {
 //     console.log(Arrays.paidClassDetails)
 //     console.log(Arrays.classDetails)
 //     console.log(Arrays.extendDetails)
-//     console.log("Video links",Arrays.videoLinks)
 // })
 
 // const form = useForm({
@@ -51,24 +50,6 @@ const form2 = useForm({
 function joinOnline(cid) {
     form2.classID = cid;
     form2.post('/dashboard/zoomlink');
-}
-
-function formatExpiryDate(expiryDate) {
-  if (!expiryDate) return '';
-  
-  // Parse the date string
-  const date = new Date(expiryDate);
-  
-  // Subtract one day
-  date.setDate(date.getDate() - 1);
-  
-  // Format the date as YYYY-MM-DD
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  
-  // Return formatted date with time
-  return `${year}-${month}-${day} 11:59 PM`;
 }
 
 // function collectTuitionClassIds() {
@@ -255,7 +236,8 @@ const downloadFile = (tute_name, tute_path) => {
                                                         <div class="flex justify-end">
                                                             <div
                                                                 class="inline-block bg-gray-300 text-gray-800 text-sm py-1 px-3 rounded-full">
-                                                                Expires on <span class="font-bold">{{ formatExpiryDate(video.expiry_date) }}</span>
+                                                                Expires on <span class="font-bold">{{ video.expiry_date
+                                                                    }} | Time : 23:59</span>
                                                             </div>
                                                         </div>
                                                         <div class="mt-2 text-sm text-gray-600">
