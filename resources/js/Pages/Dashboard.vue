@@ -237,7 +237,7 @@ const downloadFile = (tute_name, tute_path) => {
                                                             <div
                                                                 class="inline-block bg-gray-300 text-gray-800 text-sm py-1 px-3 rounded-full">
                                                                 Expires on <span class="font-bold">{{ video.expiry_date
-                                                                    }} | Time : 11:59 P.M.</span>
+                                                                    }} | Time : 11:59 PM</span>
                                                             </div>
                                                         </div>
                                                         <div class="mt-2 text-sm text-gray-600">
