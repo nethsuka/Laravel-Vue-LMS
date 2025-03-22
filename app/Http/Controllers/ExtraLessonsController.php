@@ -16,7 +16,7 @@ class ExtraLessonsController extends Controller
     public function __construct() {
 
         $this->extraLessons = ExtraVideo::where('st_id', Auth::id())
-                                ->where('expiry_date', '>=', Carbon::now('Asia/Colombo'))
+                                ->whereDate('expiry_date', '>=', Carbon::now('Asia/Colombo')->toDateString())
                                 ->get();
     }
 
