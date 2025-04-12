@@ -311,9 +311,9 @@ const agree = ref(false)
                         <path fill="#fff"
                             d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z" />
                     </svg>
-                    <div class="ms-3 text-sm font-medium">
-                        {{ $page.props.flash.successMsg }}
-                    </div>
+                    <div class="ms-3 text-sm font-medium flex flex-col gap-1">
+    <span class="font-semibold text-green-700">Your payment was successfully submitted, and access will be granted within 24 hours after review.</span>
+</div>
                     <button type="button"
                         class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
                         @click="closeAlert" aria-label="Close">
