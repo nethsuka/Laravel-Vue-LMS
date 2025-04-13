@@ -283,14 +283,14 @@ const agree = ref(false)
                 <h2 class="font-semibold text-2xl text-gray-800 leading-tight">Payments</h2>
                 <div>
                     <Link href="/more-classes">
-                        <button type="button"
+                    <button type="button"
                         class="text-white bg-gradient-to-r from-sky-500 to-sky-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-sky-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center shadow-lg shadow-sky-500/50 dark:shadow-lg dark:shadow-cyan-800/80 ml-3">
-                            Add More Classes
-                        </button>
+                        Add More Classes
+                    </button>
                     </Link>
                     <a href="/student-controls" v-if="props.auth.user.role === 'admin'">
                         <button type="button"
-                        class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ml-2">
+                            class="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ml-2">
                             Admin Panel
                         </button>
                     </a>
@@ -311,8 +311,19 @@ const agree = ref(false)
                         <path fill="#fff"
                             d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z" />
                     </svg>
-                    <div class="ms-3 text-sm font-medium">
-                        {{ $page.props.flash.successMsg }}
+                    <div class="ms-3 text-sm font-medium flex flex-col gap-1">
+                        <ul class="flex flex-col gap-2">
+                            <li class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-green-700 rounded-full"></span>
+                                <span class="font-semibold text-green-700">Your payment is successfully submitted</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-green-700 rounded-full"></span>
+                                <span class="font-semibold text-green-700">We will review your payment and grant access
+                                    within
+                                    24 hours</span>
+                            </li>
+                        </ul>
                     </div>
                     <button type="button"
                         class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
@@ -434,16 +445,22 @@ const agree = ref(false)
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">
                                     PNG, JPG or PDF (MAX 2MB).</p>
                                 <InputError class="mt-2" :message="form1.errors.slip" />
-                                <fwb-checkbox v-model="agree" label="I have uploaded the correct payment slip" class="mt-4" />
+                                <fwb-checkbox v-model="agree" label="I have uploaded the correct payment slip"
+                                    class="mt-4" />
                                 <button type="submit" :disabled="!agree || loading1" :class="[
                                     'mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-lg text-center flex justify-center items-center',
                                     agree && !loading1
                                         ? 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
                                         : 'text-white bg-blue-300 cursor-not-allowed dark:bg-blue-300 dark:text-blue-300'
                                 ]">
-                                    <svg v-if="loading1" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    <svg v-if="loading1" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4">
+                                        </circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
                                     </svg>
                                     {{ loading1 ? 'Submitting...' : 'Submit' }}
                                 </button>
@@ -479,7 +496,7 @@ const agree = ref(false)
                                             <span
                                                 class="inline-flex items-center px-2 py-1 text-sm font-medium text-indigo-800 bg-indigo-100 rounded-full dark:bg-indigo-900 dark:text-indigo-300 max-w-xs truncate relative">
                                                 <span class="truncate pr-5" :title="item.name">{{ item.resource_name
-                                                    }}</span>
+                                                }}</span>
                                                 <button @click="removeitem(item.resource_name)" type="button"
                                                     class="mr-2 inline-flex items-center p-1 ms-2 text-md text-indigo-400 bg-transparent rounded-xs hover:bg-indigo-200 hover:text-indigo-900 dark:hover:bg-indigo-800 dark:hover:text-indigo-300 absolute right-0"
                                                     aria-label="Remove">
@@ -496,8 +513,8 @@ const agree = ref(false)
                                         </div>
                                     </template>
                                     <template v-else>
-                                        <p class="text-sm pl-4 mb-2">You can pick Resources from <a
-                                                href="/resources" class=" text-blue-600 underline">HERE
+                                        <p class="text-sm pl-4 mb-2">You can pick Resources from <a href="/resources"
+                                                class=" text-blue-600 underline">HERE
                                             </a>
                                         </p>
                                     </template>
@@ -526,16 +543,21 @@ const agree = ref(false)
                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">
                                     PNG, JPG or PDF (MAX 2MB).</p>
                                 <InputError class="mt-2" :message="form2.errors.slip" />
-                                <fwb-checkbox v-model="agree" label="I have uploaded the correct payment slip" class="mt-4" />
+                                <fwb-checkbox v-model="agree" label="I have uploaded the correct payment slip"
+                                    class="mt-4" />
                                 <button type="submit" :disabled="!agree || loading2" :class="[
                                     'mt-6 w-full sm:w-auto px-5 py-2.5 text-sm font-medium rounded-lg text-center flex justify-center items-center',
                                     agree && !loading2
                                         ? 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
                                         : 'text-white bg-blue-300 cursor-not-allowed dark:bg-blue-300 dark:text-blue-300'
                                 ]">
-                                    <svg v-if="loading2" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    <svg v-if="loading2" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
                                     </svg>
                                     {{ loading2 ? 'Submitting...' : 'Submit' }}
                                 </button>
