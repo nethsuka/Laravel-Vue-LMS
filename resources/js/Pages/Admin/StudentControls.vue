@@ -143,12 +143,12 @@ function getkey() {
 
 const isextended = ref(null)
 function extentedStundents() {
-    currentPage.value = 1 
+    currentPage.value = 1
     seacrharray.value = seacrharray.value.filter(student => student.extend_date > 7)
         .sort((a, b) => {
             const dateA = new Date(a.updated_at);
             const dateB = new Date(b.updated_at);
-            return dateB - dateA; 
+            return dateB - dateA;
         });
     if (isextended.value == null) {
         isextended.value = true;
@@ -387,6 +387,17 @@ function getnumber(id) {
                                                                 extra
                                                                 lessons</fwb-button>
                                                         </div>
+                                                        <div class="flex items-center">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="h-5 w-5 mr-2 text-green-500" fill="none"
+                                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M12 3L1 9l11 6 11-6-11-6zM2 12l10 6 10-6M2 15l10 6 10-6" />
+                                                            </svg>
+                                                            <span class="font-semibold text-gray-700">School:</span>
+                                                            <p class="ml-2 text-gray-600">{{ stu.school }}</p>
+                                                        </div>
                                                     </div>
 
                                                     <div class="space-y-2">
@@ -443,6 +454,18 @@ function getnumber(id) {
                                                                 Save
                                                                 </Link>
                                                             </fwb-button>
+                                                        </div>
+                                                        <div class="flex items-center">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="h-5 w-5 mr-2 text-green-500" fill="none"
+                                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                            </svg>
+                                                            <span class="font-semibold text-gray-700">Get To
+                                                                Know:</span>
+                                                            <p class="ml-2 text-gray-600">{{ stu.getToKnow }}</p>
                                                         </div>
                                                     </div>
                                                 </div>
